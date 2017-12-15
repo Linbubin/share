@@ -1,7 +1,7 @@
 # this
 
 ## 最外层
-```
+```javascript
 console.log(this === window);  // true
 console.log(window.alert === this.alert);  // true
 console.log(this.parseInt("021", 10));  // 21 
@@ -10,7 +10,7 @@ console.log(this.parseInt("021", 10));  // 21
 
 ## 函数内部使用this, this指调用对象
 
-```
+```javascript
 // 定义一个全局函数
 function foo() {
     console.log(this.fruit); // window
@@ -44,6 +44,7 @@ a(); // undefined
 var a = one.two.foo.bind(one);
 a();  //"apple"
 ```
+
 ### 箭头函数
 >1. 箭头函数的this绑定看的是this所在的函数定义在哪个对象下，绑定到哪个对象则this就指向哪个对象
 >2. 如果有对象嵌套的情况，则this绑定到最近的一层对象上
@@ -51,7 +52,7 @@ a();  //"apple"
 简单来说，箭头函数中的this就是在箭头函数所在函数外层的那个this,(向外查找function声明的函数，里面加一句console.log(this)就是这个！)
 
 而function声明的函数，只是看调用对象
-```
+```javascript
 var a = {
     b: {
         c: {
@@ -62,7 +63,7 @@ var a = {
     }
 }
 ```
-```
+```javascript
 var obj1={  
     num:4,  
     fn:function(){  
@@ -78,7 +79,7 @@ var obj1={
 obj1.fn();
 ```
 改变一处
-```
+```javascript
 var obj1={  
     num:4,  
     fn:function(){  
@@ -96,7 +97,7 @@ var obj1={
 obj1.fn();  
 ```
 改变另一处
-```
+```javascript
 var obj1={  
     num:4,  
     fn:function(){  
@@ -120,15 +121,15 @@ class中则为 class
 ## 使用apply和call来改变
 > JavaScript 的一大特点是，函数存在「定义时上下文」和「运行时上下文」以及「上下文是可以改变的」这样的概念。
 
-```
+```javascript
 func.call(this, arg1, arg2);
 func.apply(this, [arg1, arg2])
 ```
 ### 作用
-```
+```javascript
 function中arguments为伪数组不具备array的方法，就可以用Array.prototype.join.call(arguments, ...)
 ```
-```
+```javascript
 function changeStyle(attr, value){
     this.style[attr] = value;
 }
@@ -139,7 +140,7 @@ window.changeStyle.apply(box, ['height', '200px'])
 改变this指向从而赋值
 ```
 
-```
+```javascript
 function log(msg)　{ 
   console.log(msg);
 }
@@ -153,7 +154,7 @@ log(1);    //1
 log(1,2);    //1 2
 ```
 ---
-```
+```javascript
 // 柯里化
 if (!function() {}.mybind) {
     Function.prototype.mybind = function(context) {
@@ -184,7 +185,7 @@ fun('hzjs'); //zeng::xy::hzjs
 把obj绑定到thisObj，这时候thisObj具备了obj的属性和方法。与call和apply不同的是，bind绑定后不会立即执行。
 
 示例
-```
+```javascript
 function fn(a,b){
     console.log(this);
     console.log(a);
@@ -200,7 +201,7 @@ bf2 = fn.bind("Bind this",1,2);
 bf2(); // "Bind this",1,2
 ```
 多重bind
-```
+```javascript
 function say() {  
     alert(this.x);  
 };  
@@ -212,7 +213,7 @@ var c = b.bind({x: 3});
 c();
 ```
 简化版本bind
-```
+```javascript
 Function.prototype.bind = Function.prototype.bind || function(context) {
   var that = this;
   return function() {
@@ -221,7 +222,7 @@ Function.prototype.bind = Function.prototype.bind || function(context) {
 } 
 ```
 等式替换
-```
+```javascript
 var a = function() {  
     return say.apply({x: 1});  
 };
@@ -241,7 +242,7 @@ var b = function() {
 ```
 
 多次绑定参数的顺序
-```
+```javascript
 function say() {  
     console.log(this.x);  
 };  
@@ -276,7 +277,7 @@ b(7,8,9)的参数组成是：
 >无论什么时候，只要创建了一个函数，就会根据一组特定的规则为该函数创建一个prototype属性，这个属性指向函数的原型对象。在默认情况下，所有对象原型都会自动获得一个constructor属性，这个属性包含一个指向prototype属性所在函数的指针。 --Javascript高级程序设计
 
 例子
-```
+```javascript
 function fruits() {}
 
 fruits.prototype = {
@@ -289,7 +290,7 @@ fruits.prototype = {
 var apple = new fruits;
 apple.say();    //My color is red
 ```
-```
+```javascript
 function a(c){
     this.b = c;
     this.d =function(){
@@ -322,13 +323,13 @@ new 对象 出来的值是没有prototype的,
 > 注意，__proto__是实例的一个属性，而原型prototype是其构造函数函数的一个性质。
 
 所以 `var obj = new a('test');`可以理解为
-```
+```javascript
 var obj={};
 obj.__proto__=a.prototype;
 a.call(obj, 'test');
 ```
 level up
-```
+```javascript
 function a(c){
     this.b = c;
     this.d =function(){
@@ -350,9 +351,10 @@ var t = new obj('obj');
 
 t.test();
 //t.__proto__.__proto__
+// 但是为什么t.prototype为undefined
 ```
 again
-```
+```javascript
 function a(c){
     this.b = c;
     this.d =function(){
@@ -368,7 +370,7 @@ obj1.constructor === a.prototype.constructor // false
 // 因为当a.prototype.constructor改变，则new的新对象的constructor就会直接等于最顶层的object对象的constructor
 ```
 constructor妙用
-```
+```javascript
 function MyClass(a, b) {
     this.a = a;
     this.b = b;
