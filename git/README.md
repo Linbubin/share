@@ -94,7 +94,13 @@ linux  ~/.ssh/id_rea.pub
 ```
 3. 测试能否连接github `ssh -T git@github.com`
 
+
 4. 图解
+首页：
+![首页](https://github.com/Linbubin/share/blob/master/git/home.png)
+
+个人页：
+![个人页](https://github.com/Linbubin/share/blob/master/git/self.png)
 
 5. 比较差异
 [1.11.5-2.2.1](https://github.com/ant-design/ant-design/compare/1.11.5...2.2.1)
