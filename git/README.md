@@ -87,6 +87,31 @@ git reset HEAD~                   //回退到commit之前  修改之后
 git reset --hard commit_id        //退到上次提交后的状态
 git reset HEAD filename           //将文件从暂存区返回到工作区
 ```
+### 建议
+1. 每次提交前,diff自己的代码，以免提交错误代码
+2. 下班前整理好自己的工作区(git commit)
+3. 并行项目使用分支开发
+4. 遇到冲突时，搞明白冲突的原因，不要随意丢弃别人的代码
+5. 
+
+## 工作流程 gitflow
+![gitflow](https://github.com/Linbubin/share/blob/master/git/gitflow.png)
+1. master 分支
+也就是我们经常使用的Master分支，这个分支最近发布到生产环境的代码，最近发布的Release， 这个分支只能从其他分支合并，不能在这个分支直接修改
+
+2. Develop 分支
+这个分支是我们是我们的主开发分支，包含所有要发布到下一个Release的代码，这个主要合并与其他分支，比如Feature分支
+
+3. Feature 分支
+这个分支主要是用来开发一个新的功能，一旦开发完成，我们合并回Develop分支进入下一个Release
+
+4. Release分支
+当你需要一个发布一个新Release的时候，我们基于Develop分支创建一个Release分支，完成Release后，我们合并到Master和Develop分支
+
+5. Hotfix分支
+当我们在master发现新的Bug时候，我们需要创建一个Hotfix, 完成Hotfix后，我们合并回Master和Develop分支，所以Hotfix的改动会进入下一个Release
+
+> [阿里的代码分支管理](http://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&mid=2651006565&idx=1&sn=9a1e9bc53def6eeb9637d79719628d3b&chksm=bdbede368ac95720cec02ced13525c75c335b49b3e9a96c0f3233194734b4ff8b5b88e36933e&mpshare=1&scene=23&srcid=033075AAhgIuHBxF3wgEmic6#rd)
 
 ## github
 ### 连接github
@@ -111,3 +136,11 @@ linux  ~/.ssh/id_rea.pub
 `https://github.com/ant-design/ant-design/compare/1.11.5...2.2.1`
 
 查看日期也可以`https://github.com/ant-design/ant-design/compare/master@{7.day.ago}...master`
+
+### 推荐star
+1. [冴羽博客](https://github.com/mqyqingfeng/Blog)
+2. [微醺岁月博客](https://github.com/jawil/blog)
+3. [宋邵茵 Cam Song](https://github.com/camsong)
+4. [张云龙 前端农民工](https://github.com/fouber)
+5. [技术面试需要掌握的基础知识整理](https://github.com/CyC2018/Interview-Notebook)
+6. [前端面试及答案](https://github.com/qiu-deqing/FE-interview)
