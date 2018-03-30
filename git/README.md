@@ -1,6 +1,6 @@
 # git与github的使用
 
-直接访问 https://github.com/Linbubin/share/tree/master/git 效果最佳
+
 
 ## git (分布式版本控制系统)
 >Git是一个开源的分布式版本控制系统，可以有效、高速的处理从很小到非常大的项目版本管理. Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件.
