@@ -92,7 +92,6 @@ git reset HEAD filename           //将文件从暂存区返回到工作区
 2. 下班前整理好自己的工作区(git commit)
 3. 并行项目使用分支开发
 4. 遇到冲突时，搞明白冲突的原因，不要随意丢弃别人的代码
-5. 
 
 ## 工作流程 gitflow
 ![gitflow](https://github.com/Linbubin/share/blob/master/git/gitflow.png)
