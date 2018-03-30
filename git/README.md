@@ -1,8 +1,11 @@
 # git与github的使用
 
+直接访问 https://github.com/Linbubin/share/tree/master/git 效果最佳
+
 ## git (分布式版本控制系统)
 >Git是一个开源的分布式版本控制系统，可以有效、高速的处理从很小到非常大的项目版本管理. Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件.
 >三个区域：工作区，暂存区，本地仓库。
+> git 命令 --help 直接跳转页面，有详细介绍。
 
 ### git下载
 [点击下载](https://git-scm.com/downloads)
@@ -65,19 +68,19 @@ git commit --amend // 修改提交资料
 
 git commit -am "xxx" //git add + commit 但是只会add 工作区的，新增的不会影响
 ```
-2. diff
+2. diff 差异比较
 ```
 git diff 分支A 分支B // 查看两个分支的差异
 git diff 分支A 分支B filename // 查看两个分支 文件的差异
 git diff commit_id //查看某次提交 与本次的差异 HEAD为本次提交 -> git diff commit_id HEAD
 ```
 
-3. rebase
+3. rebase 合并提交
 ```
 git rebase -i HEAD~2 // 合并log最上面的2个
 ```
 
-4. reset
+4. reset 版本回退(当前为 HEAD,上一次为HEAD^,上两次HEAD^^或HEAD~2)
 ```
 git reset commit_id               //可以回退到commit前，修改后    
 git reset HEAD~                   //回退到commit之前  修改之后
@@ -108,5 +111,3 @@ linux  ~/.ssh/id_rea.pub
 `https://github.com/ant-design/ant-design/compare/1.11.5...2.2.1`
 
 查看日期也可以`https://github.com/ant-design/ant-design/compare/master@{7.day.ago}...master`
-
-
