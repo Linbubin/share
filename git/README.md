@@ -70,13 +70,15 @@ git commit -am "xxx" //git add + commit 但是只会add 工作区的，新增的
 ```
 2. diff 差异比较
 
-分支比较：如果不填写分支，则默认为 当前分支的最新一次提交
+
 ```
+分支比较：如果不填写分支，则默认为 当前分支的最新一次提交
 git diff 分支A 分支B // 查看两个分支的差异
 git diff 分支A 分支B filename // 查看两个分支 文件的差异
 ```
-同一分支不同提交比较： 如果不填写哈希值，则默认为最新一次提交
+
 ```
+同一分支不同提交比较： 如果不填写哈希值，则默认为最新一次提交
 git diff commit_id //查看某次提交 与本次的差异 HEAD为本次提交 -> git diff commit_id HEAD
 ```
 
@@ -90,7 +92,7 @@ git rebase -i HEAD~2 // 合并log最上面的2个
 git reset commit_id               //可以回退到commit前，修改后    
 git reset HEAD~                   //回退到commit之前  修改之后
 git reset --hard commit_id        //退到上次提交后的状态
-git reset HEAD filename           //将文件从暂存区返回到工作区
+git reset commit_id filename      //将文件回退到commit_id, 如果commit_id为HEAD将文件从暂存区返回到工作区
 ```
 ### 建议
 1. 每次提交前,diff自己的代码，以免提交错误代码
