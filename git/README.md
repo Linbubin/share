@@ -70,7 +70,6 @@ git commit -am "xxx" //git add + commit 但是只会add 工作区的，新增的
 ```
 2. diff 差异比较
 
-
 ```
 分支比较：如果不填写分支，则默认为 当前分支的最新一次提交
 git diff 分支A 分支B // 查看两个分支的差异
