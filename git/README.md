@@ -93,6 +93,16 @@ git reset HEAD~                   //回退到commit之前  修改之后
 git reset --hard commit_id        //退到上次提交后的状态
 git reset commit_id filename      //将文件回退到commit_id, 如果commit_id为HEAD将文件从暂存区返回到工作区
 ```
+5. filter-branch 修改筛选匹配修改
+之前由于提交的时候，用户名和邮箱忘记修改，导致显示的问题。如下
+![名称和邮箱写错](https://github.com/Linbubin/share/blob/master/git/email&name-problem.png)
+```
+git filter-branch -f --env-filter \
+"GIT_AUTHOR_NAME='Newname'; GIT_AUTHOR_EMAIL='newemail'; \
+GIT_COMMITTER_NAME='committed-name'; GIT_COMMITTER_EMAIL='committed-email';" HEAD
+```
+HEAD可以替换成 HEAD~3...HEAD 这样就可以指定哪几次提交替换。 否则默认为从头到HEAD,即全部提交。
+
 ### 建议
 1. 每次提交前,diff自己的代码，以免提交错误代码
 2. 下班前整理好自己的工作区(git commit)
