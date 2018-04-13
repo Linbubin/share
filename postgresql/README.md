@@ -12,3 +12,11 @@ from
 where tmp.name = data_table.name;
 ```
 
+也可以根据select出来的值进行操作
+```sql
+update account_info set account_balance = account_balance - data_table.values
+from
+(SELECT o_r.detainee_id, sum(c_i.commodity_price * o_r.commodity_num) as values FROM order_record o_r,commodity_info c_i WHERE o_r.commodity_id = c_i.id group by o_r.detainee_id ) as data_table
+
+where account_info.detainee_id = data_table.detainee_id;
+```
