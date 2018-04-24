@@ -103,6 +103,11 @@ GIT_COMMITTER_NAME='committed-name'; GIT_COMMITTER_EMAIL='committed-email';" HEA
 ```
 HEAD可以替换成 HEAD~3...HEAD 这样就可以指定哪几次提交替换。 否则默认为从头到HEAD,即全部提交。
 
+6. push覆盖远程分支
+```
+git push origin master --force
+```
+
 ### 建议
 1. 每次提交前,diff自己的代码，以免提交错误代码
 2. 下班前整理好自己的工作区(git commit)

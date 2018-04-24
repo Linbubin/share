@@ -20,3 +20,9 @@ from
 
 where account_info.detainee_id = data_table.detainee_id;
 ```
+
+3. postgreql 连接数量过多，导致不能再打开客户端
+```
+select * from pg_stat_activity;
+```
+就能看到 具体谁 连了postgresql中的哪个数据库，执行什么命令

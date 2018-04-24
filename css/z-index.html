@@ -1,0 +1,61 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>z-index变化</title>
+  <style>
+    div {
+      height: 100px;
+      width: 100px;
+      position: absolute
+    }
+
+    .a {
+      background: red;
+      z-index: 1
+    }
+
+    .b {
+      background: green;
+      left: 50px;
+      top: 50px;
+      z-index: 2;
+    }
+
+    .c {
+      background: yellow;
+      left: 100px;
+      top: 100px;
+      z-index: 4;
+    }
+
+    .d {
+      background: blue;
+      left: 150px;
+      top: 150px;
+      z-index: 4
+    }
+  </style>
+</head>
+
+<body>
+  <div class='a'>
+
+  </div>
+  <div class='b'>
+
+  </div>
+  <div class='c'>
+
+  </div>
+  <div class='d'>
+
+  </div>
+  <div class='e'>
+
+  </div>
+</body>
+
+</html>
