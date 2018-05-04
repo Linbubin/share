@@ -1,3 +1,8 @@
+# 面向对象
+
+## 创建对象
+
+### 介绍
 1. new Object()
 2. {}
 3. 使用字面量
@@ -7,11 +12,11 @@
 7. 构造函数 + 原型
 8. 动态原型、 寄生构造函数 、稳妥构造函数 - 不常用
 
+### 代码
 1.
-```
+```js
 	var o = new Object();
-	// 等同于 var o = {};
-	o.n ame = 'linb';
+	o.name = 'linb';
 
 	o.sayName = function() {
 	alert(this.name);
@@ -21,10 +26,9 @@
 ```
 
 2.
-```
-	
+```js	
 	var o = {};
-	o.n ame = 'linb';
+	o.name = 'linb';
 
 	o.sayName = function() {
 	alert(this.name);
@@ -33,8 +37,29 @@
 	o.sayName()
 ```
 
-4. 
+3.
+```js
+var o1 = {};
+o1.sayName = function() {
+	alert(this.name);
+}
+
+var o2 = {};
+o2.name = 'lisi';
+o2.sayName = function(){
+	alert(this.name);
+}
+
+alert(o1.sayName == 02.sayName)
 ```
+### 缺点
+1-3：
+1-没有特定类型 只能new Object 不能 直接new Animal, 声明的时候 需要写多遍。一一赋值， 代码会重复。
+2-sayName不是两个相同的方法，不同对象调用不同的方法。
+### 优点
+如果只new一次 就用这种方式
+4. 工厂模式
+```js
 function createPerson(name){
 	var o = new Object();
 	o.name = name;
@@ -53,11 +78,12 @@ person2.sayName();
 alert(person.sayName == person2.sayName);
 
 alert(person instanceof Object);
-// 虽然解决了冗余 ， 但是不知道是谁new出来的。
+// 虽然解决了代码冗余 ， 但是没有定义具体的类型(知道是Object，但不知道是不是Person类型)。
+// 本质上sayName还是重复占用空间。
 // alert(person instanceof Person)
 ```
 
-5. 
+5. 构造函数模式
 ```js
 // function _sayName(){
 // 	alert(this.name);
@@ -79,6 +105,7 @@ p1.sayName();
 p2.sayName();
 
 alert(p1.sayName == p2.sayName); // false
+// new 出来的 constructor指向 构造方法
 alert(p1.constructor == p2.constructor); 
 alert(p1.constructor == Person); 
 alert(p1.constructor); 
@@ -88,11 +115,14 @@ alert(typeof(p1));
 alert(p1 instanceof Object);
 alert(p1 instanceof Person);
 
-// new Person Object -> Person extends Object
+// (new Person => Object) -> Person extends Object
+// 明确标识类型，但是方法还是要重新封装一遍(可以用全局函数来替代。 但是如果方法比较多，就会破坏封装性， 别人想调用直接拿外部的来调用)
 ```
 
-6. 
+6.  原型模式
+// new出来的对象 如果本身没有该属性，就去 构造函数的prototype有没有
 ```js
+// TODO: 函数中Animal改成this，可以用吗？this.prototype.name = 'animal';
 function Animal(){
 	Animal.prototype.name = 'animal';
 	Animal.prototype.sayName = function(){
@@ -125,6 +155,7 @@ a2.name = 'dog';
 a2.sayName();
 
 ```
+定义属性中 存在引用类型， 会导致 共同更改
 ```js
 function Animal(){
 	Animal.prototype = {
@@ -146,16 +177,19 @@ a1.sayName();
 alert(Animal.prototype.constructor);
 
 a1.friends.push('snack');
+// 如果直接设置 a1.frineds = 111; 那么 a2.friends会改变吗
 alert(a2.friends);
 ```
 
-7.
+7. 构造函数 + 原型
 ```js
+// 独有的 用 构造函数来指定
 function Animal(name){
 	this.name = name;
 	this.friends = ['dog','cat'];
 }
 
+// 共享的放到原型里
 Animal.prototype.sayName = function() {
 	alert(this.name);
 }
@@ -172,6 +206,8 @@ alert('a2.friends');
 ## 继承
 
 1. 原型链继承
+new 出来的实例 如果没有 自身的属性或者对象，可以通过 构造函数的 原型（prototype）来访问，
+如果一层没有就往上找， 最上面是 Object.prototype    
 ```js
 function Animal(){
 	this.name = 'animal';
@@ -197,10 +233,13 @@ d.getAge();
 ```
 
 弊端
+// TODO: 为什么push就会改变，而赋值 则会给本身替代
+// a.friends.push('xxx')   b.friends -> [..., 'xxx']
+// a.friends = '123'; b.friends -> ???  ('123' / [...])
 ```js
 function Animal(){
 	this.name = 'animal';
-	this.friends = ['a1', 'a2'];
+	this.friends = ['a1', 'a2'];//
 }
 
 Animal.prototype.getName = function() {
@@ -233,21 +272,15 @@ function Animal(name){
 	this.friends = ['a1', 'a2'];
 }
 
-// Animal.prototype.getName = function() {
-// 	alert(this.name)
-// }
-
 function Dog(){
 	Animal.call(this, 'dog');
 	this.age = 8;
 }
 
 var d1 = new Dog();
-var d2 = new Dog();
+var d2 = new Dog();// new 一个新的时候，会重新写一遍 Animal,所以 friends不会被覆盖
 d1.friends.push('a3');
 alert(d2.friends)
-
-// d1.getName();
 ```
 弊端
 ```js
@@ -304,6 +337,7 @@ d1.getName();
 ```
 弊端： 多次执行父类对象 N+1
 子类中name和friends都重新覆盖Animal中的。 多次重写。 浪费资源
+不过就多写一次，不是不能接受。 大部分都利用这种方式
 
 4. jquery中 继承(clone和拓展)
 ```js
@@ -315,11 +349,13 @@ var animal = {
 	}
 }
 
-var dog = Object.create(animal); // dog的原型指向animal
-dog.name = 'dog';
+// clone
+var dog = Object.create(animal); // dog的原型指向animal  TODO：测试！
+// 扩展
+dog.age = '8';
 
 var cat = Object.create(animal);
-cat.name = 'cat';
+cat.age = '18';
 
 dog.friends.push('a3');
 alert(cat.friends);
@@ -454,6 +490,7 @@ var a = {};
 jQuery.extend(a, {name: 'hello'}, {age: 10});
 console.log(a); // Object{name: "hello", age: 10}
 
+// 浅拷贝
 var a = {};
 var b = { friends: ['a1', 'a2'] };
 jQuery.extend(a,b);
@@ -461,6 +498,8 @@ console.log(a);
 a.friends.push('a3');
 console.log(b);// ['a1','a2','a3']
 
+
+// 深拷贝
 var a = {};
 var b = { friends: ['a1', 'a2'] };
 jQuery.extend(true, a, b);
