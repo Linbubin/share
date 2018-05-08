@@ -1,8 +1,6 @@
 # 面向对象
 
-## 创建对象
-
-### 介绍
+## 创建对象(封装)
 1. new Object()
 2. {}
 3. 使用字面量
@@ -12,6 +10,18 @@
 7. 构造函数 + 原型
 8. 动态原型、 寄生构造函数 、稳妥构造函数 - 不常用
 
+## 继承
+1. 原型链继承
+2. 构造函数继承
+3. 组合继承 = 原型链继承 + 构造函数继承
+4. jquery中 继承(clone和拓展)
+5. 最理想的继承 寄生组合 
+
+
+
+// TODO: Object.create ??? 
+
+
 ### 代码
 1.
 ```js
@@ -19,7 +29,7 @@
 	o.name = 'linb';
 
 	o.sayName = function() {
-	alert(this.name);
+		alert(this.name);
 	}
 
 	o.sayName()
@@ -52,12 +62,14 @@ o2.sayName = function(){
 
 alert(o1.sayName == 02.sayName)
 ```
-### 缺点
+缺点：
 1-3：
 1-没有特定类型 只能new Object 不能 直接new Animal, 声明的时候 需要写多遍。一一赋值， 代码会重复。
 2-sayName不是两个相同的方法，不同对象调用不同的方法。
-### 优点
+
+优点：
 如果只new一次 就用这种方式
+
 4. 工厂模式
 ```js
 function createPerson(name){
@@ -106,11 +118,11 @@ p2.sayName();
 
 alert(p1.sayName == p2.sayName); // false
 // new 出来的 constructor指向 构造方法
-alert(p1.constructor == p2.constructor); 
-alert(p1.constructor == Person); 
-alert(p1.constructor); 
+alert(p1.constructor == p2.constructor);
+alert(p1.constructor == Person);
+alert(p1.constructor);
 
-alert(typeof(p1));
+alert(typeof(p1));// Object
 
 alert(p1 instanceof Object);
 alert(p1 instanceof Person);
@@ -122,7 +134,7 @@ alert(p1 instanceof Person);
 6.  原型模式
 // new出来的对象 如果本身没有该属性，就去 构造函数的prototype有没有
 ```js
-// TODO: 函数中Animal改成this，可以用吗？this.prototype.name = 'animal';
+// TODO: 函数中Animal改成this，可以用吗？this.prototype.name = 'animal'; 不行，因为 this会指向 生成的对象
 function Animal(){
 	Animal.prototype.name = 'animal';
 	Animal.prototype.sayName = function(){
@@ -155,6 +167,23 @@ a2.name = 'dog';
 a2.sayName();
 
 ```
+```js
+function Animal(name){
+	Animal.prototype.name = name;
+	Animal.prototype.sayName = function(){
+		alert(this.name);
+	}
+}
+
+var a1 = new Animal('dog');
+var a2 = new Animal('cat');
+
+a1.sayName();
+
+a2.name = 'dog';
+a2.sayName();
+
+```
 定义属性中 存在引用类型， 会导致 共同更改
 ```js
 function Animal(){
@@ -167,6 +196,7 @@ function Animal(){
 		}
 	}
 }
+// dddddddddddddd
 
 var a1 = new Animal();
 var a2 = new Animal();
@@ -507,3 +537,32 @@ console.log(a);
 a.friends.push('a3');
 console.log(b);// ['a1','a2']
 ```
+
+
+
+
+
+
+
+
+4. 
+将要生成的对象，放到一个函数中，根据传入的参数值不同，生成不同的对象。
+由于所有的object都继承自Object，所以person instanceof Object为true
+优点： 代码减少
+缺点： 依然没有定义具体的类型， 只知道是一个createPerson函数。 sayName也是重复生成，二次占用空间。
+
+5.
+构造函数其实和上面的方法类似，但是注意，他的函数名是大写开头的,也算是一种约定。高程里面指出，变量用下划线， 方法用驼峰。大写开头的方法，自然就是构造函数。
+同时,构造函数.prototype.constructor 指向它本身,
+俗话说，没有对象，就自己new一个。 new方法类似于 call和apply， 将this指向改变成生成的值。
+当然，不仅仅是改变指向， 同时 他会将 自己的__proto__指向 构造函数的 prototype.
+所以 p1.constructor == p2.constructor 都指向 Person的prototype -> true, 也指向Person本身 -> true
+
+6.
+为什么可以直接定义未声明的变量， 因为js函数在执行之前不会编译，只是放在那里。当你准备执行的时候，其实他已经存在了。
+this应该都知道的。比如`function a(){console.log(a)}`是不会报错的。 同理 Animal里可以访问关于Animal的一切(可以让你访问到的一切).
+但是这种构造函数的contructor不会指向他自己,会直接定位到Function
+
+提前讲继承的小知识。 当自己没有这个方法或者属性时，就会通过this.__proto__即 构造函数.prototype去查找有没有类似的方法和属性。
+
+所以这里的sayName就会相等
