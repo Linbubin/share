@@ -184,7 +184,30 @@ a2.name = 'dog';
 a2.sayName();
 
 ```
-定义属性中 存在引用类型， 会导致 共同更改
+这种有一个很明显的缺点：定义属性中 存在引用类型， 会导致 共同更改
+```js
+function Animal(){
+	Animal.prototype.name = 'animal';
+	Animal.prototype.friends = ['dog', 'cat'];
+	Animal.prototype.sayName = function(){
+		alert(this.name);
+	}
+}
+
+var a1 = new Animal();
+var a2 = new Animal();
+
+a1.sayName();
+
+a2.name = 'dog';
+a2.sayName();
+
+a1.friends.push('snack');
+alert(a2.friends);
+// 如果直接设置 a1.frineds = 111; 那么 a2.friends会改变吗
+// 不会，只有部分函数才会把原指向的对象进行改变,而赋值是直接将指针指向其他位置。
+```
+改变一种原型赋值的方式
 ```js
 function Animal(){
 	Animal.prototype = {
@@ -196,45 +219,44 @@ function Animal(){
 		}
 	}
 }
-// dddddddddddddd
 
 var a1 = new Animal();
+console.log(a1.__proto__ == Animal.prototype) // false
+console.log(a1.__proto__); // {constructor: ƒ}
+console.log(Animal.prototype); // {constructor: ƒ, name: "animal", friends: Array(2), sayName: ƒ}
+
 var a2 = new Animal();
-
-alert(a1.sayName == a2.sayName);
-a1.sayName();
-
-alert(Animal.prototype.constructor);
-
-a1.friends.push('snack');
-// 如果直接设置 a1.frineds = 111; 那么 a2.friends会改变吗
-alert(a2.friends);
+console.log(a2.__proto__ == Animal.prototype) // false
 ```
 
 7. 构造函数 + 原型
 ```js
-// 独有的 用 构造函数来指定
+// 综上：有两个问题
+// 1. 私有属性会因为原型而同时发生改变
+// 2. 共有的方法或属性会因为 构造函数 重复写，占用空间
+// 就采用 私有用构造函数 + 共有用原型
+
+// 私有--构造函数
 function Animal(name){
 	this.name = name;
 	this.friends = ['dog','cat'];
 }
 
-// 共享的放到原型里
+// 共有--原型
 Animal.prototype.sayName = function() {
 	alert(this.name);
 }
 
 var a1 = new Animal("a1");
-var a1 = new Animal("a2");
+var a2 = new Animal("a2");
 
 alert(a1.sayName == a2.sayName);
 
 a1.friends.push('snake');
-alert('a2.friends');
+alert(a2.friends);
 ```
 
 ## 继承
-
 1. 原型链继承
 new 出来的实例 如果没有 自身的属性或者对象，可以通过 构造函数的 原型（prototype）来访问，
 如果一层没有就往上找， 最上面是 Object.prototype    
@@ -246,12 +268,16 @@ function Animal(){
 Animal.prototype.getName = function() {
 	alert(this.name);
 }
+// 上面是标准的构造函数+原型
 
 function Dog() {
 	this.age = 8
 }
 
+// 为了让new出来的dog可以访问到 Animal的方法和属性
 Dog.prototype = new Animal();
+// 这里能明显的看到一个问题，构造函数.prototype.constructor被Animal给覆盖掉了(原来应该是Dog自身，现在成 Animal了).
+// 这个问题后面解决，先假装不知道。 继续 标记一下 PROBLEM
 Dog.prototype.getAge = function() {
 	alert(this.age);
 }
@@ -259,26 +285,25 @@ Dog.prototype.getAge = function() {
 var d = new Dog();
 
 d.getName();
+// 提供2个方法检验属性or方法是否是属于该对象
+// 1. in  -> 'getName' in d => true 是否可以访问到
+// 2. hasOwnProperty -> d.hasOwnProperty('getName') => false 是否属于对象本身
+//d.getName ->d.__proto__.getName -> Dog.prototype.getName -> Dog.prototype.__proto__.getName -> Animal.prototype.getName
+
+//还有个问题 getName中的this指的是谁
+// console.log(this == ???)
 d.getAge();
 ```
-
-弊端
-// TODO: 为什么push就会改变，而赋值 则会给本身替代
-// a.friends.push('xxx')   b.friends -> [..., 'xxx']
-// a.friends = '123'; b.friends -> ???  ('123' / [...])
+弊端: 和原型模式的缺点一样，定义的对象会被其他子类改写。
 ```js
 function Animal(){
 	this.name = 'animal';
-	this.friends = ['a1', 'a2'];//
+	this.friends = ['a1', 'a2'];
 }
 
 Animal.prototype.getName = function() {
 	alert(this.name)
 }
-
-var a1 = new Animal();
-
-a1.getName();
 
 function Dog(){
 	this.age = 8;
@@ -292,7 +317,10 @@ Dog.prototype.getAge = function() {
 var d1 = new Dog();
 var d2 = new Dog();
 d1.friends.push('a3');
-alert(d2.friends)// a1 a2 a3  引用会被改变   // TODO: 改变name 是否会改变
+// d1.friends -> d1.__proto__.friends -> Dog.prototype.friends -> ['a1', 'a2']的位置
+
+alert(d2.friends)// a1 a2 a3  
+// 引用会被改变 -> ask: 改变d1.name = 'dog1', 是否会改变 d2.name
 ```
 
 2.  构造函数继承
@@ -308,19 +336,20 @@ function Dog(){
 }
 
 var d1 = new Dog();
-var d2 = new Dog();// new 一个新的时候，会重新写一遍 Animal,所以 friends不会被覆盖
+var d2 = new Dog();
 d1.friends.push('a3');
-alert(d2.friends)
+alert(d2.friends);
+alert(d1.friends === d2.friends);
+// new 一个新的时候，会重新写一遍 Animal,所以 friends不会被覆盖
 ```
-弊端
+构造方法里面增加方法
 ```js
 function Animal(name){
 	this.name = name ;
 	this.friends = ['a1', 'a2'];
-}
-
-Animal.prototype.getName = function() {
-	alert(this.name)
+	this.getName = function() {
+		alert(this.name)
+	}
 }
 
 function Dog(){
@@ -333,8 +362,9 @@ var d2 = new Dog();
 d1.friends.push('a3');
 alert(d2.friends)
 
-d1.getName(); //dog的原型对象没有指向 animal， 所以 dog的方法不会指向animal的getName
+d1.getName();
 ```
+缺点： 和构造时候的缺点一样，getName这种共用方法会写多次，占用空间.所以需要使用原型链+构造函数继承的组合。
 
 3. 组合继承 = 原型链继承 + 构造函数继承
 ```js
@@ -366,7 +396,8 @@ alert(a2.friends);
 d1.getName();
 ```
 弊端： 多次执行父类对象 N+1
-子类中name和friends都重新覆盖Animal中的。 多次重写。 浪费资源
+‘子类中name和friends都重新覆盖Animal中的。’ // ？？？？？？？？？？ 回去看看
+ 多次重写。 浪费资源
 不过就多写一次，不是不能接受。 大部分都利用这种方式
 
 4. jquery中 继承(clone和拓展)
@@ -381,6 +412,7 @@ var animal = {
 
 // clone
 var dog = Object.create(animal); // dog的原型指向animal  TODO：测试！
+//https://blog.csdn.net/blueblueskyhua/article/details/73135938
 // 扩展
 dog.age = '8';
 
@@ -415,7 +447,7 @@ function Dog(){
 }
 
 Dog.prototype = Object.create(Animal.prototype);
-Dog.prototype.constructor = Dog;
+Dog.prototype.constructor = Dog; // 解决之前的 PROBLEM
 
 Dog.prototype.getAge = function(){
 	alert(this.age);
