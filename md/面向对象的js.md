@@ -14,13 +14,8 @@
 1. 原型链继承
 2. 构造函数继承
 3. 组合继承 = 原型链继承 + 构造函数继承
-4. jquery中 继承(clone和拓展)
+4. Obejct.create继承(clone和拓展)
 5. 最理想的继承 寄生组合 
-
-
-
-// TODO: Object.create ??? 
-
 
 ### 代码
 1.
@@ -96,6 +91,12 @@ alert(person instanceof Object);
 ```
 
 5. 构造函数模式
+> new , js执行如下
+> ```
+> var o1 = new Object();
+> o1.__proto__ = Base.prototype;
+> Base.call(o1);
+> ```
 ```js
 // function _sayName(){
 // 	alert(this.name);
@@ -400,7 +401,16 @@ d1.getName();
  多次重写。 浪费资源
 不过就多写一次，不是不能接受。 大部分都利用这种方式
 
-4. jquery中 继承(clone和拓展)
+4. Object.create继承(clone和拓展)
+>先插一段小知识
+> ```
+> Object.create =  function (o) {
+>    var F = function () {};
+>    F.prototype = o;
+>    return new F();
+>};
+> ```
+
 ```js
 var animal = {
 	name: 'animal',
@@ -411,8 +421,8 @@ var animal = {
 }
 
 // clone
-var dog = Object.create(animal); // dog的原型指向animal  TODO：测试！
-//https://blog.csdn.net/blueblueskyhua/article/details/73135938
+var dog = Object.create(animal); // dog的原型指向animal
+
 // 扩展
 dog.age = '8';
 
@@ -430,7 +440,7 @@ alert(dog.sayName == cat.sayName);
 ```
 弊端: class中有引用类型，会导致数据异常
 
-5. 最理想的继承 寄生组合 // TODO: Object.create ??? 
+5. 最理想的继承 寄生组合 // TODO 代码错误。 重查
 ```js
 function Animal(name){
 	this.name = name;
@@ -446,7 +456,7 @@ function Dog(){
 	this.age = 8;
 }
 
-Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype = Object.create(Animal.prototype); // Dog.prototype = ??
 Dog.prototype.constructor = Dog; // 解决之前的 PROBLEM
 
 Dog.prototype.getAge = function(){
@@ -456,9 +466,12 @@ Dog.prototype.getAge = function(){
 var d1 = new Dog('d1');
 var d2 = new Dog('d2');
 d1.friends.push('a3');
-alert(d2.friends);
+alert(d2.friends); // ?? 什么值
 
-d1.getName();
+d1.getName(); // ??
+// d1.getname -> d1.__proto__.getName -> Dog.prototype.getName ->
+// Dog.prototype.__proto__.getName -> Animal{}.prototype.getName ->
+// Animal.prototype.getName
 ```
 
 jquery的extend方法
