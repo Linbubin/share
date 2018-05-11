@@ -10,15 +10,8 @@
 7. 构造函数 + 原型
 8. 动态原型、 寄生构造函数 、稳妥构造函数 - 不常用
 
-## 继承
-1. 原型链继承
-2. 构造函数继承
-3. 组合继承 = 原型链继承 + 构造函数继承
-4. Obejct.create继承(clone和拓展)
-5. 最理想的继承 寄生组合 
 
-### 代码
-1.
+### 1. new Object()
 ```js
 	var o = new Object();
 	o.name = 'linb';
@@ -30,7 +23,7 @@
 	o.sayName()
 ```
 
-2.
+### 2. {}
 ```js	
 	var o = {};
 	o.name = 'linb';
@@ -42,7 +35,7 @@
 	o.sayName()
 ```
 
-3.
+### 3. 使用字面量
 ```js
 var o1 = {};
 o1.sayName = function() {
@@ -65,7 +58,7 @@ alert(o1.sayName == 02.sayName)
 优点：
 如果只new一次 就用这种方式
 
-4. 工厂模式
+### 4. 工厂模式
 ```js
 function createPerson(name){
 	var o = new Object();
@@ -93,7 +86,7 @@ alert(person instanceof Object);
 // alert(person instanceof Person)
 ```
 
-5. 构造函数模式
+### 5. 构造函数模式
 > new , js执行如下
 > ```
 > var o1 = new Object();
@@ -137,7 +130,7 @@ alert(p1 instanceof Person);
 // 缺点： 方法还是要重新封装一遍(可以用全局函数来替代。 但是如果方法比较多，就会破坏封装性， 别人想调用直接拿外部的来调用)
 ```
 
-6.  原型模式
+### 6.  原型模式
 // new出来的对象 如果本身没有该属性，就去 构造函数的prototype有没有
 ```js
 function Animal(){
@@ -217,7 +210,7 @@ var a2 = new Animal();
 console.log(a2.__proto__ == Animal.prototype) // false
 ```
 
-7. 构造函数 + 原型
+### 7. 构造函数 + 原型
 ```js
 // 综上：有两个问题
 // 1. 私有属性会因为原型而同时发生改变
@@ -244,8 +237,15 @@ a1.friends.push('snake');
 alert(a2.friends);
 ```
 
+
 ## 继承
 1. 原型链继承
+2. 构造函数继承
+3. 组合继承 = 原型链继承 + 构造函数继承
+4. Obejct.create继承(clone和拓展)
+5. 最理想的继承 寄生组合 
+
+### 1. 原型链继承
 > new 出来的实例 如果没有 自身的属性或者对象，可以通过 构造函数的 原型（prototype）来访问，如果这层没有就往上找， 最上面是 Object.prototype
 ```js
 function Animal(){
@@ -310,7 +310,7 @@ alert(d2.friends)// a1 a2 a3
 // 引用会被改变 -> ask: 改变d1.name = 'dog1', 是否会改变 d2.name
 ```
 
-2.  构造函数继承
+### 2.  构造函数继承
 ```js
 function Animal(name){
 	this.name = name ;
@@ -353,7 +353,7 @@ d1.getName();
 ```
 缺点： 和构造时候的缺点一样，getName这种共用方法会写多次，占用空间.所以需要使用原型链+构造函数继承的组合。
 
-3. 组合继承 = 原型链继承 + 构造函数继承
+### 3. 组合继承 = 原型链继承 + 构造函数继承
 ```js
 function Animal(name) {
 	this.name = name;
@@ -384,7 +384,7 @@ d1.getName();
 ```
 弊端： 多次执行父类对象 N+1. 子类中name和friends都重新覆盖Animal中的。大部分都利用这种方式
 
-4. Object.create继承(clone和拓展)
+### 4. Object.create继承(clone和拓展)
 >先插一段小知识
 > ```
 > Object.create =  function (o) {
@@ -423,7 +423,7 @@ alert(dog.sayName == cat.sayName);
 ```
 弊端: class中有引用类型，会导致数据异常
 
-5. 最理想的继承 寄生组合 //
+### 5. 最理想的继承 寄生组合
 ```js
 function Animal(name){
 	this.name = name;
