@@ -423,7 +423,7 @@ alert(dog.sayName == cat.sayName);
 ```
 弊端: class中有引用类型，会导致数据异常
 
-5. 最理想的继承 寄生组合 //
+5. 最理想的继承 寄生组合
 ```js
 function Animal(name){
 	this.name = name;
