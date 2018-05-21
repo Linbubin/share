@@ -89,7 +89,8 @@ alert(person instanceof Object);
 ### 5. 构造函数模式
 > new , js执行如下
 > ```
-> var o1 = new Object();
+> var o1 = new Base() =>
+> var o1 = {};
 > o1.__proto__ = Base.prototype;
 > Base.call(o1);
 > ```
@@ -97,7 +98,7 @@ alert(person instanceof Object);
 ```js
 // function _sayName(){
 // 	alert(this.name);
-// } 
+// }
 function Person(name){
 	this.name = name;
 	this.sayName = function(){
@@ -134,7 +135,7 @@ alert(p1 instanceof Person);
 // new出来的对象 如果本身没有该属性，就去 构造函数的prototype有没有
 ```js
 function Animal(){
-	Animal.prototype.name = 'animal';
+	Animal.prototype.name = 'animal2';['']
 	Animal.prototype.sayName = function(){
 		alert(this.name);
 	}
@@ -142,7 +143,7 @@ function Animal(){
 
 var a1 = new Animal();
 var a2 = new Animal();
-
+a1.name = 'aa'
 alert(a1.sayName == a2.sayName);
 a1.sayName();
 
@@ -246,14 +247,14 @@ alert(a2.friends);
 5. 最理想的继承 寄生组合 
 
 ### 1. 原型链继承
-> new 出来的实例 如果没有 自身的属性或者对象，可以通过 构造函数的 原型（prototype）来访问，如果这层没有就往上找， 最上面是 Object.prototype
+> new 出来的实例 如果没有 自身的属性或者方法，可以通过 构造函数的 原型（prototype）来访问，如果这层没有就往上找， 最上面是 Object.prototype
 ```js
 function Animal(){
 	this.name = 'animal';
 }
 
 Animal.prototype.getName = function() {
-	alert(this.name);
+	alert(this);
 }
 // 上面是标准的构造函数+原型
 
@@ -266,9 +267,9 @@ Dog.prototype = new Animal();
 // 这里能明显的看到一个问题，构造函数.prototype.constructor被Animal给覆盖掉了(原来应该是Dog自身，现在成 Animal了).
 // 这个问题后面解决，先假装不知道。 继续 标记一下 PROBLEM
 Dog.prototype.getAge = function() {
-	alert(this.age);
+	alert(this);
 }
-
+// d.name -> d.__proto__.name -> Dog.prototype.name
 var d = new Dog();
 
 d.getName();
@@ -378,7 +379,7 @@ Dog.prototype.getAge = function(){
 var d1 = new Dog();
 var d2 = new Dog();
 d1.friends.push('a3');
-alert(a2.friends);
+alert(d2.friends);
 
 d1.getName();
 ```
