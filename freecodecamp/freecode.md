@@ -29,6 +29,15 @@
 3. 正则：var expression = /and/gi; var andCount = testString.match(expression); g为全局，否则默认匹配第一个， i 为 忽略大小写
 4. 正则: var expression = /\d+/g; \d为 数字， +为多个数字， g为匹配多个
 5. 我们也可以使用正则表达式选择器 \s 来选择一个字符串中的空白。空白字符有 " " (空格符)、\r (回车符)、\n (换行符)、\t (制表符) 和 \f (换页符)。
-6. \S 除了空白以外的
+6. \s为 空格，包括5中所有。 \S 除了空白以外的。 \w匹配[0-9a-zA-Z], \W 匹配出\w以外所有
 7. 正则表达式 不写 +，都是匹配一个！
+8. 正则 /[.|,|!]/g  []中 用|隔开， 或 关系。 也可以不隔开，直接用[.,!]、
+9. 正则 str.replace(/([A-Z])/g,' $1').replace(/_/g,' ').replace(/^\s/, '').replace(/\s+/g,'-')  =======> $1 指前面第一个()中取到的值,/^\s/ 指 全文最开头出现的\s, \s+ 指 1个或多个空格
+10. str.substr(a,b)   a为start数，可以传入负数， 则表示为 str.length + (a).  b为截取长度. 如果 大于 str.length,则取到str最后一位
+11. str.repeat(num) 返回 重复 num次的str;  'a'.repeat(3) => 'aaa'
+12. /[a-z]/.test('a') -> true, 正则判断 后面是否完全符合前面,用于判断大小写之类的
+13. Object.keys(obj) -> [key1, key2 ...] 获取obj中所有的key,并组装成一个arr
 
+
+### 坑
+1. 数组中 多数字求最小公倍数
