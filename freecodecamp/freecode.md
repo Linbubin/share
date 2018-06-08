@@ -37,7 +37,81 @@
 11. str.repeat(num) 返回 重复 num次的str;  'a'.repeat(3) => 'aaa'
 12. /[a-z]/.test('a') -> true, 正则判断 后面是否完全符合前面,用于判断大小写之类的
 13. Object.keys(obj) -> [key1, key2 ...] 获取obj中所有的key,并组装成一个arr
-
+14. indexOf 第一个参数-待查值 第二个参数- 从哪个位置开始
 
 ### 坑
 1. 数组中 多数字求最小公倍数
+```js
+//  获取arr[0]-arr[1]之间所有数的最小公倍数
+function smallestCommons(arr) {
+
+  let arrs = [];
+  let lcm = 1;
+  arr.sort((a, b) => a - b);
+  for (let i = arr[0]; i <= arr[1]; i++) {
+    arrs.push(i);
+  }
+  arrs = arrs.filter(item => item !== 1);
+  while (arrs.length) {
+    const min = arrs[0];
+    arrs = arrs.map(item => item % min === 0 ? item / min : item);
+    lcm *= min;
+    arrs = arrs.filter(item => item !== 1);
+  }
+  return lcm;
+}
+smallestCommons([1, 5]);
+```
+
+2. 取出嵌套的arr
+```js
+function steamroller(arr) {
+  // I'm a steamroller, baby
+  var result = [];
+  function flatten(arr){
+    arr.forEach(item => {
+      if(Array.isArray(item)){
+         flatten(item);   
+      }else{
+        result.push(item);
+      }
+    });
+  }
+  flatten(arr);
+  return result;
+}
+
+steamroller([1, [2], [3, [[4]]]]);
+```
+3. 对等差分
+```js
+function sym() {
+  // 去重
+  const canshu = Array.prototype.map.call(arguments, (item)=>{
+    let arr = [];
+    item.forEach(i => {
+      if(arr.indexOf(i) === -1){
+        arr.push(i);
+      }
+    })
+    return arr;
+  })
+
+  const result = canshu.reduce((a,b) => {
+    let arr = [];
+    a.forEach(item => {
+      const index = b.indexOf(item);
+      if( index === -1){
+        arr.push(item);
+      }else{
+        b.splice(index, 1);
+      }
+    })
+    arr = arr.concat(b);
+    return arr;
+  })
+  return result;
+}
+
+sym([1, 2, 3], [5, 2, 1, 4]);
+```
