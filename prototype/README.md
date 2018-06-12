@@ -276,6 +276,8 @@ b(7,8,9)的参数组成是：
 # 原型链
 >无论什么时候，只要创建了一个函数，就会根据一组特定的规则为该函数创建一个prototype属性，这个属性指向函数的原型对象。在默认情况下，所有对象原型都会自动获得一个constructor属性，这个属性包含一个指向prototype属性所在函数的指针。 --Javascript高级程序设计
 
+> 构造函数.prototype 称为 实例的原型(person.__proto__)
+
 例子
 ```javascript
 function fruits() {}
