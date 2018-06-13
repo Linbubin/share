@@ -278,6 +278,15 @@ b(7,8,9)的参数组成是：
 
 > 构造函数.prototype 称为 实例的原型(person.__proto__)
 
+> ```
+> function Person(){}; 
+> Person.prototype = null;
+> var person = new Person();
+> person.__proto__ // 由于Person.prototype不是Object,所以在new的时候会将Object.prototype分配给person
+> ```
+
+> Object.prototype Function.prototype 等一些定义好的变量，是不能够被人为更改的
+
 例子
 ```javascript
 function fruits() {}
