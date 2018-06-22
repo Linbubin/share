@@ -173,6 +173,52 @@ function hoistFunction(){
 hoistFunction();
 console.log(foo);// 3, 因为函数内是var声明，不会直接改变外部的结果
 ```
+### 特殊
+块中的函数声明
+```js
+foo();
+if(true){
+  function foo(){
+    console.log('1111');
+  }
+}else{
+    function foo(){
+      console.log('22222');
+  }
+}
+```
+---> 会转化成函数表达式
+```js
+var foo;
+foo();
+if(true){
+    foo = function foo(){
+        console.log('1111');
+    }
+}else{
+    foo = function foo(){
+      console.log('22222');
+    }
+}
+```
+函数中打印前面声明的变量
+```js
+var foo = 1;
+console.log(foo);
+
+function foo(){
+    console.log("foo");
+};
+```
+--->
+```js
+var foo;
+foo = function foo(){
+    console.log("foo")
+}
+foo = 1;
+console.log(foo)
+```
 
 # 总结
 所以，函数声明(function x(){})的优先权是最高的，它永远被提升至作用域最顶部，然后才是函数表达式(a=function(){})和变量(var a;a=1;)提升，剩余部分按顺序执行，这一点要牢记。
