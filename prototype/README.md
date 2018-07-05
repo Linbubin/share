@@ -458,3 +458,7 @@ db.color.aggregate([{
     $sort : {"rank" : 1} // sort ascending by our newly created "rank" field
 }])
 ```
+
+
+
+`Object.getPrototypeOf(person) === person.__proto__` 因为__proto__是浏览器提供的方法，有些没提供.es5中提供了`getPrototypeOf`
