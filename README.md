@@ -1,3 +1,9 @@
+# Read-Search-Ask
+
+1. Read the Error
+2. Search Google
+3. Ask for help
+
 # 坑
 
 ## git使用
