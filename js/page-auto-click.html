@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div></div>
+  <button onclick="beginChange();">点击自动变色</button>
+  <script>
+    function beginChange(){
+      setInterval(function() {
+        // IE
+        if(document.all) {
+          document.getElementsByClassName("btn")[0].click();
+        }
+        // 其它浏览器
+        else {
+          var e = document.createEvent("MouseEvents");
+          e.initEvent("click", true, true);
+          document.getElementsByClassName("btn")[0].dispatchEvent(e);
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
