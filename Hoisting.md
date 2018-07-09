@@ -29,7 +29,7 @@ hoistVariable();
 var foo = 3;
 
 function hoistVariable() {
-    var foo;
+    var foo; // 声明提升了
     foo = foo || 5;
 
     console.log(foo); // 5
@@ -164,7 +164,7 @@ console.log(foo);
 var foo = 3;
 function hoistFunction(){
   var foo;
-  foo = function foo(){};
+  foo = function foo(){}; // 函数表达式会提前，并且拆分成 var xx; xx = function xx(){}
   console.log(foo); //function foo(){}
 
   foo=5; // 因为不是用var声明的，所以不会变量提升
