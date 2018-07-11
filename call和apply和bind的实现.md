@@ -139,6 +139,7 @@ console.log(bar.call2(obj, 'kevin', 18));
 ```
 
 # apply
+与call不同之处在于， 他的最多有2个参数，第二个参数为[xxx]，列表中值为call的第二个参数到最后的集合
 
 直接给代码
 ```js
@@ -171,11 +172,56 @@ Function.prototype.apply = function (context, arr) {
 2. 第二个参数开始，都是传入函数的参数
 
 ## 利用apply实现bind
+```js
+Function.prototype.bind2 = function (content) {
+    var self = this;
+    return function(){
+        return self.apply(content);
+    }
+}
+```
 
+## bind可以传入多个参数  bind(foo,1,2,3,4)
+```js
+Function.prototype.bind3 = function (content) {
+    var self = this;
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function(){
+        return self.apply(content, args);
+    }
+}
+```
 
-## bind可以在后续传入参数
+## bind出来的函数，可以继续传入参数 var a = xx.bind(foo); a(1,2,3);
+```js
+Function.prototype.bind4 = function (content) {
+    var self = this;
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function(){
+        console.log('aaaa::', arguments[1]);
+        return self.apply(content, args.concat(Array.prototype.slice.call(arguments)));
+    }
+}
+```
 
-## 
+## bind 出来的函数 new后 this 指向会改变
+```js
+Function.prototype.bind2 = function (context) {
+    var self = this;
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    var fBound = function () {
+        var bindArgs = Array.prototype.slice.call(arguments);
+        // 当作为构造函数时，this 指向实例，此时结果为 true，将绑定函数的 this 指向该实例，可以让实例获得来自绑定函数的值
+        // 以上面的 demo 为例，如果改成 `this instanceof fBound ? null : context`，实例只是一个空对象，将 null 改成 this ，实例会具有 habit 属性
+        // 当作为普通函数时，this 指向 window，此时结果为 false，将绑定函数的 this 指向 context
+        return self.apply(this instanceof fBound ? this : context, args.concat(bindArgs));
+    }
+    // 修改返回函数的 prototype 为绑定函数的 prototype，实例就可以继承绑定函数的原型中的值
+    fBound.prototype = this.prototype;
+    return fBound;
+}
+```
 
 ## 最终
 ```js

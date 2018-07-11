@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		.a1{
+			width: 200px;
+			background-color: green;
+			height: 40px;
+			padding-left: 40px;
+		}
+		.a2{
+			width: 30px;
+			height: 30px;
+			background: yellow;
+			margin-left: -40px;
+			display: inline-block;
+		}
+		.a3 {
+			width: 100%;
+			height: 20px;
+			display: inline-block;
+			background:gray;
+		}
+	</style>
+</head>
+<body>
+  <!-- 之前探讨ie8下calc使用，发现inline-block之间存在间距问题 -->
+  原来：
+  <div class="a1">
+		<div class="a2">1</div>
+		<div class="a3">2</div>
+  </div>
+  <br />
+  第一种方法: 人为的将空格去掉，全部积压在一起， 代码不方便阅读:
+  <div class="a1"><div class="a2">1</div><div class="a3">2</div></div>
+  <br/>
+  第二种方法: 将父级设置font-size为0,需要将子级的font-size设置回来，否则会导致文字显示不出(为0当然没了) ,而且不兼容safari(兼容的话 加letter-space:-N px, N具体值自行填写)
+  <div class="a1" style="font-size: 0">
+		<div class="a2" style="font-size: 15px">1</div>
+		<div class="a3" style="font-size: 15px">2</div>
+  </div>
+  第三种方法: 给左边的子 加一个margin-right, 如果子多的话，需要一个一个的设置，很麻烦.而且设置的数值与font-size值有关 (-0.25em)
+  <div class="a1">
+		<div class="a2" style="margin-right: -4px" >1</div>
+		<div class="a3" >2</div>
+  </div>
+</body>
+</html>
