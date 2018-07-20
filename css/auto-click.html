@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>自动响应button按钮的点击事件</title>
+</head>
+<body>
+  可以用作各大抢购网站，但是需要和网站的时间同步
+  <br/>
+  <br/>
+  <br/>
+  <span>1</span>
+  <button class="btn" onclick="add()">点我+1</button>
+  <button class="btn" onclick="beginAuto()">点我触发左边的btn按钮</button>
+  <script>
+    // 默认点击事件
+    function add(){
+      var span = document.getElementsByTagName('span')[0];
+      span.textContent = Number(span.textContent) + 1;
+    }
+
+    function beginAuto(){
+      // 触发自动点击
+      setInterval(function() {
+        // IE
+        if(document.all) {
+          document.getElementsByClassName("btn")[0].click();
+        }
+        // 其它浏览器
+        else {
+          var e = document.createEvent("MouseEvents");
+          e.initEvent("click", true, true);
+          document.getElementsByClassName("btn")[0].dispatchEvent(e);
+        }
+      }, 100);
+    }
+  </script>
+</body>
+</html>

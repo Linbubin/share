@@ -62,7 +62,14 @@ git checkout 分支 // 切换分支
 1. commit log
 ```
 git commit  // 1简写,2空,3详
-git log --pretty=short
+git log --pretty=short // --pretty后面参数很多
+git log --pretty=format:"%cn committed %h on %cd" // 将输出转成 名字 + hash + 时间,也可以自定义
+
+git log
+--author=linbin
+--pretty=format:"%cn committed %h on %cd" 
+--after="2018-5-1"
+--before="2018-6-1" // 还可以根据时间、姓名来进行筛选
 
 git commit --amend // 修改提交资料
 
