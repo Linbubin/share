@@ -78,6 +78,4 @@ console.log(result()); // 1
 ```
 let sayName = (...names) => names;
 ```
-箭头函数没有new关键字，不能用 new funName来调用，同时 也不存在new.target和prototype
-
-4. str.repect(num); str重复num次
+箭头函数没有new关键字，不能用 new funName来调用，同时 也不存在new.target和prototype super

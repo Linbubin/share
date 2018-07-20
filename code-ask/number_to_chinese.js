@@ -16,7 +16,7 @@ const numberToChinese = (num) => {
   const chinese = num_array.map((item, index) => {
     // 四位数 + 单位
     const four_str = fourNumToChinese(item);
-    return  four_str + (four_str ? unit[index] : '')
+    return  four_str + (four_str !== '0' ? unit[index] : '')
   })
   const str = chinese.reverse().join('');
   return str[0] === '0' ? str.substr(1) : str
@@ -30,8 +30,9 @@ const fourNumToChinese = (num) => {
     let val;
     if(item === '0'){
       // 如果自己为0
-      if(!before_is_zero){
-        //且之前不为0
+      if(!before_is_zero && index !== 3){
+        //之前不为0且不是最后一位
+        //否则会导致 10 -> 一十零
         before_is_zero = true;
         val = '0';
       }
@@ -54,7 +55,7 @@ const fourNumToChinese = (num) => {
 // console.log(12345,numberToChinese('12345'));
 // console.log(1234567890,numberToChinese('1234567890'));
 console.log(1000000000,numberToChinese('1000000000'));
-console.log(1005000400,numberToChinese('1005000400'));
+// console.log(1005000400,numberToChinese('1005000400'));
 // console.log(1000100000,numberToChinese('1000100000'));
 
 
