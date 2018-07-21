@@ -1,4 +1,7 @@
+> es6强制开启严格模式 `use strict`
 1. let const 会形成TDZ(Temporal Dead Zone)
+const 声明是 必须赋值，否则会报错 `const a = 1;`
+const 指向的位置不能变，但是指向该位置的对象 可以变
 ```js
 var value = "global";
 
@@ -79,3 +82,38 @@ console.log(result()); // 1
 let sayName = (...names) => names;
 ```
 箭头函数没有new关键字，不能用 new funName来调用，同时 也不存在new.target和prototype super
+
+4. 解构赋值
+```js
+let a,b,c;
+
+// 数组赋值
+[a,b] = [1,2];
+console.log(a,b);// 1,2
+
+[a,b,...c] = [1,2,3,4,5,6];
+console.log(c); // [3,4,5,6]
+
+
+// 对象解构赋值
+{a,b} = {a:1, b: 2};
+console.log(a,b); // 1,2
+```
+默认值
+```js
+let a,b,c;
+[a,b,c=3] = [1,2];
+console.log(a,b,c); // 1,2,3
+
+[a,b,c] = [1,2];
+console.log(c); // undefined
+```
+使用
+```js
+// 变量交换
+let a=1,b=2;
+[a,b] = [b,a];
+console.log(a,b);
+
+
+```
