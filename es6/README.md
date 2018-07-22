@@ -115,5 +115,78 @@ let a=1,b=2;
 [a,b] = [b,a];
 console.log(a,b);
 
+// 接受函数返回
+function f(){
+    return [1,2]
+}
+let a,b;
+[a,b] = f();
+console.log(a,b) // 1,2
+// 或者
+function f(){
+    return [1,2,3,4]
+}
+let a,b;
+[a,,b] = f();
+console.log(a,b); // 1,3
+[a, ...b] = f();
+console.log(b); // [2,3,4]
 
+
+//对象解构赋值使用
+let o = {p:42, q:true};
+let {p,q} = o;
+console.log(p,q); // 42, true
+
+let {a=10,b=5} = {a:3};
+console.log(a,b);// 3, 5
+
+// 高级
+let metaData = {
+    title: 'abc',
+    test: [{
+        title: 'test',
+        desc: 'description'
+    }]
+}
+let {title: esTitle, test:[{title: cnTitle}] = metaData;
+console.log(esTitle, cnTitle); // abc, test
+```
+
+5. 正则
+```js
+// es5
+let regex = new RegExp('xyz','i');
+let regex2 = new RegExp(/xyz/i);
+
+console.log(regex.test('xyz123'), regex2.test('xyz123'));// true true
+
+// es6 新增
+let regex3 = new RegExp(/xyz/ig, 'i');
+console.log(regex3.flags); // 输出修饰符， 如果第二个参数是修饰符，则会覆盖前面的修饰符
+
+// y修饰符  和 g修饰符都是全局匹配，但是在第二次匹配时，必须是第一次匹配的下个字符才算成功
+// g 只要在上次匹配的后面 符合匹配就行
+let s = 'bbb_bb_b';
+let a1 = /b+/g;
+let a2 = /b+/y;
+console.log('one',a1.exec(s), a2.exec(s)); //one, ['bbb', index: 0, input: 'bbb_bb_b'],['bbb', index: 0, input: 'bbb_bb_b']
+console.log('two',a1.exec(s), a2.exec(s)); //one, ['bb', index: 4, input: 'bbb_bb_b'], null
+console.log(a1.sticky, a2.sticky); // false, true   是否开启u字符
+
+// u修饰符 unicode, 处理字符串中 大于2个字节的，就加u
+// 之前的.并非匹配所有的字符
+let u1 = /^\uD83D/;
+let u2= /^\uD83D/u;
+
+console.log(u1.test('\uD83D\uDC2A')); // true 没加u当成字符串
+console.log(u2.test('\uD83D\uDC2A')); // false 加u当成unicode
+
+console.log(/\u{61}/.test('a')); // false
+console.log(/\u{61}/u.test('a')); // true
+
+// 原来的.代替>0且<ffff的字符
+let str = `\u{20BB7}`;
+console.log(/^.$/.test(str)); // false
+console.log(/^.$/u.test(str)); // true
 ```
