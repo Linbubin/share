@@ -53,3 +53,15 @@ JSON.stringify(bar, ['a', 'b']);
 JSON.stringify(bar, ['a', 'b', 'c']);
 //"{"a":1,"b":{"c":2}}"
 ```
+
+如果有 toJSON方法，就会覆盖原来的返回值
+```js
+var obj = {
+  foo: 'foo',
+  toJSON: function () {
+    return 'bar';
+  }
+};
+JSON.stringify(obj);      // '"bar"'
+JSON.stringify({x: obj}); // '{"x":"bar"}'
+```
