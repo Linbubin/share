@@ -190,3 +190,33 @@ let str = `\u{20BB7}`;
 console.log(/^.$/.test(str)); // false
 console.log(/^.$/u.test(str)); // true
 ```
+6. 字符串的判断
+```js
+let str = 'string';
+// 判断是否包括 以xxx开始  以xxx结尾
+console.log('includes', str.includes("i"));// true
+console.log('startsWith', str.startsWith("str"));// true
+console.log('endsWith', str.endsWith("ing"));// true
+
+// 重复某个字符多次
+console.log(str.repeat(2)); // stringstring
+
+// 长度不够，补白
+console.log('1'.padStart(2, '0'))// 2的长度， 不够就向前补0
+console.log('1'.padEnd(2, '0'))//  2的长度， 不够就向后补0
+
+// 字符串模板
+let user = {
+    name : 'list',
+    info : 'hello world'
+}
+abc`i am ${user.name} , ${user.info}`
+function abc(s, v1, v2){
+    console.log(s, v1, v2);
+    return s + v1 + v2
+}
+
+// 对所有\进行转义，让他不再换行
+console.log(String.raw`Hi\n${1+2}`); // Hi\n3
+console.log(`Hi\n${1+2}`); // Hi \n 3
+```
