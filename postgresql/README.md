@@ -21,25 +21,30 @@ from
 where account_info.detainee_id = data_table.detainee_id;
 ```
 
-3. postgreql 连接数量过多，导致不能再打开客户端
+3. 联表修改，即t1表的a字段改成t2表的b字段，根据双方id相等
+```sql
+update t1 set a=t2.b from t2 where t1.id=t2.id;
+```
+
+4. postgreql 连接数量过多，导致不能再打开客户端
 ```
 select * from pg_stat_activity;
 ```
 就能看到 具体谁 连了postgresql中的哪个数据库，执行什么命令
 
-4. 根据 某个字段是否为指定值 优先排序
+5. 根据 某个字段是否为指定值 优先排序
 > 比如推荐文章需要是和当前文章同类型
 ```
 SELECT CASE WHEN (article_type = 111) THEN 1 ELSE 0 END AS cond FROM test ORDER BY cond;
 ```
 
-5. 如果某个字段(price)在表中未赋值，可以将查询结果赋默认值(0)
+6. 如果某个字段(price)在表中未赋值，可以将查询结果赋默认值(0)
 > 查询金额时，如果未赋值，则默认为0
 ```
 SELECT COALESCE(price, 0) as price FROM commodity;
 ```
 
-6. 判断某个字段(detainee_jsid)是否为空(null)
+7. 判断某个字段(detainee_jsid)是否为空(null)
 > 不能用 `a=null`,也不能用 `5`中表示的先将其赋值再查询，因为两者是同时进行的
 > 用 `is`
 ```
