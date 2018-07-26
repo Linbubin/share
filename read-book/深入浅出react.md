@@ -1,0 +1,63 @@
+# 深入浅出react和redux
+
+## onClick的设计是否不合理
+_onclick表示原生html中， onClick表示react中_
+
+首先说明 原生html中 onclick的问题
+1. onclick是在全局作用域下， 会污染全局环境
+2. 给多个dom添加onclick 会影响页面性能
+3. 对使用onclick的元素清除时，需要将对应的时间处理器注销掉，否则会造成内存泄漏(这点很容易忘记)
+
+但是 在react中，上述都不会存在
+1. react的onClick是根据组件一起加载的，不在全局作用域下
+2. 我们在react组件中使用多个onClick，在加载后不会产生多个onclick的html,而是采用了事件委托(event delegation)的方式处理。
+即所有的onClick都会加载成一个事件处理函数，挂在顶层的DOM节点上。所有点击事件都被这个事件处理函数捕获，然后再具体组件分配特定函数.
+所以性能会大大的提升.
+3. react有特点的生命周期，在unmount的时候会清楚该组件相关的所有事件， 所以也不存在内存泄漏
+
+## props 和 state
+
+### propTypes检查
+_因为props是由父级传递过来的，相当于一个接口。那么自己就可以定义接口的规范_
+```js
+ReactName.propTypes = {
+  caption: PropTypes.string.isRequired,// 具体书写方式可以去官网看
+  initValue: PropTypes.number
+}
+```
+在开发中定义propTypes即可，在生产环境时应当将这块代码注释或者删除，因为检测也会影响性能，再者warming语句用户也看不懂.
+`babel-react-optimize`就有类似的功能。
+
+### state的设置
+通常写在构造函数(constructor)的结尾
+
+如果要使用传进来的props做初始值，但是propTypes又不是必须的话，可以写成
+```js
+this.state = {
+  value: props.initValue || 0
+}
+```
+当然如果有大量的state需要判断，那么会影响代码观赏性，可以采用下列的例子
+```js
+Counter.defaultProps = {
+  initValue: 0
+}
+```
+这样如果父级没有传入,就会默认props里存在initValue为0.有传入则用传入值
+
+## 生命周期
+> Mount 装载过程 Update 重新渲染 Unmount 从dom中移除
+
+### 装载过程
+1. constructor
+2. getInitialState  这个方法只有在React.createClass中才起作用， 用es6语法 则包含在`constructor`的`this.state = {...}`中
+3. getDefaultProps  同上，es6中不使用
+4. componentWillMount 这个函数通常不写，涉及到他的操作基本都可以提到constructor中，作者认为这个函数只是为了和 `componentDidMount` 对称。 但是他可以在服务端和浏览器端共同使用。
+5. render
+6. componentDidMount 当render彻底!全部!都加载好后，才会执行。 比如一个父组件有3个子组件，只有当3个子组件的render都执行完毕，才会开始执行第一个子组件的`componentDidMount`方法。只能在浏览器中使用,具体查看 12章 **同构**
+在执行这个函数的时候，dom已经组装好。假设，项目不得不使用jq，就能在这个函数中使用，因为此时dom已经完成，可以进行操作。
+
+## 小知识点
+1. 当传入的props 不是 String类型时，需要用 {}包括起来
+2. 如果要访问父级传来的`props`,需要在`constructor(props)`里面写`super(props)`
+3. 修改需要用`this.setState`来修改，否则会报警告，而且会将对应的给修改掉，当你再次用`this.setState`修改时，会产生不可预计的后果
