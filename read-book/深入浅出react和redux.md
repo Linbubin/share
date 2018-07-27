@@ -46,7 +46,7 @@ Counter.defaultProps = {
 这样如果父级没有传入,就会默认props里存在initValue为0.有传入则用传入值
 
 ## 生命周期
-> Mount 装载过程 Update 重新渲染 Unmount 从dom中移除
+> Mount 装载过程 Update 更新过程 Unmount 卸载过程
 
 ### 装载过程
 1. constructor
@@ -54,10 +54,33 @@ Counter.defaultProps = {
 3. getDefaultProps  同上，es6中不使用
 4. componentWillMount 这个函数通常不写，涉及到他的操作基本都可以提到constructor中，作者认为这个函数只是为了和 `componentDidMount` 对称。 但是他可以在服务端和浏览器端共同使用。
 5. render
-6. componentDidMount 当render彻底!全部!都加载好后，才会执行。 比如一个父组件有3个子组件，只有当3个子组件的render都执行完毕，才会开始执行第一个子组件的`componentDidMount`方法。只能在浏览器中使用,具体查看 12章 **同构**
-在执行这个函数的时候，dom已经组装好。假设，项目不得不使用jq，就能在这个函数中使用，因为此时dom已经完成，可以进行操作。
+6. componentDidMount 当render彻底!全部!都加载好后，才会执行。 比如一个父组件有3个子组件，只有当3个子组件的render都执行完毕，才会开始执行第一个子组件的`componentDidMount`方法。只能在浏览器中使用,具体查看 12章 **同构**<br/>
+在执行这个函数的时候，dom已经组装好。假设，项目不得不使用jq，就能在这个函数中使用，因为此时dom已经完成，可以进行操作。<br/>
+但是如果要同时考虑jq的修改和react的更新，就需要使用 `componentDidUpdate`
+
+### 更新过程
+1. componentWillReceiveProps(nextProps) 只要父级的render被调用，那么所有的子组件都会执行该函数. 子组件的this.setState方法不会处罚该方法， 因为更新state的方法就是 this.setState,如果this.setState会调用该方法，那么就会造成死循环
+2. shouldComponentUpdate(nextProps, nextState) 默认返回true,可以通过设置 来使其返回false,阻止渲染. 因为有些时候是没必要渲染的。
+3. componentWillUpdate
+4. render
+5. componentDidUpdate
+
+### 卸载过程
+componentWillUnmount 这个函数没有设置好的参数，也没有对应得did函数，一般用于清除`componentDidMount`中声明的一些非react的方法，比如定时器.否则可能会造成内存泄漏.
+
+## redux
 
 ## 小知识点
 1. 当传入的props 不是 String类型时，需要用 {}包括起来
 2. 如果要访问父级传来的`props`,需要在`constructor(props)`里面写`super(props)`
 3. 修改需要用`this.setState`来修改，否则会报警告，而且会将对应的给修改掉，当你再次用`this.setState`修改时，会产生不可预计的后果
+4. `this.forceUpdate()`是每个react组件自带的方法，可以让react组件强制刷新
+5. `componentWillReceiveProps(nextProps)`传入的是 要更新成的props, 在该方法中可以用`this.props`来访问当前的props, `shouldComponentUpdate(nextProps, nextState)`同理，可以用`this.props`和`this.state`来查询当前值
+
+
+
+# ask:
+1. react在服务端   什么意思，多次提起
+2. react和jq结合， 书中提到是 P34 <br/>这句话是什么意思
+> 我们说可以利用componentDidMount函数执行其他UI库的代码,比如jQuery代码.当React组件被更新时,原有的内容被重新绘制,这时候就需要在 componentDidUpdate函数再次调用jQuery代码.
+
