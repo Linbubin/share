@@ -83,4 +83,4 @@ componentWillUnmount 这个函数没有设置好的参数，也没有对应得di
 1. react在服务端   什么意思，多次提起
 2. react和jq结合， 书中提到是 P34 <br/>这句话是什么意思
 > 我们说可以利用componentDidMount函数执行其他UI库的代码,比如jQuery代码.当React组件被更新时,原有的内容被重新绘制,这时候就需要在 componentDidUpdate函数再次调用jQuery代码.
-
+3. react怎么把mvc转换成mvvm
