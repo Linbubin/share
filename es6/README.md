@@ -220,3 +220,64 @@ function abc(s, v1, v2){
 console.log(String.raw`Hi\n${1+2}`); // Hi\n3
 console.log(`Hi\n${1+2}`); // Hi \n 3
 ```
+
+7. 数值扩展
+```js
+console.log(0b111110111); // 二进制503
+console.log(0o767);// 八进制503
+
+// 是否有尽
+Number.isFinite(); // false
+Number.isFinite(0); // false
+Number.isFinite(NaN); // false
+Number.isFinite(15); // true
+
+// 是否为整数
+Number.isInterger(25); // true
+Number.isInterger(25.0); // true
+Number.isInterger(25.1); // false
+Number.isInterger('1'); // false
+
+// 整数极值
+Number.MIN_SAFE_INTEGER; // -9007199254740991
+Number.MAX_SAFE_INTEGER; // 9007199254740991
+
+// 是否是安全数字
+Number.isSafeInteger(10); // true
+Number.isSafeInteger('a'); // false
+
+// 判断带小数的整数部分，并返回   es5中 Math.floor
+Math.trunc(4.999); // 4
+Math.trunc(4.1); // 4
+
+// 判断 与 0的关系
+Math.sign(-111); // -1
+Math.sign(0); // 0
+Math.sign(111); // 1
+Math.sign('a'); // NaN
+Math.sign('100'); // 1
+
+// 立方根
+Math.cbrt(8); // 2
+Math.cbrt('a'); // NaN
+```
+
+8. 数组扩展
+```js
+// 把变量转换成数组
+Array.of('a',12,3,4)
+
+// 数组转换
+Array.from(arguments); // 让arguments有数组的方法
+Array.from(arguments, x=> x+2; // 所有的参数都进行+2处理
+
+// 数组填充 fill
+[1,2,3,4].fill(10); // [10,10,10,10]
+[1,2,3,4].fill(10,1,3); // [1,10,10,4]
+
+// 查找匹配的
+[1,2,3,6666666666666,5].find((i)=>i>3); // 6666666666666
+[1,2,3,6666666666666,5].findIndex((i)=>i>3); // 3
+[1,2,NaN].includes(NaN); // true
+[1,2,NaN].includes(1); // true
+```
