@@ -68,7 +68,32 @@ Counter.defaultProps = {
 ### 卸载过程
 componentWillUnmount 这个函数没有设置好的参数，也没有对应得did函数，一般用于清除`componentDidMount`中声明的一些非react的方法，比如定时器.否则可能会造成内存泄漏.
 
-## redux
+## flux和redux
+
+### flux
+优点
+1. 在使用flux后，react组件的state基本上就沦为flux上的参数,这样如果出错，方法都有对应的调用，方便调试。
+2. flux的store只有get方法，没有set方法，所以所有需要改变值得方法，都需要通过action发出。
+
+缺点
+1. 难以进行服务器端渲染。
+2. store混杂了逻辑和状态，替换store时，只能全局替换，不能根据某一块地方进行替换。
+
+### redux
+> flux基本原则 -> 单向数据流
+> redux在此基础上加了
+> 1. 唯一数据源
+> 2. 保持状态只读
+> 3. 数据改变只能通过纯函数实现
+
+1. reducer(state, action)
+// ............................. 先跳过不看了， 头晕
+
+## react 和 redux组合使用 构建服务
+首先考虑以下三点:
+1. 代码文件的组织结构
+2. 确定模块的边界
+3. Store的状态树设计
 
 ## 小知识点
 1. 当传入的props 不是 String类型时，需要用 {}包括起来
