@@ -281,3 +281,43 @@ Array.from(arguments, x=> x+2; // 所有的参数都进行+2处理
 [1,2,NaN].includes(NaN); // true
 [1,2,NaN].includes(1); // true
 ```
+
+8. 函数扩展
+```js
+/// 参数默认值 默认值一定要居后
+function test(x,y = 'world'){
+    console.log(x, y);
+}
+test('hello'); // hello world
+function test(x='a',y){} // 会有什么后果吗？
+```
+```js
+let x = 'test';
+function test(x, y = x){
+    console.log(x,y)
+}
+test('see'); // see see
+```
+```js
+// rest参数 ...rest, rest后面不能再有参数
+function test(...arg){
+    // arg
+}
+```
+```js
+// 扩展运算符， 和 rest类似于逆运算
+console.log(...[1,2,4])// 1 2 4
+console.log('a', ...[1,2,4])// a 1 2 4
+```
+```js
+// 尾调用 -- 函数式编程， 函数的最后是不是一个函数
+// 查-----------！！！！！！！！！！！！！！！
+// 不断调用或者 不断嵌套其他函数，就使用 尾调用
+function tail(x){
+    console.log('tail', x);
+}
+function fx(x){
+    return tail(x);
+}
+fx(123);
+```
