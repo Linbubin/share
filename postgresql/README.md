@@ -50,3 +50,8 @@ SELECT COALESCE(price, 0) as price FROM commodity;
 ```
 SELECT CASE WHEN (detainee_jsid is NULL) THEN 1 ELSE 0 END AS cond FROM detainee_model ORDER BY cond
 ```
+
+8. 如果原字段为 timestamp，现在传入date数据，为了使其匹配，使用 `字段::类型`转
+`SELECT * FROM detainee_info_model WHERE detainee_rsrq::date in ('2017-10-01', '2017-11-01')`
+
+9. 计算某段时间内每天的值(没有的话自动为0暂时没想到方法展示)
