@@ -27,31 +27,41 @@ update t1 set a=t2.b from t2 where t1.id=t2.id;
 ```
 
 4. postgreql 连接数量过多，导致不能再打开客户端
-```
+```sql
 select * from pg_stat_activity;
 ```
 就能看到 具体谁 连了postgresql中的哪个数据库，执行什么命令
 
 5. 根据 某个字段是否为指定值 优先排序
 > 比如推荐文章需要是和当前文章同类型
-```
+```sql
 SELECT CASE WHEN (article_type = 111) THEN 1 ELSE 0 END AS cond FROM test ORDER BY cond;
 ```
 
 6. 如果某个字段(price)在表中未赋值，可以将查询结果赋默认值(0)
 > 查询金额时，如果未赋值，则默认为0
-```
+```sql
 SELECT COALESCE(price, 0) as price FROM commodity;
 ```
 
 7. 判断某个字段(detainee_jsid)是否为空(null)
 > 不能用 `a=null`,也不能用 `5`中表示的先将其赋值再查询，因为两者是同时进行的
 > 用 `is`
-```
+```sql
 SELECT CASE WHEN (detainee_jsid is NULL) THEN 1 ELSE 0 END AS cond FROM detainee_model ORDER BY cond
 ```
 
 8. 如果原字段为 timestamp，现在传入date数据，为了使其匹配，使用 `字段::类型`转
-`SELECT * FROM detainee_info_model WHERE detainee_rsrq::date in ('2017-10-01', '2017-11-01')`
+```sql
+SELECT * FROM detainee_info_model WHERE detainee_rsrq::date in ('2017-10-01', '2017-11-01')
+```
 
 9. 计算某段时间内每天的值(没有的话自动为0暂时没想到方法展示)
+```sql
+SELECT COALESCE(count(id),0), to_char(detainee_rsrq, 'YYYY-MM-DD hh:mm:ss') as _datetime FROM detainee_info_model WHERE detainee_rsrq BETWEEN '2017-01-01' AND '2018-12-30' GROUP BY _datetime
+```
+
+10. 将查询出来的date属性转换成string属性 to_char
+```sql
+SELECT to_char(somedate, 'YYYY-MM-DD') FROM date_table;
+```
