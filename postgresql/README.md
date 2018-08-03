@@ -65,3 +65,8 @@ SELECT COALESCE(count(id),0), to_char(detainee_rsrq, 'YYYY-MM-DD hh:mm:ss') as _
 ```sql
 SELECT to_char(somedate, 'YYYY-MM-DD') FROM date_table;
 ```
+
+11. 将查询出来的date属性转换成int属性 cast
+```sql
+SELECT CAST(COUNT(id) AS INTEGER) FROM date_table GROUP BY some_name;
+```
