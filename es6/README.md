@@ -321,3 +321,30 @@ function fx(x){
 }
 fx(123);
 ```
+
+9. 对象扩展
+```js
+// 简介表示法
+let a = 1;
+let b = 2;
+let obj = { a,b } // {a: 1, b: 2}
+let obj1 = { hello(){console.log(123)}}// { hello: function(){ console.log(123)}}
+
+// 属性表达式
+let a = 'b';
+let obj = {
+    [a]: 'c'
+}// { 'b': 'c' }
+
+// 扩展运算符
+Object.assign // 浅拷贝
+//  for of方法
+
+
+// Object新增方法
+let {a,b,...c} = {a: 1, b: 2, c: 'ddd', d:'ccc'};
+c = {
+    c: 'ddd',
+    d: 'ccc'
+}
+```
