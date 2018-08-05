@@ -348,3 +348,116 @@ c = {
     d: 'ccc'
 }
 ```
+
+10. Symbol数据类型,  定义和作用
+> 这种数据类型提供一个独一无二的值
+```js
+const a = 5;
+const b = 5;
+a === b; // true
+
+const a1 = Symbol();
+const a2 = Symbol();
+a1 === a2; // false
+
+// 用Symbol.for可以使其相等
+let a3 = Symbol.for('aaaa');
+let a4 = Symbol.for('aaaa');
+a3 === a4;// true
+```
+使用
+```js
+// 可以使obj的key不冲突
+let a1 = Symbol.for('abc');
+let obj = {
+    [a1]: '123',
+    'abc': 345,
+    'c': 456
+}
+
+// obj中使用Symbol做key值时， for in，和let of 是取不到
+for( let [key, value] of Object.entries(obj)){
+    console.log('let of', key, value);
+}
+
+Object.entries(obj); // [["abc", 345], ["c", 456]]
+
+// 可以用Object.getOwnPropertySymbols(obj)来获取
+Object.getOwnPropertySymbols(obj); //[Symbol(abc)]
+// obj[Object.getOwnPropertySymbols(obj)[0]]; // '123'
+
+// 可以获取全部的key值
+Reflect.ownKeys(obj); //  ["abc", "c", Symbol(abc)]
+```
+
+11. 数据结构 Set(不可重复的数组) Map(key可以是任意数据类型的obj)) WeakSet WeakMap
+```js
+let list = new Set();
+list.add(5);
+list.add(7);
+list.add(5);// 会被忽略，不会报错
+
+console.log('size', list.size); // 类似于arr的length 2
+
+// 或者直接用arr来声明
+let arr = [1,2,3,4,5];
+let list = new Set(arr);
+list.length; // 5
+
+// 快速去重 数据类型不同 不会被去掉 2 --- '2'
+let arr = [1,2,3,4,5,4,3,2,1];
+let list = new Set(arr);
+list.length; // 5
+
+// set 方法
+let arr = ['add', 'delete', 'clear', 'has'];
+let list = new Set(arr);
+list.has('delete'); // true
+list.delete('add'); // true 删除成功
+list.clear(); // undefined
+list; // Set{}
+
+// 利用for of进行循环
+let arr = ['add', 'delete', 'clear', 'has'];
+let list = new Set(arr);
+for(let key of list.keys()){
+    console.log('keys::', key)
+}
+
+for(let key of list.values()){
+    console.log('values::', key)
+}
+// 两个for 都是 add delete clear has
+```
+```js
+// weakSet只能用对象， 对象是浅拷贝, size方法没有
+let weakset = new WeakSet();
+let arg = {};
+weakset.add(arg);
+// weakset.add(2); // TypeError
+```
+```js
+let map = new Map();
+let arr = ['123'];
+
+// 设置key和value
+map.set(arr, 456);
+map.get(arr); // 456
+map; // Map(1) {Array(1) => 456}
+
+// 直接传入 key value声明
+let map = new Map([['a', 123], ['b', 456]]);
+map; // Map(2) {"a" => 123, "b" => 456}
+
+// 方法
+let map = new Map([['a', 123], ['b', 456]]);
+map.size; // 2
+map.delete('a'); // true
+map.clear();// undefined
+
+// 遍历之类的方法 都与Set相同
+```
+```js
+// key值必须obj， 不能遍历  没有size
+let weakmap = new WeakMap();
+```
