@@ -461,3 +461,23 @@ map.clear();// undefined
 // key值必须obj， 不能遍历  没有size
 let weakmap = new WeakMap();
 ```
+map set array 的增删改查 区别
+```js
+let map = new Map();
+let array = [];
+// 增
+map.set('t1', 1);
+arr.push({t: 1});
+
+// 查
+map.has('t'); //true
+array.find(item => item.t); // {t: 1}
+
+// 改
+map.set('t', 2);
+array.forEach(item => item.t? item.t = 2: '');
+
+// 删
+map.delete('t');
+array.splice(array.findIndex(item => item.t), 1)
+```
