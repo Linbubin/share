@@ -461,7 +461,7 @@ map.clear();// undefined
 // key值必须obj， 不能遍历  没有size
 let weakmap = new WeakMap();
 ```
-map set array 的增删改查 区别
+12. map set array 的增删改查 区别
 ```js
 let map = new Map();
 let array = [];
@@ -480,4 +480,31 @@ array.forEach(item => item.t? item.t = 2: '');
 // 删
 map.delete('t');
 array.splice(array.findIndex(item => item.t), 1)
+```
+set 和 obj
+```js
+let item = {t: 1};
+let map = new Map();
+let set = new Set();
+let obj = {};
+
+//增
+map.set('t', 1);
+set.add(item);
+obj['t'] = 1;
+
+// 查
+map.has('t');
+set.has(item);
+'t' in obj
+
+// 改
+map.set('t', 2);
+item.t = 2;
+obj['t'] = 2;
+
+// 删
+map.delete('t');
+set.delete(item);
+delete obj['t']
 ```
