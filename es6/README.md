@@ -508,3 +508,22 @@ map.delete('t');
 set.delete(item);
 delete obj['t']
 ```
+
+13. Proxy 和 Reflect
+```js
+let obj = {
+    time: '2017-03-11',
+    name: 'net',
+    _r: 123
+};
+
+let monitor = new Proxy(obj, {
+    // 拦截对象属性的读取
+    get(target, key){
+        // 不管读取什么属性， 都要把2017换成2018
+        return target[key].replace('2017', '2018')
+    }
+}); // 创建代理商
+
+monitor.time
+```
