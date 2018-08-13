@@ -517,13 +517,104 @@ let obj = {
     _r: 123
 };
 
+// 拦截方法都是 return 布尔值(不是的话,也会被转义)
 let monitor = new Proxy(obj, {
     // 拦截对象属性的读取
     get(target, key){
         // 不管读取什么属性， 都要把2017换成2018
         return target[key].replace('2017', '2018')
+    },
+    // 拦截对象属性的设置
+    // ??? return 意义在哪里
+    // 可以不return ，但是需要将其赋值修改
+    set(target, key, value){
+        if(key === 'name'){
+            return target[key]=value;
+        }else{
+            return target[key];
+        }
+    },
+    // 拦截key in object操作
+    has(target, key){
+        if(key === 'name'){
+            return 123
+        }else{
+            return false;
+        }
+    },
+    // 拦截delete
+    deleteProperty(target, key){
+        if(key.indexOf('_') > -1){
+            delete target[key];
+            return true;
+        }else{
+            return false
+        }
+    },
+    // 拦截Object.keys, Object.getOwnPropertySymbols,Object.getOwnPropertyNames
+    ownKeys(target){
+        return Object.keys(target).filter(item => item != 'time')
     }
 }); // 创建代理商
 
-monitor.time
+monitor.time;
+'time' in monitor; // false
+'name' in monitor; // true
+delete monitor.time
+Object.keys(monitor); // ["name", "_r"]
+```
+Reflect也是相同
+```js
+let obj = {
+    time: '2017-03-11',
+    name: 'net',
+    _r: 123
+};
+
+console.log(Reflect.get(obj, 'time')) // "2017-03-11"
+Reflect.set(obj, 'name', 'billy');
+console.log(obj);  // -----> name -> billy
+```
+例子
+通过 proxy将 对象和 赋值 完全隔开
+```js
+function validator(target, validator){
+    return new Proxy(target, {
+        _validator: validator,
+        set(target, key, value, proxy){
+            if(target.hasOwnProperty(key)){
+                let va = this._validator[key];
+                if(!!va(value)){
+                    return Reflect.set(target, key, value, proxy)
+                }else{
+                    throw Error(`不能设置${key}到${value}`)
+                }
+            }else{
+                throw Error(`${key} 不存在`)
+            }
+        }
+    })
+}
+
+const personValidators = {
+    name(val){
+        return typeof val === 'string'
+    },
+    age(val){
+        return typeof val === 'number' && val > 18
+    }
+}
+
+class Person{
+    constructor(name, age){
+        this.name = name;
+        this.age = age;
+        return validator(this, personValidators);
+    }
+}
+
+const person = new Person('lilei', 30);
+person.name = 48 // Uncaught Error: 不能设置name到48
+
+
 ```
