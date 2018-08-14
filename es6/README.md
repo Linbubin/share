@@ -618,3 +618,63 @@ person.name = 48 // Uncaught Error: 不能设置name到48
 
 
 ```
+
+14. 类和对象
+```js
+// 定义和生成实例
+class Parent{
+    constructor(name = 'billy'){
+        this.name = name;
+    }
+}
+let v_parent = new Parent('是我');
+```
+```js
+// 类的继承 extends
+class Child extends Parent{
+    constructor(name='child'){
+        super(name); // super一定放第一行
+        this.type = 'child'
+    }
+}
+```
+```js
+// 静态方法--通过类去调用，而不是通过实例去调用
+class Parent{
+    constructor(name = 'billy'){
+        this.name = name;
+    }
+    static tell(){
+        console.log('tell');
+    }
+}
+Parent.tell();
+```
+```js
+// 静态属性
+class Parent{
+    constructor(name = 'billy'){
+        this.name = name;
+    }
+}
+Parent.type = 'test'; // 因为没有类似于static的静态属性定义方法，所以直接给他赋值
+Parent.type // test
+```
+```js
+// getter  setter
+class Parent{
+    constructor(name = 'billy'){
+        this.name = name;
+    }
+    get longName(){
+        return 'mk' + this.name
+    }
+
+    set longName(value){
+        this.name = value
+    }
+}
+
+let v = new Parent
+
+```
