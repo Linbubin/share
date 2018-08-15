@@ -391,6 +391,24 @@ Reflect.ownKeys(obj); //  ["abc", "c", Symbol(abc)]
 ```
 
 11. 数据结构 Set(不可重复的数组) Map(key可以是任意数据类型的obj)) WeakSet WeakMap
+_Weak打头的都是弱引用，什么是弱引用，就是指当引用对象被垃圾回收时，该引用就会跟随被回收。_
+_而强引用，当引用对象设置为null(假装被垃圾回收),这边还是会指向原来引用的对象，而不会被垃圾回收,不懂的话看代码_
+```js
+// node --expose-gc
+
+global.gc();
+process.memoryUsage(); // heapUsed: 4638992 ≈ 4.4M
+
+const wm = new WeakMap();
+let key = new Array(5 * 1024 * 1024);
+wm.set(key, 1);
+global.gc();
+process.memoryUsage(); // heapUsed: 46776176 ≈ 44.6M
+
+key = null;
+global.gc();
+process.memoryUsage(); // heapUsed: 4800792 ≈ 4.6M
+```
 ```js
 let list = new Set();
 list.add(5);
