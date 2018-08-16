@@ -678,3 +678,134 @@ class Parent{
 let v = new Parent
 
 ```
+
+15. Promise --- 解决异步操作问题
+```js
+// es5中回调 解决异步操作
+let ajax = function(callback){
+    console.log('执行')
+    setTimeout(function(){
+        callback&&callback.call()
+    }, 1000);
+};
+
+ajax(function(){
+    console.log('timeout1');
+})
+```
+```js
+// promise的写法
+let ajax = function(){
+    console.log('执行2');
+    return new Promise(function(resolve, reject){
+        setTimeout(function(){
+            resolve()
+        }, 1000)
+    })
+}
+
+ajax().then(function(){
+    console.log('promise', 'timeout2')
+})
+```
+```js
+// 用promise实现依次回调
+let ajax = function(){
+    console.log('执行2');
+    return new Promise(function(resolve, reject){
+        setTimeout(function(){
+            resolve()
+        }, 1000)
+    })
+}
+
+ajax().then(function(){
+    return new Promise(function(resolve, reject){
+        setTimeout(function(){
+            resolve()
+        }, 2000)
+    })
+}).then(function(){
+    console.log('timeout3')
+})
+```
+```js
+// promise报错 catch
+let ajax = function(num){
+    console.log('执行4');
+    return new Promise(function(resolve, reject){
+        if(num >5){
+            resolve()
+        }else{
+            throw new Error('出错了')
+        }
+    })
+}
+
+ajax(6).then(function(){
+    console.log('log',6);
+}).catch(function(e){
+    console.log('error:', e)
+})
+```
+实例
+```js
+// 所有图片加载完再添加到页面
+function loadImg(src){
+    return new Promise((resolve, reject)=>{
+        let img = document.createElement('img');
+        img.src = src;
+        img.onload=()=>{
+            resolve(img);
+        }
+        img.onerror=()=>{
+            reject(err)
+        }
+    })
+}
+
+function showImgs(imgs){
+    imgs.forEach(img=>{
+        document.body.appendChild(img);
+    })
+}
+
+// Promise.all 是将多个实例组装成一个实例
+// 只有当 所有的图片都加载好， 才会实现then， 只要有一个err，就会到catch
+Promise.all([
+    loadImg('http://asdasdasd.asdasdasd.asdasd'),
+    loadImg('http://asdasdasd.asdasdasd.xxxxxx'),
+    loadImg('http://asdasdasd.asdasdasd.cccccccc'),
+    loadImg('http://asdasdasd.asdasdasd.zzzzz'),
+]).then(showImgs);
+```
+```js
+// promise.race   先到先得
+// 有一个图片加载完，就显示到页面
+function loadImg(src){
+    return new Promise((resolve, reject)=>{
+        let img = document.createElement('img');
+        img.src = src;
+        img.onload=()=>{
+            resolve(img);
+        }
+        img.onerror=()=>{
+            reject(err)
+        }
+    })
+}
+
+function showImgs(img){
+    let p = document.createElement('p');
+    p.appendChild(img);
+    document.body.appendChild(p);
+}
+
+// 有一个完成，就直接执行then， 其他then就不去了
+Promise.race([
+    loadImg('http://asdasdasd.asdasdasd.asdasd'),
+    loadImg('http://asdasdasd.asdasdasd.xxxxxx'),
+    loadImg('http://asdasdasd.asdasdasd.cccccccc'),
+    loadImg('http://asdasdasd.asdasdasd.zzzzz'),
+]).then(showImgs);
+```
