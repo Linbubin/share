@@ -696,3 +696,96 @@ class Parent{
 let v = new Parent
 
 ```
+
+15. promise
+> `Promise`对象代表一个异步操作，有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
+```js
+// 在执行resolve和reject之前，promise实例始终处于 pending 状态，只有执行 resolve 才会表示成功,同样 执行 rejected 则会进入失败
+const promise = new Promise(function(resolve, reject) {
+  // ... some code
+
+  if (/* 异步操作成功 */){
+    
+    resolve(value);
+  } else {
+    reject(error);
+  }
+});
+
+// promise.then可以传2个参数，第一个是接收 resolve的参数（必选）,第二个是接收 reject的参数(可选)
+promise.then(function(value){
+    // resolve传出的value
+}, function(error){
+    // reject传出的error
+})
+
+// 调用 resolve和reject不会终止promise的运行
+// 由于状态只能从pending变成其他，所以 reject和resolve谁写在前面，就先到那一块去
+new Promise((resolve, reject) => {
+    resolve(1);
+    console.log(2);
+    reject(3);
+    console.log(4)
+}).then((i)=> console.log(i+10),j=>console.log(j+100))
+
+// 不过一般来说，在 resolve或reject后面的操作应该放在then中执行，
+// 所以加个return 就可以忽略后续的操作
+new Promise((resolve, reject) => {
+  return resolve(1);
+  // 后面的语句不会执行
+  console.log(2);
+})
+```
+```js
+// 除了.then 还有一个.catch方法
+const promise = new Promise(function(resolve, reject) {
+  throw new Error('test');
+});
+
+promise.catch(function(error) {
+  console.log(error);
+});
+// .catch可替换成.then如下
+promise.then(null, function(error) {
+  console.log(error);
+});
+// 同理 上述写法可以换成
+// 写法一
+const promise = new Promise(function(resolve, reject) {
+  try {
+    throw new Error('test');
+  } catch(e) {
+    reject(e);
+  }
+});
+promise.catch(function(error) {
+  console.log(error);
+});
+
+// 写法二
+const promise = new Promise(function(resolve, reject) {
+  reject(new Error('test'));
+});
+promise.catch(function(error) {
+  console.log(error);
+});
+```
+```js
+// 一般情况下， 不要使用then的第二个参数，用catch来接收
+// bad
+promise
+  .then(function(data) {
+    // success
+  }, function(err) {
+    // error
+  });
+
+// good
+promise
+  .then(function(data) { //cb
+    // success
+  })
+  .catch(function(err) {
+    // error
+  });
+```
