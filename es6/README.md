@@ -391,24 +391,6 @@ Reflect.ownKeys(obj); //  ["abc", "c", Symbol(abc)]
 ```
 
 11. 数据结构 Set(不可重复的数组) Map(key可以是任意数据类型的obj)) WeakSet WeakMap
-_Weak打头的都是弱引用，什么是弱引用，就是指当引用对象被垃圾回收时，该引用就会跟随被回收。_
-_而强引用，当引用对象设置为null(假装被垃圾回收),这边还是会指向原来引用的对象，而不会被垃圾回收,不懂的话看代码_
-```js
-// node --expose-gc
-
-global.gc();
-process.memoryUsage(); // heapUsed: 4638992 ≈ 4.4M
-
-const wm = new WeakMap();
-let key = new Array(5 * 1024 * 1024);
-wm.set(key, 1);
-global.gc();
-process.memoryUsage(); // heapUsed: 46776176 ≈ 44.6M
-
-key = null;
-global.gc();
-process.memoryUsage(); // heapUsed: 4800792 ≈ 4.6M
-```
 ```js
 let list = new Set();
 list.add(5);
@@ -697,6 +679,7 @@ let v = new Parent
 
 ```
 
+
 15. promise
 > `Promise`对象代表一个异步操作，有三种状态：`pending`（进行中）、`fulfilled`（已成功）和`rejected`（已失败）
 ```js
@@ -789,3 +772,132 @@ promise
     // error
   });
 ```
+解决异步操作问题
+```js
+// es5中回调 解决异步操作
+let ajax = function(callback){
+    console.log('执行')
+    setTimeout(function(){
+        callback&&callback.call()
+    }, 1000);
+};
+
+ajax(function(){
+    console.log('timeout1');
+})
+```
+```js
+// promise的写法
+let ajax = function(){
+    console.log('执行2');
+    return new Promise(function(resolve, reject){
+        setTimeout(function(){
+            resolve()
+        }, 1000)
+    })
+}
+
+ajax().then(function(){
+    console.log('promise', 'timeout2')
+})
+```
+```js
+// 用promise实现依次回调
+let ajax = function(){
+    console.log('执行2');
+    return new Promise(function(resolve, reject){
+        setTimeout(function(){
+            resolve()
+        }, 1000)
+    })
+}
+
+ajax().then(function(){
+    return new Promise(function(resolve, reject){
+        setTimeout(function(){
+            resolve()
+        }, 2000)
+    })
+}).then(function(){
+    console.log('timeout3')
+})
+```
+```js
+// promise报错 catch
+let ajax = function(num){
+    console.log('执行4');
+    return new Promise(function(resolve, reject){
+        if(num >5){
+            resolve()
+        }else{
+            throw new Error('出错了')
+        }
+    })
+}
+
+ajax(6).then(function(){
+    console.log('log',6);
+}).catch(function(e){
+    console.log('error:', e)
+})
+```
+实例
+```js
+// 所有图片加载完再添加到页面
+function loadImg(src){
+    return new Promise((resolve, reject)=>{
+        let img = document.createElement('img');
+        img.src = src;
+        img.onload=()=>{
+            resolve(img);
+        }
+        img.onerror=()=>{
+            reject(err)
+        }
+    })
+}
+
+function showImgs(imgs){
+    imgs.forEach(img=>{
+        document.body.appendChild(img);
+    })
+}
+
+// Promise.all 是将多个实例组装成一个实例
+// 只有当 所有的图片都加载好， 才会实现then， 只要有一个err，就会到catch
+Promise.all([
+    loadImg('http://asdasdasd.asdasdasd.asdasd'),
+    loadImg('http://asdasdasd.asdasdasd.xxxxxx'),
+    loadImg('http://asdasdasd.asdasdasd.cccccccc'),
+    loadImg('http://asdasdasd.asdasdasd.zzzzz'),
+]).then(showImgs);
+```
+```js
+// promise.race   先到先得
+// 有一个图片加载完，就显示到页面
+function loadImg(src){
+    return new Promise((resolve, reject)=>{
+        let img = document.createElement('img');
+        img.src = src;
+        img.onload=()=>{
+            resolve(img);
+        }
+        img.onerror=()=>{
+            reject(err)
+        }
+    })
+}
+
+function showImgs(img){
+    let p = document.createElement('p');
+    p.appendChild(img);
+    document.body.appendChild(p);
+}
+
+// 有一个完成，就直接执行then， 其他then就不去了
+Promise.race([
+    loadImg('http://asdasdasd.asdasdasd.asdasd'),
+    loadImg('http://asdasdasd.asdasdasd.xxxxxx'),
+    loadImg('http://asdasdasd.asdasdasd.cccccccc'),
+    loadImg('http://asdasdasd.asdasdasd.zzzzz'),
+]).then(showImgs);
