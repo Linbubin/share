@@ -942,7 +942,90 @@ let obj = {
     }
 }
 
-for(let key of obj){
+for(let key of obj){s
     console.log(key)
 }
+```
+
+17. Generator
+基本概念
+```js
+let tell = function* (){
+    console.log(1);
+    yield 'a';
+    console.log(2);
+    yield 'b';
+    console.log(3);
+    return 'c'
+}
+
+let k = tell(); // 在yield之前所有操作都没执行
+
+console.log(k.next()); // 执行第一个yield之前所有代码
+console.log(k.next());
+console.log(k.next());
+console.log(k.next());
+```
+next函数的用法
+```js
+let obj = {};
+obj[Symbol.iterator] = function* (){
+    yield 1;
+    yield 2;
+    yield 3;
+}
+
+for(let value of obj){
+    console.log(value)
+}
+```
+状态机： 一直next下  循环abc
+```js
+let state = function* (){
+    while(1){
+        yield 'A';
+        yield 'B';
+        yield 'C';
+    }
+}
+
+let status = state();
+status.next();
+status.next();
+status.next();
+status.next();
+status.next();
+```
+async类似代码
+```js
+let state = async function (){
+    while(1){
+        await 'A';
+        await 'B';
+        await 'C';
+    }
+}
+
+let status = state();
+status.next();
+status.next();
+status.next();
+status.next();
+status.next();
+```
+实例： 抽奖剩余次数统计
+```js
+let draw = function(count){
+    console.info(`剩余${count}次`);
+}
+
+let residue = function * (count){
+    while (count > 0){
+        count --;
+        yield draw(count);
+    }
+}
+
+let star = residue(5);
+star.next()
 ```
