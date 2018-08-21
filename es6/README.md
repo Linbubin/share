@@ -1056,3 +1056,69 @@ let pull = function(){
 
 pull();
 ```
+
+18. Decorator
+> 修饰器: 修改类行为的函数
+
+```js
+let readonly = function(target, name, descriptor){
+    descriptor.writable = false;
+    return descriptor
+};
+
+class Test{
+    @readonly
+    time(){
+        return '2017-03-11'
+    }
+}
+
+let test = new Test();
+
+// test.time = function(){
+//     console.log('reset time')
+// }// 会报错
+
+console.log(test.time()); // '2017-03-11'
+```
+
+```js
+let typename = function(target, name, descriptor){
+    descriptor.myname = 'hello';
+};
+
+@typename
+class Test{
+
+}
+
+console.log('类修饰符', Test.myname);
+// 第三方库直接调用修饰器: core-decorators
+```
+广告的show和click
+```js
+let log = (type) => {
+    return function(target, name, descriptor){
+        let src_method = descriptor.value;
+        descriptor.value = (...arg) => {
+            src_method.apply(target, arg);
+            console.info(`log ${type}`)
+        }
+    }
+}
+
+class AD{
+    @log('show')
+    show(){
+        console.info('ad is show')
+    }
+    @log('click')
+    click(){
+        console.info('ad is click')
+    }
+}
+
+let ad = new AD();
+ad.show();
+ad.click();
+```
