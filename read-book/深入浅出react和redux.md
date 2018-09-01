@@ -52,7 +52,10 @@ Counter.defaultProps = {
 1. constructor
 2. getInitialState  这个方法只有在React.createClass中才起作用, 用es6语法 则包含在`constructor`的`this.state = {...}`中
 3. getDefaultProps  同上,es6中不使用
-4. componentWillMount 这个函数通常不写,涉及到他的操作基本都可以提到constructor中,作者认为这个函数只是为了和 `componentDidMount` 对称. 但是他可以在服务端和浏览器端共同使用.
+4. componentWillMount 这个函数通常不写,涉及到他的操作基本都可以提到constructor中,作者认为这个函数只是为了和 `componentDidMount` 对称. 但是他可以在服务端和浏览器端共同使用.其实不对，因为如果你用react-redux把请求后台的数据写在constructor里面，会导致报一下错误.所以我个人认为这个方法应该哪来在页面加载前去请求后台数据用.
+```
+Warning: setState(...): Cannot update during an existing state transition (such as within render or another component's constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to
+```
 5. render
 6. componentDidMount 当render彻底!全部!都加载好后,才会执行. 比如一个父组件有3个子组件,只有当3个子组件的render都执行完毕,才会开始执行第一个子组件的`componentDidMount`方法.只能在浏览器中使用,具体查看 12章 **同构**<br/>
 在执行这个函数的时候,dom已经组装好.假设,项目不得不使用jq,就能在这个函数中使用,因为此时dom已经完成,可以进行操作.<br/>
