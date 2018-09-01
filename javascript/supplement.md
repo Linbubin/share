@@ -41,3 +41,10 @@ setTimeout((...x)=>{
 	console.log(x);
 }, 1000, 1,2,3,4,5,6)// 1s后将输出[1,2,3,4,5,6]
 ```
+
+4. replace利用正则保留指定值
+```js
+var a = '123abcd456';
+// 替换 3abcd4 成 abcd
+a.replace(/3(.*?)4/, "$1"); // '12abcd56'
+```
