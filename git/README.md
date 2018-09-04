@@ -115,6 +115,12 @@ HEAD可以替换成 HEAD~3...HEAD 这样就可以指定哪几次提交替换。 
 git push origin master --force
 ```
 
+7. 通过commit提交的信息来查找某次提交的hash
+```
+比如要查找带有 iconfont提交信息的某次提交
+git log --grep=iconfont
+```
+
 ### 建议
 1. 每次提交前,diff自己的代码，以免提交错误代码
 2. 下班前整理好自己的工作区(git commit)
