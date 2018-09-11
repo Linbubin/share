@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>查看父级hover改变子级样式</title>
+    <style>
+        div:hover {
+            color: red;
+        }
+        div:hover span:after {
+            display: none;
+        }
+        span:after{
+            content: '我是span:after' 
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        我是div
+        <span>我是span</span>
+    </div>
+
+    <p>1. 审查元素div</p>
+    2. 把div的hover样式勾上
+    3. 审查span的style,就能看到 div:hover后span的样式,以及 span:after的样式
+</body>
+</html>
