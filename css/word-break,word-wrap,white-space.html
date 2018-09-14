@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>word-break、word-wrap和white-space区别</title>
+    <style>
+        .a{
+            width:50px;
+            background-color: bisque
+        }
+    </style>
+</head>
+<body>
+    <h1>word-break</h1>
+    特指中日韩三种语言
+    1、word-wrap: normal：仅仅在同意的断字点换行（浏览器保持默认处理）。
+    
+    2、word-wrap: break-word：在长单词或 URL 地址内部进行换行。（即在容器末端有长单词不能全然显示，不会截断单词，而是作为总体，自己主动换行）</body>
+
+
+    <h1>word-break</h1>
+    规定非中日韩文本的换行规则。
+
+        (对中文正常换行，对英文依照例如以下说明处理)
+
+        word-break有三个取值：
+
+        1、word-break: normal：使用浏览器默认的换行规则。
+
+    （等价于word-wrap: normal）
+
+        2、word-break: break-all：同意在单词内换行。（即在容器末端有长单词不能全然显示，会截断单词）
+
+        3、word-break: keep-all：仅仅能在半角空格或连字符处换行。
+
+            为了演示，在原文本的ipsum、dolor和sit之间增加一个连字符（-）
+
+            <div>
+                Lorem ipsum-dolor-sit amet, consectetur adipiscing elit. 
+            </div>
+
+    <h1>text-wrap</h1>
+    规定文本的换行规则。
+
+        text-wrap是CSS3属性，有4个取值：
+
+        1、text-wrap：normal：仅仅在同意的换行点进行换行。
+
+        2、text-wrap：none：不换行。元素无法容纳的文本会溢出。
+
+        3、text-wrap：suppress：压缩元素中的换行。浏览器仅仅在行中没有其它有效换行点时进行换行。
+
+        4、text-wrap：unrestricted：在随意两个字符间换行。
+
+       PS：眼下主流浏览器都不支持 text-wrap 属性。
+</html>
