@@ -104,7 +104,94 @@ componentWillUnmount 这个函数没有设置好的参数,也没有对应得did�
 3. 修改需要用`this.setState`来修改,否则会报警告,而且会将对应的给修改掉,当你再次用`this.setState`修改时,会产生不可预计的后果
 4. `this.forceUpdate()`是每个react组件自带的方法,可以让react组件强制刷新
 5. `componentWillReceiveProps(nextProps)`传入的是 要更新成的props, 在该方法中可以用`this.props`来访问当前的props, `shouldComponentUpdate(nextProps, nextState)`同理,可以用`this.props`和`this.state`来查询当前值
+6. react 所有事件
+```
+鼠标事件：
 
+onClick
+
+onContextMenu
+
+onDoubleClick
+
+onMouseDown
+
+onMouseEnter
+
+onMouseLeave
+
+onMouseMove
+
+onMouseOut
+
+onMouseOver
+
+onMouseUp
+
+onDrop
+
+onDrag
+
+onDragEnd
+
+onDragEnter
+
+onDragExit
+
+onDragLeave
+
+onDragOver
+
+onDragStart
+
+触摸事件：
+
+onTouchCancel
+
+onTouchEnd
+
+onTouchMove
+
+onTouchStart
+
+键盘事件：
+
+onKeyDown
+
+onKeyPress
+
+onKeyUp
+
+剪切事件：
+
+onCopy
+
+onCut
+
+onPaste
+
+表单事件：
+
+onChange
+
+onInput
+
+onSubmit
+
+焦点事件：
+
+onFocus
+
+onBlur
+
+UI事件:
+
+onScroll
+
+滚动事件：
+
+onWheel
+```
 
 
 # ask:

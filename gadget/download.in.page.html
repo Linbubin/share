@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div onclick="down();">点击下载txt文件</div>
+    <p>
+        利用blob来创建图片,并使用a标签的href download属性和click方法实现图片自动下载
+    </p>
+    <script>
+        function download(filename,content,contentType) {
+            // 如果没有传入contentType就用原始的type
+            if (!contentType) contentType = 'application/octet-stream'; // 还可以是 application/json等类型
+            
+            // new Blob来生成一段Blob类型
+            var blob = new Blob([content], { 'type': contentType });
+            // 创建一个a标签, 利用href和click来下载文件,利用download来处理保存的文件名
+            var a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+        function down(){
+            download(`未找到结果的身份证.txt`, notFoundIds.join('\r\n'));
+        }
+    </script>
+</body>
+</html>
