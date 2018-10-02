@@ -60,7 +60,7 @@ funcs[0]()
 ```
 
 
-2. 模板字符串 \`xxxx\` ,可以用 xfun\`${xx}, ${yy}\`
+2. 模板字符串 \`xxxx\` ,可以用 xfun\`${xx}, ${yy}\`, 符号中间可以用可以直接换行,输出时会保留
 3. 箭头函数
 本身没有this,所以用bind，call不会影响到他
 ```js
@@ -151,6 +151,14 @@ let metaData = {
 }
 let {title: esTitle, test:[{title: cnTitle}] = metaData;
 console.log(esTitle, cnTitle); // abc, test
+
+// 可以拿来传多参数给函数
+function hello(n1,n2){
+	console.log(n1,n2)
+}
+const arr = ['imooc', 'woniu'];
+hello.apply(null,arr)// 以前方式
+hello(...arr) // 解构赋值
 ```
 
 5. 正则
@@ -408,6 +416,8 @@ list.length; // 5
 let arr = [1,2,3,4,5,4,3,2,1];
 let list = new Set(arr);
 list.length; // 5
+// 或者直接处理
+let uniqArr = [...new Set(arr)]; // [1,2,3,4,5]
 
 // set 方法
 let arr = ['add', 'delete', 'clear', 'has'];
