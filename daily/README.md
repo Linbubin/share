@@ -1,0 +1,2 @@
+# 异步返回结果延迟
+antd的upload中status有`uploading done`属性,在uploading时,`console.log(info.file)`,在console中是有值的,但是打印`info.file.thumbUrl`就显示没有值.后来发现是异步的问题,所以选在 `status === 'done'`的时候,就能很好的获取,或者人为`settimeout`一下,也能实现.
