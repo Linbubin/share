@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+    <!-- 
+      addEventListener的第三个参数为true则为捕获, 从父到子执行, 为false则为冒泡,从子到父执行
+      都存在时,执行顺序: 捕获 -> 目标 -> 冒泡 
+      使用 event.stopPropagation(); 来阻止事件的发生   在IE<9的浏览器上使用event.cancelBubble()
+    -->
+	<div>
+		<ul>
+			<li>冒泡/捕获</li>
+		</ul>
+		<!-- 没有冒泡时 -->
+	</div>
+	<script type="text/javascript">
+	var html = document.documentElement;
+	var body = document.body;
+	var div  = body.querySelector('div');
+	var ul = body.querySelector('ul');
+	var li = body.querySelector('li');
+
+	ul.addEventListener('click', callback, true);//(2)
+	li.addEventListener('click', callback, true);//(3)
+	// div.addEventListener('click', callbackdiv2, false); //(1)
+	div.addEventListener('click', callbackdiv, true); //(1)
+
+	body.addEventListener('click', callback, false);//(4)
+	html.addEventListener('click', callback, false);//(5)
+
+	function callback(event){
+		var target = event.currentTarget;
+		console.log(target.tagName);
+	}
+	function callbackdiv(event){
+		event.stopPropagation();
+		console.log('div callback');
+	}
+	function callbackdiv2(event){
+		console.log('div callback2');
+	}
+	/* 输出(先捕获，后冒泡，捕获从上到下，冒泡从下到上)*/
+	//div callback
+	//UL 
+	//LI 
+	//BODY 
+	//HTML 
+	</script>
+</body>
+</html>
