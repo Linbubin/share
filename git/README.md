@@ -41,7 +41,10 @@ git log -p filename // 查看涉及的提交以及具体的修改情况
 ```
 
 4. show
-`git show commit_id 查看某次提交的详细信息`
+```
+git show commit_id 查看某次提交的详细信息
+git show --stat commit_id 查看某次提交修改文件的列表
+```
 
 5. checkout
 ```

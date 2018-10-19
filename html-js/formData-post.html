@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>利用FormData进行post请求 </h1>
+    <script>
+        function formDataToPost() {
+            let form = new FormData(document.getElementById("tf"));
+            let config = axios.create({
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            axios.post(`${BASE_URL}/sf2f`, form, config)
+                .then(result => {
+                    if (result.data.success) {
+                        this.setState({ isCompareSuccess: true, similarValue: result.data.similarity[0] })
+                    }
+                })
+                .catch(error => {
+                    message.error('图片比对失败,请重试')
+                    console.log('error::', error)
+                });
+        }
+
+        function formDataToPost1(){
+            let params = new FormData();
+            params.append('file', this.props.file);
+            params.append('limit', resultNumValue);
+            params.append('similarity', similarValue / 100);
+            let config = axios.create({
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            axios.post(`${BASE_URL}/simage`, params, config)
+                .then(result => {
+                    if (!result.data.imgs.length) {
+                        message.info('请尝试降低相似度阈值，再次查找')
+                    }
+                    this.props.getSimilarImgs({ similarImgs: result.data.imgs, similarValue: similarValue });
+                    // changeLocation('/img.upsearch.result');
+                })
+                .catch(error => {
+                    console.log('error::', error)
+                    message.error('图片搜索失败，请重试')
+                });
+        }
+    </script>
+</body>
+
+</html>
