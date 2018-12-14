@@ -2,8 +2,11 @@
 
 > 在javascript中,如果比较两个数时使用`==`,且比较双方类型不一致时,就会进行类型转换.
 
-比较时遵循以下规则:
+比较时遵循以下规则: 
 
+![这张图](https://cdn.filestackcontent.com/eTIpVrOQcqBNTN6Ma8i4)
+
+或者是我个人改版后的:
 1. 双方类型是否不同,如果相同,就调用===进行比较,否则继续:
 2. 双方是否为undefined和null,如果是,就返回 true,否则继续:
 3. 是否有一方为number,如果是,跳到7.否则继续:
@@ -26,7 +29,7 @@
 
 * object: 先调用valueOf方法,如果返回值为原始类型,就用返回值,否则就再调用toString,如果返回为原始类型就采用,否则就丢出错误!
 
-* Date → 调用getTime方法
+* Date → 调用toString方法
 
 ## 强制转化成string
 * undefined → "undefined"
