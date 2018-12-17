@@ -149,6 +149,7 @@ a1.sayName();
 
 alert(a1.constructor.prototype);
 // ask: 函数中Animal改成this，可以用吗?
+// 不能,因为当new时,this会被指向a1,而a1是new出来的,所以a1.prototype为undefined,从而导致报错
 ```
 ```js
 function Animal(){
