@@ -151,7 +151,7 @@ git log --grep=iconfont
 
 ## github
 ### 连接github
-1. 创建密钥`ssh -keygen -t rsa -C "your_eamil@example.com"`
+1. 创建密钥`ssh-keygen -t rsa -C "your_eamil@example.com"`
 2. 将`id_rsa.pub` 填入 github中, 路径为
 ```
 widows C:\Users\Administrator\.ssh
