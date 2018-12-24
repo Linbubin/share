@@ -180,3 +180,39 @@ linux  ~/.ssh/id_rea.pub
 4. [张云龙 前端农民工](https://github.com/fouber)
 5. [技术面试需要掌握的基础知识整理](https://github.com/CyC2018/Interview-Notebook)
 6. [前端面试及答案](https://github.com/qiu-deqing/FE-interview)
+
+
+ -p 啥意思
+
+
+
+git commit 的 message 编写
+
+ Change the message displayed by hello.py
+
+- Update the sayHello() function to output the user's name
+- Change the sayGoodbye() function to a friendlier message
+
+
+git log --oneline
+
+git checkout commit_id filename 将commit_id的filename文件add到暂存区
+
+git revert 最优解
+
+确保 reset只在本地使用,远程出bug要回退,尽可能用revert
+
+git clean 删除从来没有add的文件
+```js
+# 编辑了一些文件
+# 新增了一些文件
+# 『糟糕』
+
+# 将跟踪的文件回滚回去
+git reset --hard
+
+# 移除未跟踪的文件
+git clean -df
+```
+
+[这里-看](https://github.com/geeeeeeeeek/git-recipes/wiki/2.6-%E5%9B%9E%E6%BB%9A%E9%94%99%E8%AF%AF%E7%9A%84%E4%BF%AE%E6%94%B9)
