@@ -236,3 +236,10 @@ git push --force ！！！慎重
 
 
 git merge --no-ff 分支  只生成一条记录-可以提供给懒得管理分支上提交信息的家伙使用,但是要确保一次大改动就要提交一次
+
+中心化的工作流 - 唯一master分支push pull
+feature分支的工作流 - 新建 feature分支进行功能，然后对master分支进行 push pull
+gitflow 工作流 - 略复杂
+fork工作流 - 先fork,后面参照gitflow
+
+git push -u origin marys-feature // 给添加一个标记对应远程，下次直接git push 即可
