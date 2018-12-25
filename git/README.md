@@ -199,6 +199,7 @@ git log --oneline
 git checkout commit_id filename 将commit_id的filename文件add到暂存区
 
 git revert 最优解
+> revert 不冲突的话可以回退,否则改起来太麻烦了
 
 确保 reset只在本地使用,远程出bug要回退,尽可能用revert
 
@@ -215,4 +216,23 @@ git reset --hard
 git clean -df
 ```
 
-[这里-看](https://github.com/geeeeeeeeek/git-recipes/wiki/2.6-%E5%9B%9E%E6%BB%9A%E9%94%99%E8%AF%AF%E7%9A%84%E4%BF%AE%E6%94%B9)
+[这里-看](https://github.com/geeeeeeeeek/git-recipes/blob/master/sources/3.5-%E5%B8%B8%E8%A7%81%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%AF%94%E8%BE%83.md?1545730429984)
+
+git init --bare
+
+git commit --amend --no-edit     代替 git rebase -i HEAD~2
+
+git rebase 分支  只有不想增加额外的git log时才使用
+git reflog --relative-date 增加相对现在的日期显示
+
+git remote -v
+git remote add <name> <url>
+git remote rm <name>
+git remote rename <old-name> <new-name>
+git fetch <remote> 拉取远程分支到本地 用git branch -r查看
+fetch + merge = pull
+
+git push --force ！！！慎重
+
+
+git merge --no-ff 分支  只生成一条记录-可以提供给懒得管理分支上提交信息的家伙使用,但是要确保一次大改动就要提交一次
