@@ -201,7 +201,7 @@ git checkout commit_id filename 将commit_id的filename文件add到暂存区
 git revert 最优解
 > revert 不冲突的话可以回退,否则改起来太麻烦了
 
-确保 reset只在本地使用,远程出bug要回退,尽可能用revert
+确保 reset只在本地使用,远程出bug要回退,尽可能用revert,因为revert会新建一个提交来回退制定commit_id的提交
 
 git clean 删除从来没有add的文件
 ```js
@@ -216,7 +216,7 @@ git reset --hard
 git clean -df
 ```
 
-[这里-看](https://github.com/geeeeeeeeek/git-recipes/blob/master/sources/3.5-%E5%B8%B8%E8%A7%81%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%AF%94%E8%BE%83.md?1545730429984)
+[这里-看](https://github.com/geeeeeeeeek/git-recipes/blob/master/sources/5.2-%E5%9B%9E%E6%BB%9A%E5%91%BD%E4%BB%A4Reset%E3%80%81Checkout%E3%80%81Revert%E8%BE%A8%E6%9E%90.md?1545815476605)
 
 git init --bare
 
