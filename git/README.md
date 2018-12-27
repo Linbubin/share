@@ -35,9 +35,11 @@ git diff filename // 查看指定文件的差异
 
 3. log
 ```
-git log // 查看所有正常的提交 reflog
+git log // 查看所有正常的提交
 git log filename // 查看该文件涉及哪几次提交
 git log -p filename // 查看涉及的提交以及具体的修改情况
+git shortlog // 查看短消息
+git reflog // 查看所有提交,可以增加--relative-date参数来查看相对现在日期显示
 ```
 
 4. show
@@ -59,7 +61,7 @@ git checkout 分支 // 切换分支
 3. 切换分支 `git checkout feature-A`
 4. 2+3 => `git checkout -b feature-A`
 5. 切换到上一分支 `git checkout -`
-6. 合并 `merge` 合并所有的信息 --squash 将分支所有信息合成一个commit
+6. 合并 `merge` 合并所有的信息 --squash 将分支所有信息合成一个commit(也可以用 --no-ff 只生成一条记录-可以提供给懒得管理分支上提交信息的家伙使用,但是要确保一次大改动就要提交一次)
 
 ### 稍微深入
 1. commit log
@@ -75,6 +77,8 @@ git log
 --before="2018-6-1" // 还可以根据时间、姓名来进行筛选
 
 git commit --amend // 修改提交资料
+
+git commit --amend --no-edit     // 代替 git rebase -i HEAD~2
 
 git commit -am "xxx" //git add + commit 但是只会add 工作区的，新增的不会影响
 ```
@@ -115,7 +119,7 @@ HEAD可以替换成 HEAD~3...HEAD 这样就可以指定哪几次提交替换。 
 
 6. push覆盖远程分支
 ```
-git push origin master --force
+git push origin master --force    ！！！慎重
 ```
 
 7. 通过commit提交的信息来查找某次提交的hash
@@ -123,6 +127,69 @@ git push origin master --force
 比如要查找带有 iconfont提交信息的某次提交
 git log --grep=iconfont
 ```
+
+8. clean 来删除从来没有add的文件
+```js
+# 编辑了一些文件
+# 新增了一些文件
+# 『糟糕』
+
+# 将跟踪的文件回滚回去
+git reset --hard
+
+# 移除未跟踪的文件
+git clean -df
+```
+
+9. git log 额外参数
+```
+// 展示内容
+oneline  展示单行信息
+p        文件具体改动
+stat     文件行数差异
+graph    绘制的分支结构图
+pretty=format:"%cn committed %h on %cd" 自定义展示结构
+
+// 筛选
+-n                    n为数量,展示最近n条
+--after="yesterday"   yesterday可以改为具体日期
+--before="yesterday"
+--author="John"       作者信息
+--grep="JRA-224:"     提交信息
+-S "Hello, World!"    按代码内容
+master..feature       在feature分支,而不在master分支
+--no-merges           合并信息排除
+--merges              只看合并信息
+```
+
+10. 生成远程仓库
+
+git init --bare
+
+11. 回退某次修改 -- revert
+> git 会新增一次提交记录来表示回退以后的结果
+
+git revert commit_id // 不冲突的话可以回退,否则改起来太麻烦了
+
+12. 指向远程url -- remote
+```
+git remote -v  // 查看所有远程url
+git remote add <name> <url>
+git remote rm <name>
+git remote rename <old-name> <new-name>
+```
+
+13. 拉取远程代码 -- fetch
+```
+git fetch <remote> // 拉取远程分支到本地 用git branch -r查看
+// fetch + merge = pull
+```
+
+14. 其他
+
+还有涉及到git钩子以及提交引用等内容不好描述,就没做整理,具体可以自行查看[这里](https://github.com/geeeeeeeeek/git-recipes/blob/master/sources/5.4-Git%E9%92%A9%E5%AD%90.md?1545892075837)
+
+
 
 ### 建议
 1. 每次提交前,diff自己的代码，以免提交错误代码
@@ -181,65 +248,19 @@ linux  ~/.ssh/id_rea.pub
 5. [技术面试需要掌握的基础知识整理](https://github.com/CyC2018/Interview-Notebook)
 6. [前端面试及答案](https://github.com/qiu-deqing/FE-interview)
 
+### 补充
+1. git commit 的 message 编写
 
- -p 啥意思
-
-
-
-git commit 的 message 编写
-
+应当在每次提交时,一句简写 + 完成的功能详细描述
+```
  Change the message displayed by hello.py
 
 - Update the sayHello() function to output the user's name
 - Change the sayGoodbye() function to a friendlier message
-
-
-git log --oneline
-
-git checkout commit_id filename 将commit_id的filename文件add到暂存区
-
-git revert 最优解
-> revert 不冲突的话可以回退,否则改起来太麻烦了
-
-确保 reset只在本地使用,远程出bug要回退,尽可能用revert,因为revert会新建一个提交来回退制定commit_id的提交
-
-git clean 删除从来没有add的文件
-```js
-# 编辑了一些文件
-# 新增了一些文件
-# 『糟糕』
-
-# 将跟踪的文件回滚回去
-git reset --hard
-
-# 移除未跟踪的文件
-git clean -df
 ```
 
-[这里-看](https://github.com/geeeeeeeeek/git-recipes/blob/master/sources/5.2-%E5%9B%9E%E6%BB%9A%E5%91%BD%E4%BB%A4Reset%E3%80%81Checkout%E3%80%81Revert%E8%BE%A8%E6%9E%90.md?1545815476605)
+2. reset 和 checkout 在文件层面的改变
 
-git init --bare
-
-git commit --amend --no-edit     代替 git rebase -i HEAD~2
-
-git rebase 分支  只有不想增加额外的git log时才使用
-git reflog --relative-date 增加相对现在的日期显示
-
-git remote -v
-git remote add <name> <url>
-git remote rm <name>
-git remote rename <old-name> <new-name>
-git fetch <remote> 拉取远程分支到本地 用git branch -r查看
-fetch + merge = pull
-
-git push --force ！！！慎重
-
-
-git merge --no-ff 分支  只生成一条记录-可以提供给懒得管理分支上提交信息的家伙使用,但是要确保一次大改动就要提交一次
-
-中心化的工作流 - 唯一master分支push pull
-feature分支的工作流 - 新建 feature分支进行功能，然后对master分支进行 push pull
-gitflow 工作流 - 略复杂
-fork工作流 - 先fork,后面参照gitflow
-
-git push -u origin marys-feature // 给添加一个标记对应远程，下次直接git push 即可
+reset  缓存区 -> 工作区
+checkout 工作区 -> head
+git checkout commit_id filename // 将commit_id的filename文件add到暂存区
