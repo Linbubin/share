@@ -8,7 +8,7 @@ _因为在现在公司做的是内部管理系统，到时候无法呈现给外�
 1. 先到[官网](https://www.postgresql.org/download/linux/redhat/)选择对应的版本,他会提供对应的下载url
 2. 将1中的url复制，然后跟着官网，把下面的命令都输一次(有些估计是不用输的，但是没那么多讲究，复制就完了)
 ```
-yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rp
+yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 
 yum install postgresql96
 

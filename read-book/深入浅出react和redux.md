@@ -207,3 +207,4 @@ onWheel
 # 补充:
 1. children, 在该组件中用`this.props.children`即可接收传入的children,需要注意的是 如果当前组件没有子节点,它就是 undefined ;如果有一个子节点,数据类型是 object;如果有多个子节点,数据类型就是 array .所以,处理 this.props.children 的时候要小心.<br/>
 可以使用 `React.Children.map(this.props.children, item => <div>item</div>)`来将其完整输出,就不用担心传入的children是什么类型的值了。
+2. 因为react是虚拟dom,如果要访问真实的dom可以给jsx添加ref,`ref='xxx'`,在别处就能用`this.refs.xxx`来访问到真实dom.
