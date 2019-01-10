@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +74,31 @@
       // img.src = imgURI;
       // document.body.appendChild(img);
       
+
+      // copy 页面上的image到画布上
+      var image = document.images[0];
+      // drawImage 3个参数 imageNode, 画布x, 画布y
+      // drawImage 5个参数 imageNode, 画布x, 画布y, Width, Height
+      // drawImage 9个参数 imageNode, 原图x, 原图y, 原图Width, 原图Height, 目标x, 目标y, 目标Width, 目标Height
+      context.drawImage(image, 10, 10);
+
+      // 阴影
+      context.shadowOffsetX = 5; // x偏移
+      context.shadowOffsetY = 5; // y偏移
+      context.shadowBlur = 4;    // 模糊度
+      context.shadowColor = 'rgba(0,0,0, 0.5)'; // 颜色
+
+      // 渐变色
+      // createLinearGradient矩形 xBegin,yBegin, xEnd, yEnd
+      // var gradient = context.createLinearGradient(30, 30, 70, 70);
+      // 圆形 beginX,beginY, beginR, endX,endY, endR
+      var gradient = context.createLinearGradient(55, 55, 10, 55, 55, 30);
+      gradient.addColorStop(0, 'white');
+      gradient.addColorStop(1, 'black');
+      context.fillStyle = gradient;
+      context.fillRect(30,30,50,50); // 位置会取 gradient里面的部分位置
     }
   </script>
 </body>
 </html>
+```

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实时闹钟</title>
+</head>
+
+<body>
+  <canvas id='drawing' width="200" height="200">a drawing of something</canvas>
+  <script>
+    const drawing = document.getElementById('drawing');
+    const context = drawing.getContext('2d');
+    const SEC_LEN = 80;
+    const SEC_VAL = 60;
+    const HOUR_LEN = 50;
+    const HOUR_VAL = 12;
+    const MIN_LEN = 65;
+    const MIN_VAL = 60;
+    const DEGREES_360 = 2 * Math.PI;
+    function draw() {
+      const date = new Date();
+      const sec = date.getSeconds();
+      const min = date.getMinutes();
+      const hour = date.getHours();
+
+      if (drawing.getContext) {
+        
+        drawing.height=drawing.height;
+        // 开始绘画
+        context.beginPath();
+
+        // 绘制外圈
+        context.arc(100, 100, 99, 0, DEGREES_360, false);
+
+        // 绘制内圈
+        context.moveTo(194, 100);
+        context.arc(100, 100, 94, 0, DEGREES_360, false);
+
+        context.translate(100,100)
+
+        // 绘制秒针
+        context.save();
+        context.moveTo(0, 0);
+        context.rotate(DEGREES_360 * sec / SEC_VAL);
+        context.lineTo(0, -SEC_LEN);
+        context.stroke();
+        context.restore()
+
+        // 分针
+        context.save();
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineWidth = 2;
+        context.rotate(DEGREES_360 * min / MIN_VAL);
+        context.strokeStyle = 'red';
+        context.lineTo(0, -MIN_LEN);
+        context.stroke();
+        context.restore()
+
+        // 时针
+        context.save();
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineWidth = 3;
+        context.rotate(DEGREES_360 * (hour > HOUR_VAL ? hour - HOUR_VAL : hour) / HOUR_VAL);
+        context.strokeStyle = 'blue';
+        context.lineTo(0, -HOUR_LEN);
+        context.stroke();
+        context.restore()
+
+        // 添加数字刻度
+        context.textAlign = 'center';
+        context.textBaseline = 'top';
+        // context.fillText("12", 0, -85);
+        for(let i = 1; i< 13; i++){
+          context.rotate(DEGREES_360 * 1 / 12);
+          context.fillText(i, 0, -85);
+        }
+      }
+    }
+
+    setInterval(draw, 1000);
+  </script>
+</body>
+
+</html>
