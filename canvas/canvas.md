@@ -81,6 +81,11 @@
       // drawImage 5个参数 imageNode, 画布x, 画布y, Width, Height
       // drawImage 9个参数 imageNode, 原图x, 原图y, 原图Width, 原图Height, 目标x, 目标y, 目标Width, 目标Height
       context.drawImage(image, 10, 10);
+      // 模式
+      // 第二个参数为 是否重复
+      var pattern = context.createPattern(image, 'repeat');
+      context.fillStyle = pattern;
+      context.fillRect(10, 10, 150, 150)
 
       // 阴影
       context.shadowOffsetX = 5; // x偏移
@@ -97,6 +102,10 @@
       gradient.addColorStop(1, 'black');
       context.fillStyle = gradient;
       context.fillRect(30,30,50,50); // 位置会取 gradient里面的部分位置
+
+
+      // 模式
+      var
     }
   </script>
 </body>
