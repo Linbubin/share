@@ -94,6 +94,32 @@ F2(f1); // 100
 ```
 开发中的应用： 设置私有变量
 
+12. 异步
+场景： 在可能发生等待的情况(定时任务,网络请求,事件绑定-比如onload或者onerror事件)
+
+单线程： 一次只能干一件事
+
+同步异步区别：同步会阻塞(alert)
+
+13. 随机数
+Math.random 在url上增加 可以清除缓存
+
+14. DOM
+基本数据结构: dom树结构
+常用API: 
+```
+获取dom document.get**** querySelectorAll
+新增 删除节点 appendChild(node) 如果是页面上原来有的，会移动位置 removeChild
+获取父节点 parentElement
+获取子节点 childNodes
+```
+attribute和property区别: property 节点基础属性class style, attribute setAttribute 节点额外属性 date-origin
+property只是一个js对象的属性的修改和获取, attribute是对html标签属性的修改和获取 	
+
+15. BOM
+检测浏览器类型 `navigator.userAgent`
+拆解url的各部分 `location href protocal pathname search hash`
+url后退前进 `history.back() history.forward()`
 
 4. window.onload 和 DOMContentLoaded的区别             浏览器渲染过程
 5. 用js创建10个a标签,点击弹出相应序号                    闭包
