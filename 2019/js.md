@@ -121,6 +121,62 @@ property只是一个js对象的属性的修改和获取, attribute是对html标�
 拆解url的各部分 `location href protocal pathname search hash`
 url后退前进 `history.back() history.forward()`
 
+16. Ajax
+```js
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "/api", false);
+xhr.onreadystatechange = function(){
+	if(xhr.readyState==4){
+		if(xhr.status==200){
+			alert(xhr.responseText)
+		}
+	}
+}
+xhr.send(null)
+```
+readyState:
+0 - 还没调用send方法
+1 - 已经调用send方法，正在发送请求
+2 - send执行完成，已经接收到全部相应内容
+3 - 正在解析相应内容
+4 - 相应内容解析完成，可以在客户端调用
+
+status：
+2xx - 表示成功请求处理。如200
+3xx - 需要重定向，浏览器直接跳转
+4xx - 客户端请求错误,如404
+5xx - 服务端错误
+
+17. 跨域
+浏览器有同源策略，不允许ajax访问其他域接口
+跨域条件: 协议 域名 端口 有一个不同就算跨域
+可跨域标签： img（可能防盗链， 可以加载站长统计的图片来进行打点统计） link(cnd) script(jsonp)
+JSONP:
+```js
+<script>
+window.callback = function(data){
+	console.log(data)
+}
+</script>
+<script src="http://www.wuqiu.xyz/api">
+</script>
+```
+服务端设置 http header
+
+18. cookie sessionStorage localStorage区别:
+cookie 本身用于客户端和服务器端通信，但是有本地存储功能j，就被借用了。document.cookie = xxx来获取和设置
+缺点： 存储量太小，只有4KB   所有http请求都带着，会影响获取资源的效率  api太简单，需要封装才能用
+
+sessionStorage(浏览器关了，就会清理) localStorage(不执行清除,就不会清除)
+HTML5专门为存储而设计,最大容量5M
+api简单易用: localStorage.setItem(key, value); localStorage.getItem(key) get在ios的safari隐藏模式下会报错
+
+区别: 
+1. 容量
+2. 是否携带在ajax中
+3. api的易用性
+
+
 4. window.onload 和 DOMContentLoaded的区别             浏览器渲染过程
 5. 用js创建10个a标签,点击弹出相应序号                    闭包
 6. 实现一个模块加载器,实现类似require                    js模块化
