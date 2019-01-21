@@ -7,3 +7,4 @@
 6. 一页一页的查看 less filename
 7. 查看实时刷新的log文件 tail -f filename
 8. 查看进程序列号 ps axu|grep node
+9. 免密登录 ssh-copy-id -i ~/.ssh/id_rsa.pub user@ip    下次直接 ssh user@ip 即可

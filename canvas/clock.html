@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实时闹钟</title>
+</head>
+
+<body>
+  <canvas id='drawing' width="200" height="200">a drawing of something</canvas>
+  <script>
+    var drawing = document.getElementById('drawing');
+    var context = drawing.getContext('2d');
+    function draw() {
+      const date = new Date();
+      if (drawing.getContext) {
+        
+        drawing.height=drawing.height;  
+        // 开始绘画
+        context.beginPath();
+
+        // 绘制外圈
+        context.arc(100, 100, 99, 0, 2 * Math.PI, false);
+
+        // 绘制内圈
+        context.moveTo(194, 100);
+        context.arc(100, 100, 94, 0, 2 * Math.PI, false);
+
+        // 绘制秒针
+        context.moveTo(100, 100);
+        const secXY = getAngle({ type: 'sec', pathX: 100, pathY: 100, val: date.getSeconds(), len: 80 });
+        context.lineTo(secXY[0], secXY[1]);
+        context.stroke();
+
+        // 分针
+        context.beginPath();
+        context.moveTo(100, 100);
+        context.lineWidth = 2;
+        const minXY = getAngle({ type: 'min', pathX: 100, pathY: 100, val: date.getMinutes(), len: 65 });
+        context.strokeStyle = 'red';
+        context.lineTo(minXY[0], minXY[1]);
+        context.stroke();
+
+        // 时针
+        context.beginPath();
+        context.moveTo(100, 100);
+        context.lineWidth = 3;
+        context.strokeStyle = 'blue';
+        const hourXY = getAngle({ type: 'hour', pathX: 100, pathY: 100, val: date.getHours(), len: 50 });
+        context.lineTo(hourXY[0], hourXY[1]);
+        context.stroke();
+
+        // 添加数字刻度
+        context.textAlign = 'center';
+        context.textBaseline = 'top';
+        // context.fillText("12", 100, 10);
+        for(let i = 1; i< 13; i++){
+          const textPath = getXY({pathX: 100, pathY: 100, angle: i/12, len: 85});
+          context.fillText(i, textPath[0], textPath[1]);
+        }
+      }
+    }
+    function getAngle({ type, val, pathX, pathY, len }) {
+      let x, y, angle, xType, yType, angleVal;
+
+      // 获取角度
+      switch (type) {
+        case 'min':
+        case 'sec':
+          angle = val / 60;
+          break;
+        case 'hour':
+          // 如果超过12小时,就-12
+          angle = (val > 14 ? val - 12 : val) / 12;
+          break;
+        default:
+          alert('搞错啦')
+      }
+
+      return getXY({pathX, pathY, angle, len})
+    }
+    function getXY({pathX, pathY, angle, len}){
+      switch (true) {
+        case angle >= 0 && angle < 0.25:
+          xType = 1;
+          yType = -1;
+          angleVal = angle * 2 * Math.PI;
+          break;
+        case angle >= 0.25 && angle < 0.5:
+          xType = 1;
+          yType = 1;
+          angleVal = Math.PI - angle * 2 * Math.PI;
+          break;
+        case angle >= 0.5 && angle < 0.75:
+          xType = -1;
+          yType = 1;
+          angleVal = angle * 2 * Math.PI - Math.PI;
+          break;
+        case angle >= 0.75 && angle <= 1:
+          xType = -1;
+          yType = -1;
+          angleVal = 2 * Math.PI - angle * 2 * Math.PI;
+          break;
+        default:
+          alert('角度搞错啦', angle)
+      }
+
+      x = pathX + xType * Math.sin(angleVal) * len;
+      y = pathY + yType * Math.cos(angleVal) * len;
+      return [x, y]
+    }
+    setInterval(draw, 1000);
+  </script>
+</body>
+
+</html>
