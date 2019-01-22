@@ -46,3 +46,21 @@ function myNew(constructor) {
 
 settimeout的第二个参数不是执行等待时间,是事件管理器将函数移入调用栈的等待时间[这里](https://yubolun.com/javascript-interview-handbook/)
 [这里](https://medium.freecodecamp.org/the-definitive-javascript-handbook-for-a-developer-interview-44ffc6aeb54e?gi=7cdc8a29149)
+
+
+==
+> 布尔类型除非和布尔类型比较,否则都会优先转为number类型
+
+```js
+[[[[[]]]]].toString() // ''
+[[[[[1]],2]],3].toString() // '1,2,3'
+```
+
+
+Number(null) // 0
+Number(undefined) // NaN
+Number(obj) // 先调用 obj.valueOf() 原始则Number(原始), else obj.toString() 原始则Number(原始) 否则报错
+String(obj) // 先调用 obj.toString() 原始则String原始), else obj.valueOf() 原始则String原始) 否则报错
+Boolean // 6个转成false undefined null -0或+0 NaN ''（空字符串）
+
+switch-case 转换成 obj-key-function的形式,最后return funcName()的执行结果
