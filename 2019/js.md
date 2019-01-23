@@ -171,6 +171,7 @@ status：
 可跨域标签： img（可能防盗链， 可以加载站长统计的图片来进行打点统计） link(cnd) script(jsonp)
 JSONP:
 ```js
+// src对应的url返回的值会被解析成js直接执行 ---> eval('返回值')
 <script>
 window.callback = function(data){
 	console.log(data)
