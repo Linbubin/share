@@ -195,6 +195,58 @@ api简单易用: localStorage.setItem(key, value); localStorage.getItem(key) get
 2. 是否携带在ajax中
 3. api的易用性
 
+19. AMD 异步模块化定义
+require
+`<script src="require.js" data-main='./main.js'></script>`
+```js
+define(['xx.js'], ()=>{
+	return {
+		funName: () => {}
+	}
+})
+define(()=>{})
+require(['a.js'], () => {
+	// dosomething
+})
+```
+
+20. commonJS
+```js
+// util.js
+module.exports = {
+	funcName: () => {
+		// dosomething
+	}
+}
+
+// a-util.js
+var util = require('util.js');
+module.exports = {
+	funcName: () => {}
+}
+```
+
+21. http-server
+
+22. webpack
+```js
+var path = require('path');
+var webpack = require('webpack');
+
+module.exports = {
+	context: path.resolve(__dirname, './src'),
+	entry: {
+		app: './app.js'
+	},
+	output: {
+		path: path.resolve(__dirname, './dist'),
+		filename: 'bundle.js'
+	},
+	plugins: [
+		new webpack.optimize.UglifyJsPlugin()
+	]
+}
+```
 
 4. window.onload 和 DOMContentLoaded的区别             浏览器渲染过程
 5. 用js创建10个a标签,点击弹出相应序号                    闭包
