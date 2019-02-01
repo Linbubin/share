@@ -113,3 +113,21 @@ result.then(function(){
 * 块级作用域
 * 函数默认参数
 * 箭头函数 this指向函数体最近一层的this, 书写简便化
+
+5. jquery 原型的实际应用 
+jquery用$选择器获得的变量,都有css html方法,都是从原型中获得
+```js
+// selector
+
+// Array.prototype.call(document.querySelector(selector))
+
+// this[i] = dom[i]
+```
+
+6. 单线程 多线程
+> 单线程，只有一个线程,只能做一件事情。<br>
+> 存在的原因: 避免DOM渲染冲突.(js修改DOM,多线程修改dom就会出问题)
+
+异步的问题:
+* 没有按照书写方式执行,可读性差
+* callback中不容易模块化
