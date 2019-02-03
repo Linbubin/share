@@ -131,3 +131,84 @@ jquery用$选择器获得的变量,都有css html方法,都是从原型中获得
 异步的问题:
 * 没有按照书写方式执行,可读性差
 * callback中不容易模块化
+
+event-loop：
+事件轮询,先将异步函数挂起（放到异步队列）,等待时间结束，由事件管理器将其拿回到调用栈中
+
+7. jquery 1.5的变化
+> jQ 1.5之前ajax 使用success: xxx, fail: xxx, 1.5之后用.then(successFun, failFun)
+* 无法改变js异步和单线程的本质
+* 只能写法上杜绝callback这种形式
+* 很好体现: 开放封闭原则(对扩展开放,对修改封闭)
+
+```js
+// jquery deffered
+// 第一类 dtd.resolve dtd.reject
+// 第二类 dtd.then dtd.done dtd.fail
+function waitHandle(){
+    var dtd = $.Deferred();
+
+    var wait = function(dtd){
+        vat task = function(){
+            console.log('执行完成');
+            dtd.resolve(); // 成功传入
+            dtd.reject(); // 失败传入
+        }
+        setTimeout(task, 2000);
+        // return dtd; // 返回deffered对象
+        return dtd.promise(); // 返回promise对象
+    }
+    return wait(dtd)
+}
+
+var w = waitHandle();
+// w.then(successFun, errorFun)
+$.when(w).then(successFun, errorFun)
+```
+
+8. promise
+```js
+return new Promise((resolve, reject) => {
+    // resolve();
+    // reject();
+})
+```
+promise.then().catch()
+
+```js
+// 链式操作
+// 第一个then中return的值会成为第二个return的初始值
+result1.then(()=>{
+    // xxxx
+    return something // something为普通类型,则被当做下一个.then的参数,something为promise类型,则被当做下个.then的promise执行
+}).then((something)=>{
+    // xxx
+}).catch(err => {
+    // handle Error
+})
+```
+
+Promise.all & Promise.race
+```js
+// result 和 result2 为promise类型
+Promise.all([result, result2]).then(datas => {
+    console.log(datas)
+})
+Promise.race([result, result2]).then(datas => {
+    console.log(datas)
+})
+```
+
+9. async/await
+> 将异步转为同步
+```js
+// import 'babel-polyfill'  // 因为是es7,多加一条 babel兼容
+// 最基本使用
+const load = async function(){
+    const result1 = await loadImg('src1');
+    console.log(result1)
+    const result2 = await loadImg('src2');
+    console.log(result2)
+}
+load();
+```
