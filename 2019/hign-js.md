@@ -212,3 +212,23 @@ const load = async function(){
 }
 load();
 ```
+
+10. generator 和异步的关系
+
+11. 虚拟DOM(virtual dom)
+api: snabbdom 的 h(标签，属性， 子) 和patch(原dom,新dom)函数
+是什么: 用js模拟dom结构
+为什么: dom操作非常昂贵
+如何使用: snabbdom的h和patch函数
+介绍diff算法: diff是什么，为什么用
+diff是linux的基本命令，git diff也有
+vdom中diff是为了找出需要更新的节点
+
+12. MVVM
+
+13. 组件化和react
+组件化理解
+jsx本质是什么
+jsx和vdom的关系
+setState的过程
+阐述自己对react和vue的认识
