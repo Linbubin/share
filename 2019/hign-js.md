@@ -227,8 +227,26 @@ vdom中diff是为了找出需要更新的节点
 12. MVVM
 
 13. 组件化和react
-组件化理解
-jsx本质是什么
-jsx和vdom的关系
+数据视图分离, 数据驱动视图改变
+
+组件化理解: 封装和复用(类似面向对象的 封装继承多态)
+封装`视图、数据、变化逻辑`
+复用`改变props的值,产生不同的结果`
+
+jsx本质是什么:
+jsx是语法糖  jsx解析成js React.createElement
+
+
+jsx和vdom的关系  React.createElement(vnode, {style}, [children])
+
 setState的过程
+
 阐述自己对react和vue的认识
+不同：
+名字    本质     模板
+vue     MVVM    模板
+react   组件化   jsx
+
+相同:
+都支持组件化
+数据驱动视图
