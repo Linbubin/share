@@ -225,6 +225,42 @@ diff是linux的基本命令，git diff也有
 vdom中diff是为了找出需要更新的节点
 
 12. MVVM
+使用jq和用框架的区别: 数据和视图分离 和 数据驱动视图
+
+MVVM的理解：modal view  view-modal(作为view和modal的桥梁)
+
+三要素：  响应式 模板引擎 渲染
+响应式： 修改data属性，vue立刻监听.
+使用 Object.defineProperty
+将data属性代理到vm上
+```js
+var obj = {};
+var name = 'zhangsan';
+Object.defineProperty(obj, "name", {
+    get: function(){
+        console.log('get');
+        return name;
+    },
+    set: function(newVal){
+        console.log('set');
+        name = newVal;
+    }
+})
+
+console.log(obj.name);
+obj.name = 'list'
+```
+
+模版： 本质-字符串   有逻辑 v-if v-for   嵌入js变量   模板必须转化为js代码(只有js代码有逻辑、渲染html、js变量)    
+
+v-for: _l(list, (item)=>_c(xxx,xx,xx))
+v-on: input 事件
+
+vue整个实现流程：
+* 解析模板成render函数
+* 响应式开始监听
+* 首次渲染,显示页面,且绑定依赖
+* data属性变化,触发renderer
 
 13. 组件化和react
 数据视图分离, 数据驱动视图改变
