@@ -248,7 +248,26 @@ module.exports = {
 }
 ```
 
-4. window.onload 和 DOMContentLoaded的区别             浏览器渲染过程
-5. 用js创建10个a标签,点击弹出相应序号                    闭包
-6. 实现一个模块加载器,实现类似require                    js模块化
-7. 实现数组随机排序                                     基础算法
+23. 页面加载
+输入url到页面加载过程：
+url ->  浏览器根据DNS服务器得到域名的IP地址 -> 向ip服务器发送http请求 -> 服务器接受 处理 并返回http请求 > 浏览器接收到html信息  -> 浏览器根据html---DOMTree, CSS---CSSOM 将DOM和CSSOM整合成RenderTree， 根据RenderTree开始渲染和展示,其中遇到`<script>`标签会执行并阻塞渲染   -> 加载html -> html中的静态资源 
+
+window.onload和DOMContentLoaded的区别
+```js
+window.addEventListener('load', function(){
+	// 页面全部资源加载完才会执行，包括图片、视频等
+})
+document.addEventListener('DOMContentLoaded', function(){
+	// DOM 渲染完即可执行， 此时图片、视频可能还没加载完
+})
+```
+
+24. 性能优化
+> 多使用内存、缓存,减少请求次数
+从哪入手：
+加载页面和静态资源 - 静态资源的压缩合并、静态资源缓存、使用CDN让资源加载更快、使用ssr后端渲染,数据直接输出到HTML中
+页面渲染 - CSS放前面,JS放后面、懒加载(图片懒加载-先src一个很小的图片,data-src写原图,在js里面取到data-src里面的原图地址,赋值给src、下拉加载更多)、减少DOM查询、减少DOM操作、事件节流(input框 输入马上搜索 keydown会连续按,就clearTimeout 停下来再去查)、尽早执行操作(DOMContentLoaded)
+
+25. 安全性
+XSS跨站请求攻击 - 文章中偷偷插入一段`<script>`, 预防: `<` -> `&lt`
+XSRF跨站请求攻击 - 利用你已有的cookie，通过隐藏的`<img src='xxx.com/pay?id=123'>`进行直接购买,预防: 增加指纹、密码、短信验证码
