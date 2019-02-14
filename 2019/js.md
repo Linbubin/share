@@ -271,3 +271,34 @@ document.addEventListener('DOMContentLoaded', function(){
 25. 安全性
 XSS跨站请求攻击 - 文章中偷偷插入一段`<script>`, 预防: `<` -> `&lt`
 XSRF跨站请求攻击 - 利用你已有的cookie，通过隐藏的`<img src='xxx.com/pay?id=123'>`进行直接购买,预防: 增加指纹、密码、短信验证码
+
+26. 内存泄漏
+意外的全局变量 被遗忘的计时器或回调函数 脱离文档的DOM引用 闭包
+
+27. 函数防抖
+input输入时自动查询,如果输入过快 就要清空定时器
+
+28. web安全攻击手段及防范
+xss(cross site scripting) 跨站脚本攻击: 对 script 等标签进行编码
+csrf(cross site request forgery) 跨站请求伪造： 请求地址增加token验证
+sql注入(SQL injection): 杜绝用户提交的参数入库并执行,对sql进行转义,进行sql测试
+
+29. 前端缓存
+http缓存 浏览器缓存
+浏览器缓存 有 cookie,localstorage,sessionStorage 其中 sessionStorage在页面关闭时就会被清除
+
+30. symbol 符号
+特性: 独一无二, 只读
+```js
+// 没有参数的情况
+var s1 = Symbol();
+var s2 = Symbol();
+s1 === s2 // false
+// 有参数的情况
+var s1 = Symbol("foo");
+var s2 = Symbol("foo");
+s1 === s2 // false
+```
+
+有时候并不想知道他具体是什么，只是单纯的做区分， 就用 symbol.
+obj[symbolxx] = 1;

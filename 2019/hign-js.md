@@ -9,11 +9,12 @@
 
 
 1. 模块化
+模块的定义: 可以理解成实现特定功能的相互独立的一组方法<br>
 webpack rollup
 import export 的语法
 
 2. class 和 构造函数
-> * 用class作继承,子class的constructor必须写super(),其参数传给父class的constructor当做参数。<br />
+> * 用class作继承,子class的constructor必须写super(),其参数传给父class的constructor当做参数,但是返回的是 子class的属性。<br />
 > * class子类new出来的实例会带有父class的constructor里面的值<br /> 
 
 ```js
@@ -211,6 +212,49 @@ const load = async function(){
     console.log(result2)
 }
 load();
+// 如果要获取失败值,可以在function中return await的返回值,在外部调用.then .catch方法
+
+async function xx(){
+    const result = await loadImg('src1');
+    return result
+}
+
+xx().then(i => {})
+    .catch(i => {})
+```
+
+```js
+// 特殊执行顺序
+console.log(1)
+let promiseDemo = new Promise((resolve, reject) => {
+    console.log(2)
+    setTimeout(() => {
+        let random = Math.random()
+        if (random >= 0.2) {
+            resolve('success')
+            console.log(3)
+        } else {
+            reject('failed')
+            console.log(3)
+        }   
+    }, 1000)
+})
+
+async function test() {
+    console.log(4)
+    let result = await promiseDemo
+    return result
+}
+
+test().then(result => {
+    console.log(5)
+}).catch((result) => {
+    console.log(5)
+})
+
+console.log(6)
+
+// 1 2 4 6 3 5
 ```
 
 10. generator 和异步的关系
