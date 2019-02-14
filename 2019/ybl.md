@@ -27,13 +27,6 @@ function c(){
 c() // 3
 ```
 
-上下文是 this，在调用时确定的
-作用域是 function内外
-
-
-this指向
-()=> 传入当前上下文的this
-
 
 new
 ```js
@@ -64,3 +57,8 @@ String(obj) // 先调用 obj.toString() 原始则String原始), else obj.valueOf
 Boolean // 6个转成false undefined null -0或+0 NaN ''（空字符串）
 
 switch-case 转换成 obj-key-function的形式,最后return funcName()的执行结果
+
+Object.getPrototypeOf(person) === Person.prototype
+Object.setPrototypeOf(person, Person.prototype)
+
+每个函数都有prototype属性，除了被bind方法返回的函数、箭头函数、Function.prototype。
