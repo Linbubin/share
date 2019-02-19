@@ -109,3 +109,29 @@ if(true){
 alert(a); // 1
 alert(b); // undefined
 ```
+instanceof  `[1,2] instanceof Array === true`, 如果Array 不为函数,则会报错. 如果左侧为基本类型,则直接返回false. 判断原型链上是否相关
+
+```js
+// 区别:
+Student.prototype = new Person()
+Student.prototype = Object.create(Person.prototype)
+
+// 如果Person构造函数中 有 this.name this.age  那么直接赋值成 new Person()就会很奇怪. 传其他值也不对,因为还没有实例化
+
+// Object.create是es5的方法,如果没有,就自己重写
+if(!Object.create){
+  Object.create = function(proto){
+    function F(){}
+    F.prototype = proto;
+    return new F
+  }
+}
+
+// 问题: 如果man里面想要有Person的内置属性,该怎么在new的时候传入
+function Student(name, age){
+  this.name = name;
+  // 把父类的内置属性拿来赋值
+  Person.call(this, age);
+}
+```
+

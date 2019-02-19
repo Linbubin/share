@@ -62,7 +62,7 @@ Warning: setState(...): Cannot update during an existing state transition (such 
 但是如果要同时考虑jq的修改和react的更新,就需要使用 `componentDidUpdate`
 
 ### 更新过程
-1. componentWillReceiveProps(nextProps) 只要父级的render被调用,那么所有的子组件都会执行该函数. 子组件的this.setState方法不会处罚该方法, 因为更新state的方法就是 this.setState,如果this.setState会调用该方法,那么就会造成死循环
+1. componentWillReceiveProps(nextProps) 只要父级的render被调用,那么所有的子组件都会执行该函数. 子组件的this.setState方法不会触发该方法, 因为更新state的方法就是 this.setState,如果this.setState会调用该方法,那么就会造成死循环
 2. shouldComponentUpdate(nextProps, nextState) 默认返回true,可以通过设置 来使其返回false,阻止渲染. 因为有些时候是没必要渲染的.
 3. componentWillUpdate
 4. render
