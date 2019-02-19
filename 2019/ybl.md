@@ -62,3 +62,50 @@ Object.getPrototypeOf(person) === Person.prototype
 Object.setPrototypeOf(person, Person.prototype)
 
 每个函数都有prototype属性，除了被bind方法返回的函数、箭头函数、Function.prototype。
+
+
+# 执行上下文
+VO按照如下顺序填充:
+1. 函数参数(若未传入,初始化该参数为undefined)
+2. 函数声明(若发生命名冲突,会覆盖)
+3. 变量声明(初始化变量值为undefined,若发生命名冲突,则忽略)
+4. 变量赋值会将之前的全部覆盖
+
+```js
+function foo(x,y,z){function func(){}; var func; console.log(func);} foo(100); // function func(){}
+function foo(x,y,z){function func(){}; var func = 1; console.log(func);} foo(100); // 1
+function foo(x,y,z){var func = 1; function func(){};console.log(func);} foo(100); // 1
+```
+
+其中 函数表达式的匿名函数不会占VO
+```js
+function foo(x,y,z){
+  var a = 100;
+  var b = function c(){
+    console.log('c');
+  }
+  b(); // 'c'
+  c(); // c is not defined
+}
+foo();
+```
+```js
+// 练习
+alert(x); // function
+
+var x = 10;
+alert(x); // 10
+x = 20;
+
+function x(){}
+alert(x);
+
+if(true){
+  var a = 1;
+}else{
+  var b = true;
+}
+
+alert(a); // 1
+alert(b); // undefined
+```

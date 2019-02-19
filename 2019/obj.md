@@ -99,3 +99,27 @@ function xx(){}
 
 // 函数表达式
 var xx = function(){}
+
+```js
+// bind currying
+function add(a,b,c){
+    return a+b+c
+}
+
+var func = add.bind(null, 10, 20);
+var func1 = func.bind(null, 30);
+func1();
+```
+
+```js
+// new 如果构造函数return基本类型，则会忽略return语句，返回原有的
+function foo(){
+    this.b = 100;
+    return this.a;
+}
+
+var func = foo.bind({a:1});
+func();// 1
+// 因为new 会重新传入this,所以 .bind 就会被忽略
+new func(); // {b: 100}
+```

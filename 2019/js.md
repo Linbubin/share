@@ -183,7 +183,7 @@ window.callback = function(data){
 服务端设置 http header
 
 18. cookie sessionStorage localStorage区别:
-cookie 本身用于客户端和服务器端通信，但是有本地存储功能j，就被借用了。document.cookie = xxx来获取和设置
+cookie 本身用于客户端和服务器端通信，但是有本地存储功能，就被借用了。document.cookie = xxx来获取和设置
 缺点： 存储量太小，只有4KB   所有http请求都带着，会影响获取资源的效率  api太简单，需要封装才能用
 
 sessionStorage(浏览器关了，就会清理) localStorage(不执行清除,就不会清除)
