@@ -96,3 +96,49 @@ Keys 是 React 用于追踪哪些列表中元素被修改、被添加或者被�
 
 ## 为什么我们需要使用 React 提供的 Children API 而不是 JavaScript 的 map？
 因为单个子组件时是对象,多个子组件时是数组
+
+## 新生命周期
+即将被移除的三个生命周期
+* componentWillMount
+* componentWillReceiveProps
+* componentWillUpdate
+
+新增的两个生命周期
+* getDerivedStateFromProps
+* getSnapshotBeforeUpdate
+
+### componentWillReceiveProps移除原因
+`getDerivedStateFromProps`代替`componentWillReceiveProps`
+```js
+// before
+componentWillReceiveProps(nextProps) {
+  if (nextProps.isLogin !== this.props.isLogin) {
+    this.setState({ 
+      isLogin: nextProps.isLogin,   
+    });
+  }
+  if (nextProps.isLogin) {
+    this.handleClose();
+  }
+}
+
+// after
+static getDerivedStateFromProps(nextProps, prevState) {
+  if (nextProps.isLogin !== prevState.isLogin) {
+    return {
+      isLogin: nextProps.isLogin,
+    };
+  }
+  return null;
+}
+
+componentDidUpdate(prevProps, prevState) {
+  if (!prevState.isLogin && this.props.isLogin) {
+    this.handleClose();
+  }
+}
+```
+之前在`componentWillReceiveProps`中我们根据props的改变来改变state,并且执行回调函数.现在我们强制的用`nextProps`和`prevState`作比较来改变state,并将对应的回掉函数放到`componentDidUpdate`中去做,确保数据的同步.
+
+### componentWillUpdate移除原因
+> 与 componentWillReceiveProps 类似，许多开发者也会在 componentWillUpdate 中根据 props 的变化去触发一些回调。但不论是 componentWillReceiveProps 还是 componentWillUpdate，都有可能在一次更新中被调用多次，也就是说写在这里的回调函数也有可能会被调用多次，这显然是不可取的。与 componentDidMount 类似，componentDidUpdate 也不存在这样的问题，一次更新中 componentDidUpdate 只会被调用一次，所以将原先写在 componentWillUpdate 中的回调迁移至 componentDidUpdate 就可以解决这个问题。

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>圣杯布局</title>
+  <style>
+    .header, .footer{
+      float: left;
+      width: 100%;
+      background: gray;
+      height: 40px;
+      text-align: center;
+      line-height: 0px;
+    }
+    .container{
+      padding: 0 220px 0 200px;
+    }
+    .left, .middle, .right{
+       position: relative;
+       float: left;
+       min-height: 300px;
+    }
+    .middle{
+      width: 100%;
+      background: blue;
+    }
+    .left{
+      width: 200px;
+      background: red;
+      /* 浮动情况下,负边界值会导致div上移,使用100%可以确保它移动到最左侧 */
+      margin-left: -100%;
+      left: -200px;
+    }
+    .right{
+      width: 220px;
+      background: green;
+      margin-left: -220px;
+      right: -220px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 头部 -->
+  <div class="header">
+    <h4>Header</h4>
+  </div>
+  <!-- 主体 -->
+  <div class="container">
+    <div class="middle">
+      <h4>middle</h4>
+    </div>
+    <div class="left">
+      <h4>left</h4>
+    </div>
+    <div class="right">
+      <h4>right</h4>
+    </div>
+  </div>
+  <!-- 底部 -->
+  <div class="footer">
+    <h4>footer</h4>
+  </div>
+</body>
+
+</html>
