@@ -60,6 +60,39 @@ http://user:pass@www.wuqiu.xyz:80/index.html?uid=1#ch1
 * uid=1 查询字符串
 * ch1片段标识符
 
+## HTTP协议用户客户端和服务器端之间的通信
+> 应用HTTP协议时,必定是一端担任客户端角色,另一端担任服务器端角色.<br>
+> 协议规定先从客户端开始建立通信,服务器端在没有接收到请求之前不会发送响应.<br>
+> HTTP是一种不保存状态,即无状态协议.但是为了实现期望的保持状态功能,引入了`Cookie`技术.<br>
+> HTTP/1.1支持持久连接(TCP连接中途不断开)和管线化(并行发送多个请求,之前是一个请求结果返回后才能发送下个请求).
+
+### 客户端
+> 请求访问文本或图像等资源的一端称为客户端
+### 服务器端
+> 提供资源相应的一端称为服务器端
+### 报文
+客户端和服务器之间使用`报文`进行通信.
+#### 请求报文
+> 请求报文由请求方法、请求URI、协议版本、可选的请求首部字段和内容实体构成的.<br>
+> POST /form/entry HTTP/1.1 其中`POST`为方法,`/form/entry`为URI,`HTTP/1.1`为协议版本
+#### 响应报文
+> 响应报文基本上由协议版本、状态码、用以解释状态码的原因短语、可选的响应首部字段以及实体主体构成.
+> HTTP/1.1 200 OK 其中`HTTP/1.1`为协议版本,`200`为状态码,`OK`为状态码的原因短语
+
+### 告知服务器意图的HTTP方法
+1. GET 获取资源,GET方法用来请求访问已被URI识别的资源.
+2. POST 传输实体主体,POST的主要目的并不是获取响应的主体内容,更多用来告知服务器处理一些事务,比如数据库的增删改操作.
+3. PUT 传输文件,但是鉴于HTTP/1.1的PUT方法自身不带验证机制,任何人都可以上传文件,存在安全问题,因此一般的Web网站不使用该方法.REST标准的Web网站可能会开放.
+4. DELETE 删除文件,和3中PUT方法相对立,由于同样原因,一般不推荐.
+5. HEAD 获取报文首部,HEAD方法和GET一样,只是不返回报文主体部分.用于确认URI的有效性及资源更新的日期时间等.
+6. OPTIONS 询问支持方法,返回结果中带有服务器支持的方法,比如GET POST等.
+7. TRACE 追踪路径,客户端通过TRACE方法可以查询发送出去的请求是怎样被加工修改/篡改的.
+8. CONNECT 要求用隧道协议连接代理,只要使用SSL,TLS协议把通信内容加密后经网络隧道传输.
+
+### Cookie技术
+> Cookie技术通过在请求和响应报文中写入Cookie信息来控制客户端的状态.<br>
+> Cookie会根据从服务器端发送的响应报文内的一个叫做Set-Cookie的首部字段信息,通知客户端保存Cookie.当下次客户端再往该服务器发送请求时,客户端会**自动**在请求报文中加入Cookie值后发送出去.
+
 # 名词
 * FTP File Transfer Protocol 文件传输协议
 * DNS Domain Name System 域名系统
@@ -68,3 +101,5 @@ http://user:pass@www.wuqiu.xyz:80/index.html?uid=1#ch1
 * UDP User Data Protocol 用户数据报协议
 * ARP Address Resolution Protocol 根据IP地址反查MAC地址的协议
 * URI Uniform Resource Identifier 统一资源标识符
+* SSL Secure Sockets Layer 安全套接层
+* TLS Transport Layer Security 传输层安全
