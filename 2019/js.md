@@ -314,4 +314,47 @@ obj[symbolxx] = 1;
 * 利: 前后端分离,交互性好.
 * 弊: 不利于SEO爬虫看不到完整的代码,首屏渲染慢.
 
-32. 为什么一般在冒泡阶段, 而不是在捕获阶段注册监听? 
+32. 浏览器事件有哪些过程? 为什么一般在冒泡阶段, 而不是在捕获阶段注册监听? addEventListener 参数分别是什么 ? 
+```js
+// DOM 0级监听
+const btn = document.getElementById("btn");
+btn.onclick = function(e) {
+    console.log("You clicked me!");
+};
+// DOM 2级监听
+const btn = document.getElementById("btn");
+const handler = function() {
+    // handler logic
+}
+btn.addEventListener("click", handler, false);
+btn.removeEventListener("click", handler);
+```
+addEventListener 第三个参数true为捕获, false为冒泡
+事件触发过程:  捕获阶段、目标阶段和冒泡阶段
+event.stopPropagation() 或 e.cancelBubble = true; 来阻止对应事件
+preventDefault()组织浏览器默认事件
+ie8 attacEvent detachEvent 
+事件委托：
+```html
+<ul id="parent-list">
+	<li id="post-1">Item 1</li>
+	<li id="post-2">Item 2</li>
+	<li id="post-3">Item 3</li>
+	<li id="post-4">Item 4</li>
+	<li id="post-5">Item 5</li>
+	<li id="post-6">Item 6</li>
+</ul>
+<script>
+	document.getElementById("parent-list").addEventListener("click", function(e) {
+		// target 与 srcElement 指触发事件的元素 li
+		// currentTarget 指事件所绑定的元素 ul
+		console.log(e)
+		if(e.target && e.target.nodeName == "LI") {
+			console.log("List item ", e.target.id.replace("post-", ""), " was clicked!");
+		}
+	}, true);
+</script>
+```
+
+因为冒泡阶段注册监听可以进行事件委托.
+addEventListener参数, 1 - 事件名称, 2 - 回调函数, 3 - true为捕获,false为冒泡 默认为冒泡

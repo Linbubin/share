@@ -142,3 +142,24 @@ componentDidUpdate(prevProps, prevState) {
 
 ### componentWillUpdate移除原因
 > 与 componentWillReceiveProps 类似，许多开发者也会在 componentWillUpdate 中根据 props 的变化去触发一些回调。但不论是 componentWillReceiveProps 还是 componentWillUpdate，都有可能在一次更新中被调用多次，也就是说写在这里的回调函数也有可能会被调用多次，这显然是不可取的。与 componentDidMount 类似，componentDidUpdate 也不存在这样的问题，一次更新中 componentDidUpdate 只会被调用一次，所以将原先写在 componentWillUpdate 中的回调迁移至 componentDidUpdate 就可以解决这个问题。
+
+### 父组件直接写propsname,不写数值,子组件拿到为true
+```js
+// 父组件
+render(){
+  return(
+    <Children a b c d e="1" f={123} />
+  )
+}
+
+// 子组件
+console.log(this.props); // {a: true, b: true, c: true, d: true, e: '1', f: 123 }
+```
+
+### 直接写传入html   dangerouslySetInnerHTML
+`<div dangerouslySetInnerHTML={{'{{'}}__html: 'First &middot; Second'}} />`
+
+### 事件
+* React使用单个事件处理器,并且会把所有的事件委托到这个处理器上.
+* Autobinding 在 React，所有方法被自动绑定到了它的组件实例上
+* 事件代理 ： React 实际并没有把事件处理器绑定到节点本身。当 React 启动的时候，它在最外层使用唯一一个事件监听器处理所有事件。当组件被加载和卸载时，只是在内部映射里添加或删除事件处理器。当事件触发，React 根据映射来决定如何分发。当映射里处理器时，会当作空操作处理。

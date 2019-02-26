@@ -26,18 +26,19 @@
 
 	ul.addEventListener('click', callback, true);//(2)
 	li.addEventListener('click', callback, true);//(3)
-	// div.addEventListener('click', callbackdiv2, false); //(1)
+	// div.addEventListener('click', callbackdiv2, true); //(1)
 	div.addEventListener('click', callbackdiv, true); //(1)
 
-	body.addEventListener('click', callback, false);//(4)
-	html.addEventListener('click', callback, false);//(5)
+	// body.addEventListener('click', callback, false);//(4)
+	// html.addEventListener('click', callback, false);//(5)
 
 	function callback(event){
 		var target = event.currentTarget;
+		// event.stopPropagation();
 		console.log(target.tagName);
 	}
 	function callbackdiv(event){
-		event.stopPropagation();
+		// event.stopPropagation();
 		console.log('div callback');
 	}
 	function callbackdiv2(event){
