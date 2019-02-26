@@ -163,3 +163,39 @@ console.log(this.props); // {a: true, b: true, c: true, d: true, e: '1', f: 123 
 * React使用单个事件处理器,并且会把所有的事件委托到这个处理器上.
 * Autobinding 在 React，所有方法被自动绑定到了它的组件实例上
 * 事件代理 ： React 实际并没有把事件处理器绑定到节点本身。当 React 启动的时候，它在最外层使用唯一一个事件监听器处理所有事件。当组件被加载和卸载时，只是在内部映射里添加或删除事件处理器。当事件触发，React 根据映射来决定如何分发。当映射里处理器时，会当作空操作处理。
+### context
+> Context 设计目的是为共享那些被认为对于一个组件树而言是“全局”的数据.<br>
+> 不要仅仅为了避免在几个层级下的组件传递 props 而使用 context，它是被用于在多个层级的多个组件需要访问相同数据的情景。
+
+```jsx
+// 创建一个 theme Context,  默认 theme 的值为 light
+const ThemeContext = React.createContext('light');
+
+function ThemedButton(props) {
+  // ThemedButton 组件从 context 接收 theme
+  return (
+    <ThemeContext.Consumer>
+      {theme => <Button {...props} theme={theme} />}
+    </ThemeContext.Consumer>
+  );
+}
+
+// 中间组件
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
+    </div>
+  );
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <ThemeContext.Provider value="dark">
+        <Toolbar />
+      </ThemeContext.Provider>
+    );
+  }
+}
+```
