@@ -199,3 +199,36 @@ class App extends React.Component {
   }
 }
 ```
+
+### setState的问题
+> setState并列书写时会由于异步导致出问题
+
+```js
+this.state.x; // []
+this.setState({x: this.state.x.concat(1)})
+this.setState({x: this.state.x.concat(2)})
+
+// .... 异步结束后
+this.state.x; // [2]
+```
+如果要让两个都同步,可以使用回调函数或者用原子性的setState
+```js
+this.state.xs; // []
+this.setState(state => {
+  var xs = state.xs.concat(1);
+  return { xs }
+})
+this.setState(state => {
+  var xs = state.xs.concat(2);
+  return { xs }
+})
+this.state.xs; // [1,2]
+```
+
+### note
+* state中应该只保存最简单的数据,不要尝试把props复制到state中,要尽可能把props当作数据源.
+* 装饰器 @xx class 等同 xx(class)
+* refs无法使用时,可以使用ReactDOM.findDOMNode(this)来替代,但是最好都别用.
+* 当和其他非React第三方库整合时,可以在componentDidUpdate中调用this.componentWillUnmount和this.componentDidMount来卸载/重新挂载DOM
+* form表单中组件onChange可以都写在一个方法中,`(e) => this.handleChange('name',e)`
+* 获取焦点`autoFocus="true"`
