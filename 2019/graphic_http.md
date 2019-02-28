@@ -220,6 +220,14 @@ HTTP首部字段重复了会如何?<br>
 * proxy-revalidate 要求缓存服务器在接收到客户端带有该指令的请求返回响应之前,必须再次验证缓存的有效性.
 * no-transform 无论是在请求还是响应中,缓存都不能改变实体主体的媒体类型.可防止缓存或代理压缩图片等类似操作.
 
+#### Connection
+> 控制不再转发给代理的首部字段<br>
+> 管理持久连接
+
+* 任意字段名 不再转发的首部字段名
+* close 服务器端想明确断开连接时
+* Keep-Alive 持续连接
+
 # 名词
 * FTP File Transfer Protocol 文件传输协议
 * DNS Domain Name System 域名系统
