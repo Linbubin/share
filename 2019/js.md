@@ -358,3 +358,45 @@ ie8 attacEvent detachEvent
 
 因为冒泡阶段注册监听可以进行事件委托.
 addEventListener参数, 1 - 事件名称, 2 - 回调函数, 3 - true为捕获,false为冒泡 默认为冒泡
+
+33. Array.from 代替展开操作符 … 来映射迭代，因为它避免了创建媒介数组
+```js
+// bad
+const baz = [...foo].map(bar);
+// good
+const baz = Array.from(foo, bar);
+
+// Array.from 第一个参数为
+```
+
+34. 规范
+* 始终将默认参数放在最后。
+```js
+// bad
+function handleThings(opts = {}, name) {
+// ...
+}
+// good
+function handleThings(name, opts = {}) {
+// ...
+}
+```
+
+* 不要 export(导出) 可变绑定。
+```js
+// bad
+let foo = 3;
+export { foo };
+// good
+const foo = 3;
+export { foo };
+```
+
+* 导出纯对象使用PascalCase 式命名
+```js
+const AirbnbStyleGuide = {
+  es6: {
+    },
+};
+export default AirbnbStyleGuide;
+```
