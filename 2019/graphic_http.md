@@ -227,6 +227,14 @@ HTTP首部字段重复了会如何?<br>
 no-cache
 > 用在客户端,要求中间服务器不返回资源.
 
+#### Trailer
+字段名
+> Trailer会事先说明在报文主体后记录了哪些首部字段.该首部字段可应用在HTTP/1.1版本分块传输编码时.
+```
+Trailer: Expires
+/... 报文主体 .../
+Expires: Tue, 28 Sep 2004 23:59:59 GMT
+```
 
 #### Connection
 > 控制不再转发给代理的首部字段<br>
