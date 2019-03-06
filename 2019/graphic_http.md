@@ -244,6 +244,10 @@ Expires: Tue, 28 Sep 2004 23:59:59 GMT
 * close 服务器端想明确断开连接时
 * Keep-Alive 持续连接
 
+### 请求首部字段
+#### Accept
+> 通知服务器,客户端可接受的媒体类型和媒体类型的优先级.
+
 # 名词
 * FTP File Transfer Protocol 文件传输协议
 * DNS Domain Name System 域名系统
