@@ -400,3 +400,36 @@ const AirbnbStyleGuide = {
 };
 export default AirbnbStyleGuide;
 ```
+
+35. async + for
+```js
+const countAsync = getAsync.getCountAsync(params);
+async.parallel(countAsync, function (err, result) {
+  if (err) {
+    console.log(err);
+  }
+  
+  // result
+  /**
+   * {
+   *  a: xx,
+   *  b: zz,
+   *  c: cc,
+   *  d: dd
+   * }
+   */
+  return res.status(200).json({ success: true });
+})
+// ----
+getCountAsync: function(type){
+  let out = {};
+  Object.keys(condObj).forEach(val => {
+    out[val] = function(callback){
+      axios.get('xxx')
+        .then(_r => callback(null, _r.data.length))
+        .catch(err => callback(err, 0))
+    }
+  })
+  return out;
+}
+```

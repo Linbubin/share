@@ -14,6 +14,9 @@
 ```
 git config --global user.name "Firstname Lastname"
 git config --global user.email "your_email@example.com"
+
+// 删除配置
+git config --global --unset user.name
 ```
 ### 创建一个仓库
 执行`git init` ,就会生成一个.git的隐藏文件夹
