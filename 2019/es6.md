@@ -22,3 +22,7 @@ window.xx; // undefined
 
 ### thunk函数
 thunk函数 传名调用
+
+### 异步
+promise
+async await
