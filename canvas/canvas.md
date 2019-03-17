@@ -111,3 +111,7 @@
 </body>
 </html>
 ```
+
+## api
+fill()
+fillRect()
