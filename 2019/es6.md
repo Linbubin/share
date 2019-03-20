@@ -26,3 +26,10 @@ thunk函数 传名调用
 ### 异步
 promise
 async await
+
+### note
+去重
+```js
+const arr = [1,2,3,1,1,1,1,2,3,4,3,3,4,4];
+Array.from(new Set(arr))
+```
