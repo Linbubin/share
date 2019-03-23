@@ -55,3 +55,10 @@ function f(x=checkParameter(),y,z){
 
 f()// error
 ```
+
+代理
+```js
+// es3
+// es5
+// es6
+```
