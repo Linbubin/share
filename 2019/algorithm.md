@@ -44,3 +44,17 @@ var root = null;
 });
 console.log(root);
 ```
+
+## 中序遍历
+```js
+function inOrderTraversNode(node){
+    if(node !== null){
+        inOrderTraversNode(node.left);
+        console.log(node.key);
+        inOrderTraversNode(node.right);
+    }
+}
+```
+
+## 前序遍历
+## 后序遍历
