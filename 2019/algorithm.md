@@ -57,4 +57,96 @@ function inOrderTraversNode(node){
 ```
 
 ## 前序遍历
+> 复制
+```js
+function preOrderTraversNode(node){
+    if(node !== null){
+        console.log(node.key);
+        preOrderTraversNode(node.left);
+        preOrderTraversNode(node.right);
+    }
+}
+```
 ## 后序遍历
+> 文件访问
+```js
+function postOrderTraversNode(node){
+    if(node !== null){
+        postOrderTraversNode(node.left);
+        postOrderTraversNode(node.right);
+        console.log(node.key);
+    }
+}
+```
+
+## 二叉树节点查找
+### 最小值
+```js
+function min(node){
+    if(node){
+        while(node && node.left){
+            node = node.left
+        }
+
+        console.log(node.key)
+    }
+    return null
+}
+
+// me
+function min(node){
+    if(node !== null){
+        if(node.left){
+            min(node.left);
+        }else{
+            console.log(node.key);
+        }
+    }
+}
+```
+
+### 最大值
+```js
+function max(node){
+    if(node){
+        while(node && node.right){
+            node = node.right
+        }
+
+        console.log(node.key)
+    }
+    return null
+}
+
+// me
+function max(node){
+    if(node !== null){
+        if(node.right){
+            max(node.right);
+        }else{
+            console.log(node.key);
+        }
+    }
+}
+```
+
+### 查找指定值
+```js
+function find(node, value){
+    if(value === node.key){
+        console.log(node.key)
+    }else if(value < node.key){
+        if(node.left){
+            find(node.left, value)
+        }else{
+            console.log('not find::', value)
+        }
+    }else{
+        if(node.right){
+            find(node.right, value)
+        }else{
+            console.log('not find::', value)
+        }
+    }
+}
+```
