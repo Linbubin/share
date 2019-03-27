@@ -132,9 +132,9 @@ function max(node){
 
 ### 查找指定值
 ```js
-function find(node, value){
+function find(node, value, callback){
     if(value === node.key){
-        console.log(node.key)
+        callback(node.key)
     }else if(value < node.key){
         if(node.left){
             find(node.left, value)
@@ -154,4 +154,49 @@ function find(node, value){
 ### 删除指定节点
 1. 被删除节点没有子节点,删除即可.
 2. 被删除节点没有左 或 右子节点,删除后父与其左或右节点相连.
-3. 被删除节点同时有左右子节点， 如果被删除节点在父节点的左侧,即找到被删节点右侧的最小值来代替被删除节点，且删除该最小值节点.如果被删除节点在父节点的右侧,即找到被删节点左侧的最大值来代替被删除节点，且删除该最大值节点.
+3. 被删除节点同时有左右子节点， 找到被删节点右侧的最小值来代替被删除节点，且删除该最小值节点.(或者用被删节点左侧最大值也可以)
+
+```js
+function findMin(node){
+    if(node){
+        while(node && node.left){
+            node = node.left
+        }
+
+        return node
+    }
+    return null
+}
+function removeNode(node, key){
+    if(node === null){
+        return null
+    }
+
+    if(key < node){
+        node.left = removeNode(node.left, key);
+    }else if(key > node){
+        node.right = removeNode(node.right, key);
+    }else{
+        // 找到key,开始判断
+        if(node.left === null && node.right === null){
+            node = null;
+            return node
+        }
+        if(node.left === null){
+            node = node.right;
+            return node;
+        }
+        if(node.right === null){
+            node = node.left;
+            return node;
+        }
+        const minNode = findMin(node.right);
+        node.key = minNode.key;
+        node.right = removeNode(node.right, node.key)
+        // 或者以下伪代码
+        // const maxNode = findMax(node.left);
+        // node.key = maxNode.key;
+        // node.left = removeNode(node.left, node.key)
+    }
+}
+```
