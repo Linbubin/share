@@ -135,3 +135,11 @@ function Student(name, age){
 }
 ```
 
+# Nginx反向代理获取真实ip
+由于加了Nginx反向代理,所以客户端 `req.ip`获取到的都是代理客户端的ip
+可以从header里面拿真实ip
+```
+req.header['x-real-ip'] 
+req.header['x-forwarded-for'] 
+```
+都试试,即可
