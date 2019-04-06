@@ -146,3 +146,6 @@ req.header['x-forwarded-for']
 
 # react大量渲染table数据
 react-windows react-virtual
+
+# react16
+`Fragment`代替原来必须的div 来包裹,避免产生多余的dom
