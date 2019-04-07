@@ -149,3 +149,8 @@ react-windows react-virtual
 
 # react16
 `Fragment`代替原来必须的div 来包裹,避免产生多余的dom
+
+# chrome 密码不自动填充
+```html
+<input type="password" v-model="form.password" class="form_input" autocomplete="new-password" placeholder="请输入/>
+```
