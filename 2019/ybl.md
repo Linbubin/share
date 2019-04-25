@@ -135,3 +135,22 @@ function Student(name, age){
 }
 ```
 
+# Nginx反向代理获取真实ip
+由于加了Nginx反向代理,所以客户端 `req.ip`获取到的都是代理客户端的ip
+可以从header里面拿真实ip
+```
+req.header['x-real-ip'] 
+req.header['x-forwarded-for'] 
+```
+都试试,即可
+
+# react大量渲染table数据
+react-windows react-virtual
+
+# react16
+`Fragment`代替原来必须的div 来包裹,避免产生多余的dom
+
+# chrome 密码不自动填充
+```html
+<input type="password" v-model="form.password" class="form_input" autocomplete="new-password" placeholder="请输入/>
+```

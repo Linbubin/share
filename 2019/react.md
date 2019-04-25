@@ -248,4 +248,4 @@ useEffect(() => {
 * refs无法使用时,可以使用ReactDOM.findDOMNode(this)来替代,但是最好都别用.
 * 当和其他非React第三方库整合时,可以在componentDidUpdate中调用this.componentWillUnmount和this.componentDidMount来卸载/重新挂载DOM
 * form表单中组件onChange可以都写在一个方法中,`(e) => this.handleChange('name',e)`
-* 获取焦点`autoFocus="true"`
+* 获取焦点`autoFocus="true" dom.focus()`

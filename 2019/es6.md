@@ -3,6 +3,15 @@
 <!-- > 暂时性死区只是块级绑定的一个独特表现，而另一个独特表现则是在循环时使用它。 <br /> -->
 > 在let const声明之前调用声明值
 
+```js
+// es5中 const的实现
+const a = {}
+Object.definePerproty({}, x, {
+    value: 123,
+    writable: false
+})
+```
+
 2. 全局块级绑定
 ```js
 var a = 1;
@@ -22,3 +31,34 @@ window.xx; // undefined
 
 ### thunk函数
 thunk函数 传名调用
+
+### 异步
+promise
+async await
+
+### note
+去重
+```js
+const arr = [1,2,3,1,1,1,1,2,3,4,3,3,4,4];
+Array.from(new Set(arr))
+```
+
+默认参数
+```js
+// 用来做必传检验
+function checkParameter(){
+    throw new Error('can\'t be empty');
+}
+function f(x=checkParameter(),y,z){
+    // doSomething
+}
+
+f()// error
+```
+
+代理
+```js
+// es3
+// es5
+// es6
+```
