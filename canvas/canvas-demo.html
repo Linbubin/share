@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="telephone=no" name="format-detection">
+  <meta content="email=no" name="format-detection">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="black" name="apple-mobile-web-app-status-bar-style">
+  <title>航班</title>
+  <link rel="stylesheet" href="swiper-3.4.2.min.css">
+</head>
+
+<body>
+  <canvas id="canvas_a" width="800" height="800"></canvas>
+
+  <script type="text/javascript">
+    window.onload = function () {
+      var canvas_a = document.getElementById('canvas_a');  //获取canvas元素
+      context_a = canvas_a.getContext('2d');  //获取画图环境，指明为2d
+
+      centerX_a = canvas_a.width / 2;   //Canvas中心点x轴坐标
+      centerY_a = canvas_a.height / 2;  //Canvas中心点y轴坐标
+      rad = Math.PI * 2 / 1000; //将360度分成1000份，那么每一份就是rad度
+      speed_a = 0; //加载的快慢就靠它了 
+      speed2_a = 0;
+      speed3_a = 0;
+      speed4_a = 0;
+      max_a = 503;
+
+      was_a = 162;
+      will_a = 320;
+      delay_a = 21;
+      cancel_a = 0;
+
+      text_a = "出港航班";
+
+      //绘制外圈
+      function wasCircle(n, ctx, centerx, centery) {
+        if (n <= 0) {
+          return;
+        }
+        ctx.save();
+        ctx.strokeStyle = "#1DABE2"; //设置描边样式
+        ctx.lineCap = "butt";
+        ctx.radius = 50;
+        ctx.lineWidth = 50; //设置线宽
+        ctx.beginPath(); //路径开始
+        ctx.arc(centerx, centery, 200, -Math.PI / 2, -Math.PI / 2 + n * rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+        ctx.stroke(); //绘制
+        ctx.closePath(); //路径结束
+        ctx.restore();
+      }
+      function willCircle(n, ctx, centerx, centery, was, max) {
+        if (n <= 0) {
+          return;
+        }
+        ctx.save();
+        ctx.strokeStyle = "gray"; //设置描边样式
+        ctx.lineCap = "butt";
+        ctx.radius = 50;
+        ctx.lineWidth = 50; //设置线宽
+        ctx.beginPath(); //路径开始
+        ctx.arc(centerx, centery, 200, -Math.PI / 2 + was / max * 1000 * rad + rad, -Math.PI / 2 + n * rad + was / max * 1000 * rad + rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+        ctx.stroke(); //绘制
+        ctx.closePath(); //路径结束
+        ctx.restore();
+      }
+      function delayCircle(n, ctx, centerx, centery, was, will, max) {
+        if (n <= 0) {
+          return;
+        }
+        ctx.save();
+        ctx.strokeStyle = "yellow"; //设置描边样式
+        ctx.lineCap = "butt";
+        ctx.radius = 50;
+        ctx.lineWidth = 50; //设置线宽
+        ctx.beginPath(); //路径开始
+        ctx.arc(centerx, centery, 200, -Math.PI / 2 + was / max * 1000 * rad + will / max * 1000 * rad, -Math.PI / 2 + n * rad + was / max * 1000 * rad + will / max * 1000 * rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+        ctx.stroke(); //绘制
+        ctx.closePath(); //路径结束
+        ctx.restore();
+      }
+      function cancleCircle(n, ctx, centerx, centery, was, will, delay, max) {
+        if (n <= 0) {
+          return;
+        }
+        ctx.save();
+        ctx.strokeStyle = "red"; //设置描边样式
+        ctx.lineCap = "butt";
+        ctx.radius = 50;
+        ctx.lineWidth = 50; //设置线宽
+        ctx.beginPath(); //路径开始
+        ctx.arc(centerx, centery, 200, -Math.PI / 2 + was / max * 1000 * rad + will / max * 1000 * rad + delay / max * 1000 * rad, -Math.PI / 2 + n * rad + was / max * 1000 * rad + will / max * 1000 * rad + delay / max * 1000 * rad, false); //用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+        ctx.stroke(); //绘制
+        ctx.closePath(); //路径结束
+        ctx.restore();
+      }
+      //绘制内圈
+      function whiteCircle(ctx, centerx, centery) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.radius = 20;
+        ctx.lineWidth = 20;
+
+        ctx.strokeStyle = "white";
+        ctx.arc(centerx, centery, 200, 0, Math.PI * 2, false);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
+      }
+      //文字绘制
+      function text(ctx, centerx, centery, txt, was, will) {
+        ctx.save(); //save和restore可以保证样式属性只运用于该段canvas元素
+        ctx.strokeStyle = "white"; //设置描边样式
+        ctx.fillStyle = "black";
+
+        ctx.font = "80px sans-serif"; //设置字体大小和字体
+
+        //绘制字体，并且指定位置
+        ctx.fillText(was + will, centerx - 60, centery - 20);
+        ctx.fillStyle = "#1DABE2";
+        ctx.font = "40px sans-serif";
+        ctx.fillText(txt, centerx - 75, centery + 70);
+        ctx.stroke();//执行绘制
+
+        ctx.restore();
+      }
+      function list(ctx, centerx, centery, was, will, delay, cancel) {
+        ctx.save(); //save和restore可以保证样式属性只运用于该段canvas元素
+        ctx.strokeStyle = "white"; //设置描边样式
+        ctx.fillStyle = "black";
+        ctx.font = "30px sans-serif";
+        ctx.fillText("已执行" + was, centerx + 270 - 10, centery + 140 + 30);
+        ctx.fillText("未执行" + will, centerx + 270 - 10, centery + 180 + 30);
+        ctx.fillText("延  误" + delay, centerx + 270 - 10, centery + 220 + 30);
+        ctx.fillText("取  消" + cancel, centerx + 270 - 10, centery + 260 + 30);
+        ctx.stroke(); //执行绘制
+        ctx.restore();
+      }
+      function colorList(ctx, centerx, centery) {
+        ctx.save();
+        ctx.strokeStyle = "white";
+        ctx.fillStyle = "#1DABE2";
+        ctx.fillRect(centerx + 250 - 10, centery + 127 + 30, 10, 10);
+        //      			drawRoundRect(centerX+260, centerY+127, 10, 10, 5);   
+        ctx.fillStyle = "gray";
+        ctx.fillRect(centerx + 250 - 10, centery + 167 + 30, 10, 10);
+        //      			drawRoundRect(centerX+260, centerY+167, 10, 10, 5);
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(centerx + 250 - 10, centery + 205 + 30, 10, 10);
+        //      			drawRoundRect(centerX+260, centerY+207, 10, 10, 5); 
+        ctx.fillStyle = "red";
+        ctx.fillRect(centerx + 250 - 10, centery + 245 + 30, 10, 10);
+        //      			drawRoundRect(centerX+260, centerY+247, 10, 10, 5); 
+
+        ctx.restore();
+
+      }
+
+      function drawRoundRect(x, y, width, height, radius) {
+        context.beginPath();
+        context.arc(x + radius, y + radius, radius, Math.PI, Math.PI * 3 / 2);
+        context.lineTo(width - radius + x, y);
+        context.arc(width - radius + x, radius + y, radius, Math.PI * 3 / 2, Math.PI * 2);
+        context.lineTo(width + x, height + y - radius);
+        context.arc(width - radius + x, height - radius + y, radius, 0, Math.PI * 1 / 2);
+        context.lineTo(radius + x, height + y);
+        context.arc(radius + x, height - radius + y, radius, Math.PI * 1 / 2, Math.PI);
+        context.closePath();
+      }
+
+
+      //动画循环
+      (function drawFrame() {
+        window.requestAnimationFrame(drawFrame, canvas_a);
+        context_a.clearRect(0, 0, canvas_a.width, canvas_a.height);
+
+
+
+        whiteCircle(context_a, centerX_a, centerY_a);
+
+        text(context_a, centerX_a, centerY_a, text_a, was_a, will_a);
+
+
+        colorList(context_a, centerX_a, centerY_a);
+
+        list(context_a, centerX_a, centerY_a, was_a, will_a, delay_a, cancel_a);
+
+
+        if (speed_a < (was_a / max_a * 1000)) {
+          speed_a += 3;
+        } else {
+          speed_a = (was_a / max_a * 1000);
+
+        }
+        wasCircle(speed_a, context_a, centerX_a, centerY_a);
+        if (speed_a == (was_a / max_a * 1000)) {
+          if (speed2_a < (will_a / max_a * 1000)) {
+            speed2_a += 3;
+          } else {
+            speed2_a = (will_a / max_a * 1000);
+
+          }
+          willCircle(speed2_a, context_a, centerX_a, centerY_a, was_a, max_a);
+        }
+        if (speed2_a == (will_a / max_a * 1000)) {
+          if (speed3_a < (delay_a / max_a * 1000)) {
+            speed3_a += 3;
+          } else {
+            speed3_a = (delay_a / max_a * 1000);
+
+          }
+          delayCircle(speed3_a, context_a, centerX_a, centerY_a, was_a, will_a, max_a);
+        }
+        if (speed3_a == (delay_a / max_a * 1000)) {
+          if (speed4_a < (cancel_a / max_a * 1000)) {
+            speed4_a += 3;
+          } else {
+            speed4_a = (cancel_a / max_a * 1000);
+          }
+          cancleCircle(speed4_a, context_a, centerX_a, centerY_a, was_a, will_a, delay_a, max_a);
+        }
+
+
+      }());
+    }
+  </script>
+</body>
+
+</html>

@@ -225,6 +225,23 @@ this.setState(state => {
 this.state.xs; // [1,2]
 ```
 
+### hook
+```
+// count 如果和上面的count一样,则不渲染
+useEffect(() => {
+  document.title = `You clicked ${count} times`;
+}, [count]); 
+
+
+// return 一个function,可以作为 解绑函数
+useEffect(() => {
+    window.addEventListener('keydown', handleKeydown);
+    return () => {
+        window.removeEventListener('keydown', handleKeydown);
+    }
+})
+```
+
 ### note
 * state中应该只保存最简单的数据,不要尝试把props复制到state中,要尽可能把props当作数据源.
 * 装饰器 @xx class 等同 xx(class)
