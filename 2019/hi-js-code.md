@@ -60,3 +60,16 @@ script.text = xhr.responseText; document.body.appendChild(script);
 * 为`<script>`标签添加 defer 属性(只适用于 Internet Explorer 和 Firefox 3.5 以上版本)
 * 动态创建`<script>`元素，用它下载并执行代码
 * 用 XHR 对象下载代码，并注入到页面中
+
+## Data Access 数据访问
+直接量
+> 直接量仅仅代表自己，而不存储于特定位置。 JavaScript 的直接量包括:字符串，数字，布尔值，对象， 数组，函数，正则表达式，具有特殊意义的空值，以及未定义。
+
+变量
+> 开发人员使用 var 关键字创建用于存储数据值。
+
+数组项
+> 具有数字索引，存储一个 JavaScript 数组对象。
+
+对象成员
+> 具有字符串索引，存储一个 JavaScript 对象。

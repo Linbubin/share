@@ -120,3 +120,6 @@ fillRect()
 固定canvas的style里面的width和height,通过改变 canvas自身的width和height来实现看起来缩放的效果.
 
 因为style的width和height为真实展示的宽高,而自身的width和height为绘画时候的宽高,如果自身width为style-width的2倍,则画出来的图形为原来的1/2.从而实现缩放.
+
+## 说明
+canvas是基于状态进行绘制的.
