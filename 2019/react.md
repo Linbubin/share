@@ -169,6 +169,7 @@ console.log(this.props); // {a: true, b: true, c: true, d: true, e: '1', f: 123 
 
 ```jsx
 // 创建一个 theme Context,  默认 theme 的值为 light
+// createContext接收一个默认参数  当外面没包裹privider时,就会使用默认参数当作value, 有包裹但是没设置 value值,就会当作value传入undefined,子组件接收到空值
 const ThemeContext = React.createContext('light');
 
 function ThemedButton(props) {
@@ -241,6 +242,9 @@ useEffect(() => {
     }
 })
 ```
+
+### 编译
+babel会将 jsx语法编译成 `React.createElement()`的形式，如果jsx的标签为小写,babel就会将其编译成`<h1></h1>` -> `React.createElement('h1')`,如果是大写,babel就会将其编译成`<Welcome></Welcome>` -> `React.createElement(Welcome)`,是没有引号,也就代表着是上面 import 而来的.
 
 ### note
 * state中应该只保存最简单的数据,不要尝试把props复制到state中,要尽可能把props当作数据源.
