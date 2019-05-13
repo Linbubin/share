@@ -227,6 +227,46 @@ this.state.xs; // [1,2]
 ```
 
 ### hook
+#### state
+> useReducer
+```js
+function textReducer(state, action){
+  switch(action.type){
+    case 'UPDATE':
+      return action.value
+    default:
+      return state
+  }
+}
+
+
+
+const [ text, dispatchText ] = useReducer(textReducer, '');
+
+
+dispatchText({
+  type: 'UPDATE',
+  value: e.target.value
+})
+```
+
+上面代码换成useState
+```js
+const [text, setText] = useState('');
+
+setText(e.target.value)
+```
+
+
+text 为 this.state.text, setText 为 this.setState({text: xxx})
+
+如果是多个state,就多次使用 useState来声明
+```js
+const [text, setText] = useState('');
+const [count, setCount] = useState(0);
+```
+
+#### 生命周期
 ```
 // count 如果和上面的count一样,则不渲染
 useEffect(() => {
