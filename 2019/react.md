@@ -266,7 +266,29 @@ const [text, setText] = useState('');
 const [count, setCount] = useState(0);
 ```
 
-#### 生命周期
+#### ref
+```js
+const ref = useRef();
+
+ref.current.style.color = 'red';
+
+<input ref={ref} />
+```
+
+```js
+createRef
+useImperativeHandle
+forwardRef
+```
+
+#### context
+```js
+const context = useContext(Context);
+
+return <div>{this.context}</div>
+```
+
+#### 生命周期 useEffect
 ```
 // count 如果和上面的count一样,则不渲染
 useEffect(() => {
@@ -276,10 +298,13 @@ useEffect(() => {
 
 // return 一个function,可以作为 解绑函数
 useEffect(() => {
-    window.addEventListener('keydown', handleKeydown);
-    return () => {
-        window.removeEventListener('keydown', handleKeydown);
-    }
+  // didmount
+  window.addEventListener('keydown', handleKeydown);
+
+  // willunmount
+  return () => {
+      window.removeEventListener('keydown', handleKeydown);
+  }
 })
 ```
 
