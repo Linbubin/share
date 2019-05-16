@@ -63,6 +63,7 @@ var foo = new Foo('billy')
 * 对象属性 -> 对象
 * 函数 -> 全局window
 * call, apply, bind -> 第一个参数
+> 如果第一个参数为空,null,undefined 都会默认指向Window
 * 箭头函数 -> 箭头函数不会创建自己的this,它只会从自己的作用域链的上一层继承this,在声明时已经决定调用哪一层的this. setTimeout setInterval 指向和setTimeout函数同级的this
 ```javascript
 function fn0() {
