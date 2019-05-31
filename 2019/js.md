@@ -65,6 +65,7 @@ var foo = new Foo('billy')
 * call, apply, bind -> 第一个参数
 > 如果第一个参数为空,null,undefined 都会默认指向Window
 * 箭头函数 -> 箭头函数不会创建自己的this,它只会从自己的作用域链的上一层继承this,在声明时已经决定调用哪一层的this. setTimeout setInterval 指向和setTimeout函数同级的this
+* setTimeout 回调函数 里面会变成 window
 ```javascript
 function fn0() {
     return {
@@ -433,4 +434,23 @@ getCountAsync: function(type){
   })
   return out;
 }
+```
+
+36. 判断是否为奇数
+```js
+// 正常操作
+num % 2 === 1; // true为奇数, false为偶数
+// 位操作
+num & 1; // 1为奇数, 0为偶数
+```
+
+37. axios 同步请求
+```js
+# 利用 co 库,在内部将请求 同步化
+co(function *(){
+  var data = yield axios.get('url')
+  console.log(data);
+  console.log(456);
+	// data   456
+})
 ```
