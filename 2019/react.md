@@ -266,7 +266,29 @@ const [text, setText] = useState('');
 const [count, setCount] = useState(0);
 ```
 
-#### 生命周期
+#### ref
+```js
+const ref = useRef();
+
+ref.current.style.color = 'red';
+
+<input ref={ref} />
+```
+
+```js
+createRef
+useImperativeHandle
+forwardRef
+```
+
+#### context
+```js
+const context = useContext(Context);
+
+return <div>{this.context}</div>
+```
+
+#### 生命周期 useEffect
 ```
 // count 如果和上面的count一样,则不渲染
 useEffect(() => {
@@ -276,10 +298,13 @@ useEffect(() => {
 
 // return 一个function,可以作为 解绑函数
 useEffect(() => {
-    window.addEventListener('keydown', handleKeydown);
-    return () => {
-        window.removeEventListener('keydown', handleKeydown);
-    }
+  // didmount
+  window.addEventListener('keydown', handleKeydown);
+
+  // willunmount
+  return () => {
+      window.removeEventListener('keydown', handleKeydown);
+  }
 })
 ```
 
@@ -293,3 +318,19 @@ babel会将 jsx语法编译成 `React.createElement()`的形式，如果jsx的�
 * 当和其他非React第三方库整合时,可以在componentDidUpdate中调用this.componentWillUnmount和this.componentDidMount来卸载/重新挂载DOM
 * form表单中组件onChange可以都写在一个方法中,`(e) => this.handleChange('name',e)`
 * 获取焦点`autoFocus="true" dom.focus()`
+* this.setState是异步的,也可以是同步的
+```js
+// 异步
+this.setState({
+  counter: this.state.counter + this.props.increment,
+});
+
+// 同步
+this.setState((state, props) => ({
+  counter: state.counter + props.increment
+}));
+```
+
+### ask
+1. Class 组件应该始终使用 props 参数来调用父类的构造函数?
+2. render为什么每次都会被调用, 原理代码.
