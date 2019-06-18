@@ -533,3 +533,25 @@ function download(url, filename) {
     });
 }
 ```
+
+
+39. 题目暂存
+```js
+8. A static
+11. C //A
+13.  //
+14. A//
+17. B // ``理解
+19. B // C
+21. A // eval 字符串
+22. B // localstorage 我觉得是关闭浏览器就没了
+24. C // obj.hasOwnPropty('1' ---- 1)
+25. B // C
+26.  // 
+29. A // 有毒
+30. B
+31. // 真不会
+32. A
+38. // （x=1）会怎么操作 
+39. C // A
+```
