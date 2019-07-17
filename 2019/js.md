@@ -65,6 +65,16 @@ var foo = new Foo('billy')
 * call, apply, bind -> 第一个参数
 > 如果第一个参数为空,null,undefined 都会默认指向Window
 * 箭头函数 -> 箭头函数不会创建自己的this,它只会从自己的作用域链的上一层继承this,在声明时已经决定调用哪一层的this. setTimeout setInterval 指向和setTimeout函数同级的this
+> 在原型链上增加函数如果为箭头函数,this也不会指向调用者
+```js
+function Person(a,b){
+	this.a = a;
+	this.b = b;
+}
+const number = new Person('x','z')
+Person.prototype.test = () => this.a + this.b
+number.test() // NaN
+```
 * setTimeout 回调函数 里面会变成 window
 ```javascript
 function fn0() {
@@ -188,7 +198,7 @@ window.callback = function(data){
 cookie 本身用于客户端和服务器端通信，但是有本地存储功能，就被借用了。document.cookie = xxx来获取和设置
 缺点： 存储量太小，只有4KB   所有http请求都带着，会影响获取资源的效率  api太简单，需要封装才能用
 
-sessionStorage(浏览器关了，就会清理) localStorage(不执行清除,就不会清除)
+sessionStorage(浏览器的选项卡关了，就会清理) localStorage(不执行清除,就不会清除)
 HTML5专门为存储而设计,最大容量5M
 api简单易用: localStorage.setItem(key, value); localStorage.getItem(key) get在ios的safari隐藏模式下会报错
 
@@ -534,24 +544,144 @@ function download(url, filename) {
 }
 ```
 
-
-39. 题目暂存
+39. static
 ```js
-8. A static
-11. C //A
-13.  //
-14. A//
-17. B // ``理解
-19. B // C
-21. A // eval 字符串
-22. B // localstorage 我觉得是关闭浏览器就没了
-24. C // obj.hasOwnPropty('1' ---- 1)
-25. B // C
-26.  // 
-29. A // 有毒
-30. B
-31. // 真不会
-32. A
-38. // （x=1）会怎么操作 
-39. C // A
+// es6的语法，在js中使用
+// 该方法只在对象中使用，不能在实例中使用   不过可以通过 实例.constructor.func来调用
+class StaticMethodCall {
+    constructor() {
+        console.log(StaticMethodCall.staticMethod());
+        // 'static method has been called.'
+        console.log(this.constructor.staticMethod());
+        // 'static method has been called.'
+    }
+    static staticMethod() {
+        return 'static method has been called.';
+    }
+}
+
+const test = new StaticMethodCall;
+test.constructor.staticMethod();        // 'static method has been called.'
+
+// 在子类中可以使用
+class Tripple {
+  static tripple(n = 1) {
+    return n * 3;
+  }
+}
+
+
+class BiggerTripple extends Tripple {
+  static tripple(n) {
+    return super.tripple(n) * super.tripple(n);
+  }
+}
+
+
+console.log(Tripple.tripple());// 3
+console.log(Tripple.tripple(6));// 18
+
+let tp = new Tripple();
+
+console.log(BiggerTripple.tripple(3));// 81（不会受父类实例化的影响）
+console.log(tp.tripple());// 'tp.tripple 不是一个函数'.
 ```
+
+40. 事件传播的三个阶段
+捕获 > 目标 > 冒泡
+Capturing > Target > Bubbling
+
+默认为冒泡
+
+41. 不是所有对象都有原型
+除了基础对象外，所有实例都有原型。基础对象的原型为null（即不存在）。
+`({}).__proto__.__proto__ // null`
+
+42. 模板字符串
+> 传入参数为 `${}`中包含的 以及 排除`${}`中间的所有值
+```js
+function a(...args){console.log(args)}
+a`xxx${'a'}zzz${'b'}c${false}z` // [['xxx', 'zzz', 'c', 'z', raw: ['xxx', 'zzz', 'c', 'z']], 'a', 'b', 'false']
+```
+
+43. eval
+`eval(10*10+5) // 105`
+eval会为字符串传递的代码求值。 如果它是一个表达式，就像在这种情况下一样，它会计算表达式。 表达式为10 * 10 + 5计算得到105。
+
+44. Object.hasOwnProperty
+> 当key为数字或者是数字转化时,hasOwnProperty(key)均为true
+```js
+const obj = { 1: 'a', b: '2', '3':'c' };
+obj.hasOwnProperty('1'); // true
+obj.hasOwnProperty(1); // true
+obj.hasOwnProperty('b'); // true
+obj.hasOwnProperty(b); // ReferenceError
+obj.hasOwnProperty(3); // true
+obj.hasOwnProperty('3'); // true
+```
+
+45. async + await 实现sleep
+```js
+const sleep = (timeountMS) => new Promise((resolve) => {
+    setTimeout(resolve, timeountMS);
+});
+
+(async () => {  // 声明即执行的 async 函数表达式
+    for (var i = 0; i < 5; i++) {
+        await sleep(1000);
+        console.log(new Date, i);
+    }
+
+    await sleep(1000);
+    console.log(new Date, i);
+})();
+```
+
+46. node中更改require的obj,会对源文件进行改变
+```js
+// obj.js
+module.exports = {
+    num:1
+}
+
+// primitive.js
+module.exports = 1;
+
+// modifier.js
+var number = require('./primitive');
+var obj = require('./obj');
+
+number = 2;
+obj.num = 2;
+
+console.log(number);
+console.log(obj);
+
+// main.js
+console.log(require('./primitive'));
+console.log(require('./obj'));
+
+require('./modifier.js')
+
+console.log(require('./primitive'));
+console.log(require('./obj'));
+
+// 执行结果
+1
+{ num: 1 }
+2
+{ num: 2 }
+1
+{ num: 2 }
+```
+
+# note:
+1. 如果对象有两个具有相同名称的键，则将替前面的键。它仍将处于第一个位置，但具有最后指定的值。
+```js
+const obj = { a: "one", b: "two", a: "three" };
+console.log(obj); // { a: "three", b: "two" }
+```
+
+2. event.target永远只想最终点击的对象
+
+3. js中所有内容都是原始属性和对象

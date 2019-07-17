@@ -311,6 +311,20 @@ useEffect(() => {
 ### 编译
 babel会将 jsx语法编译成 `React.createElement()`的形式，如果jsx的标签为小写,babel就会将其编译成`<h1></h1>` -> `React.createElement('h1')`,如果是大写,babel就会将其编译成`<Welcome></Welcome>` -> `React.createElement(Welcome)`,是没有引号,也就代表着是上面 import 而来的.
 
+### 单向数据流
+React views -> user todo -> action creator -> dispatch -> store -> React views
+
+### virtual DOM
+二叉树比较的时间复杂度是 O(n的三次方)
+虚拟DOM采用 广度优先分层比较, 一层一层来对比
+如果相同,就到下一层
+位置不同,就根据关键值(key)来交换位置,如果没key,会直接进行增删来操作
+属性不同,根据key直接改变之前的属性
+类型不同,就之间删除`之前的`,增加新的(即使其他地方也用到 `之前的`节点)
+
+其他情况:
+节点跨层移动(极少发生), 比如B节点在他的父节点D之间增加了一个C, 那么Diff算法看到这一层的D不见了,就直接删除,然后增加一个C, 到下一层时,如果看到D,就会增加一个D(这个D对他来说是全新的,而不是刚才备份的)
+
 ### note
 * state中应该只保存最简单的数据,不要尝试把props复制到state中,要尽可能把props当作数据源.
 * 装饰器 @xx class 等同 xx(class)
@@ -318,6 +332,8 @@ babel会将 jsx语法编译成 `React.createElement()`的形式，如果jsx的�
 * 当和其他非React第三方库整合时,可以在componentDidUpdate中调用this.componentWillUnmount和this.componentDidMount来卸载/重新挂载DOM
 * form表单中组件onChange可以都写在一个方法中,`(e) => this.handleChange('name',e)`
 * 获取焦点`autoFocus="true" dom.focus()`
+* 所有能计算得到的状态，都不应该存储
+* 组件尽量没状态,所需数据通过props获取
 * this.setState是异步的,也可以是同步的
 ```js
 // 异步
@@ -329,6 +345,30 @@ this.setState({
 this.setState((state, props) => ({
   counter: state.counter + props.increment
 }));
+```
+* 引入文件是用React.lazy确保代码在使用时才被打包进来
+```js
+// before
+import OtherComponent from './OtherComponent';
+
+function MyComponent() {
+  return (
+    <div>
+      <OtherComponent />
+    </div>
+  );
+}
+
+// after
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
+
+function MyComponent() {
+  return (
+    <div>
+      <OtherComponent />
+    </div>
+  );
+}
 ```
 
 ### ask
