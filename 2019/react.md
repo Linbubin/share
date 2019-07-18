@@ -1,4 +1,4 @@
-# react
+# question
 ## constructor中调用super(props)的目的是什么?
 子类中调用 `super()` 才能使用this, 调用 `super(props)` 才能使用 this.props
 
@@ -167,6 +167,9 @@ console.log(this.props); // {a: true, b: true, c: true, d: true, e: '1', f: 123 
 > Context 设计目的是为共享那些被认为对于一个组件树而言是“全局”的数据.<br>
 > 不要仅仅为了避免在几个层级下的组件传递 props 而使用 context，它是被用于在多个层级的多个组件需要访问相同数据的情景。
 
+如果把context里的值放到外部,就需要自己强制去监听变化,手动刷新.如果放到context,React会自动刷新.
+其次需要将 `Consumer`需要放在`Provider`里面,否则会一直使用默认值
+
 ```jsx
 // 创建一个 theme Context,  默认 theme 的值为 light
 // createContext接收一个默认参数  当外面没包裹privider时,就会使用默认参数当作value, 有包裹但是没设置 value值,就会当作value传入undefined,子组件接收到空值
@@ -311,6 +314,7 @@ useEffect(() => {
 ### 编译
 babel会将 jsx语法编译成 `React.createElement()`的形式，如果jsx的标签为小写,babel就会将其编译成`<h1></h1>` -> `React.createElement('h1')`,如果是大写,babel就会将其编译成`<Welcome></Welcome>` -> `React.createElement(Welcome)`,是没有引号,也就代表着是上面 import 而来的.
 
+## restudy
 ### 单向数据流
 React views -> user todo -> action creator -> dispatch -> store -> React views
 
@@ -325,7 +329,18 @@ React views -> user todo -> action creator -> dispatch -> store -> React views
 其他情况:
 节点跨层移动(极少发生), 比如B节点在他的父节点D之间增加了一个C, 那么Diff算法看到这一层的D不见了,就直接删除,然后增加一个C, 到下一层时,如果看到D,就会增加一个D(这个D对他来说是全新的,而不是刚才备份的)
 
-### note
+### 函数复用
+#### 高阶组件(HOC)
+> 接受组件作为参数,返回新的组件
+解决需要一步一步往下传的问题,类似于 context
+
+比如一个定时器组件,如果你只是想要他的数据(当前时间),而不需要整个组件的样式等,就可以自己写一个高阶组件,然后返回一个time值,使用者可以用this.props.time来使用(类似于 antd form表单).
+
+#### 函数作为子组件
+如何render的状态由使用者来决定,而不是自己的组件来增加if语句来适应外部功能.
+
+
+# note
 * state中应该只保存最简单的数据,不要尝试把props复制到state中,要尽可能把props当作数据源.
 * 装饰器 @xx class 等同 xx(class)
 * refs无法使用时,可以使用ReactDOM.findDOMNode(this)来替代,但是最好都别用.
@@ -370,6 +385,9 @@ function MyComponent() {
   );
 }
 ```
+# 性能
+1. `componentWillUpdate`中`return false`来防止不必要的更新
+2. `redux`中`mapStateToProps`尽可能少的返回数据,防止由于不必要数据发生改变引起的更新
 
 ### ask
 1. Class 组件应该始终使用 props 参数来调用父类的构造函数?

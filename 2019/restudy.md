@@ -56,3 +56,11 @@ console.log(o + "")
 // toPrimitive
 // hello
 ```
+
+2. Symbol.toStringTag
+> 类似重写toString方法
+
+```js
+var o = { [Symbol.toStringTag]: "MyObject" }
+console.log(o + "");// [object MyObject]
+```
