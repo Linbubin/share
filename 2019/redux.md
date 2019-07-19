@@ -104,5 +104,9 @@ function mapDispatchToProps(dispatch){
 export default connect(mapStateToProps, mapDispatchToProps)(App)
 ```
 
+## redux-chunk
+异步的action不是特殊类型的action,而是多个action的组合使用(发送，成功，失败)
+判断action是不是promise,是的话,就截获,等待结果返回
+
 # ask
 1. combineReducers后,一个dispatch会触发两个reducer,如何单独触发
