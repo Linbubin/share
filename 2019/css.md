@@ -60,3 +60,62 @@ display: none 用户看不到,而且不占用位置<br>
 </body>
 </html>
 ```
+
+# 动画
+## transform 变化
+对象: block系
+* rotateY(xdeg)  x为角度 正顺时针,负逆时针
+* translateY 竖直方向上位移距离
+
+## transition
+> 属性是 transition-property，transition-duration，transition-timing-function 和 transition-delay
+
+一般和hover结合使用
+属性名称 + 时间
+```css
+hover时  div 2s内width从100 -> 300
+div {
+    width:100px;
+    transition:width 2s;
+}
+div:hover {
+    width:300px;
+}
+```
+
+## @keyframes 在动画序列中定义关键帧
+```css
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  50% { top: 10px; }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+```
+
+## animation
+> 属性是 animation-name，animation-duration, animation-timing-function，animation-delay，animation-iteration-count，animation-direction，animation-fill-mode 和 animation-play-state 属性的一个简写属性形式。
+
+### animation-duration 动画时间
+值: 时间 10s, 30s, 230ms
+
+### animation-timing-function
+* linear：匀速
+
+* ease-in：加速
+
+* ease-out：减速
+
+* cubic-bezier函数：自定义速度模式
+
+### animation-iteration-count 动画在结束前运行的次数
+* `<number>` 可以为0.5,即播放0.5次
+
+* infinite 无限次

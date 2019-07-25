@@ -267,3 +267,8 @@ linux  ~/.ssh/id_rea.pub
 reset  缓存区 -> 工作区
 checkout 工作区 -> head
 git checkout commit_id filename // 将commit_id的filename文件add到暂存区
+
+3. git status时中文乱码问题
+> core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常。
+
+`git config --global core.quotepath false`
