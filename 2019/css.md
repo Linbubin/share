@@ -61,6 +61,34 @@ display: none 用户看不到,而且不占用位置<br>
 </html>
 ```
 
+# 伪类
+:before :after
+:before设置 position: absolute时,内容会和原文重叠, after会位移原文长度的单位
+
+原因: 因为原来before会占掉原文的位置,导致原文向后移动,当before设置position:absolute时,脱离文档流,导致原文前移,造成重叠.
+
+# background
+## repeating-linear-gradient
+> 重复线性渐变
+```css
+/* 画一个 0-7.5px 白   7.5-15px 粉色的渐变图 */
+background: repeating-linear-gradient(
+    white 0%,
+    white 7.5px,
+    hotpink 7.5px,
+    hotpink 15px
+);
+```
+
+# box-shadow 阴影
+> 多个阴影 参数用,隔开
+参数
+* `inset` 不用inset就向外扩,使用则向内
+* `<offset-x> <offset-y>` x y轴的偏移量
+* `<blur-radius>` 值越大，模糊面积越大，阴影就越大越淡。 不能为负值。默认为0，此时阴影边缘锐利
+* `<spread-radius>` 取正值时，阴影扩大；取负值时，阴影收缩。默认为0，此时阴影与元素同样大。需要考虑 inset 
+* `<color>` 颜色值
+
 # 动画
 ## transform 变化
 对象: block系
@@ -73,7 +101,7 @@ display: none 用户看不到,而且不占用位置<br>
 一般和hover结合使用
 属性名称 + 时间
 ```css
-hover时  div 2s内width从100 -> 300
+/* hover时  div 2s内width从100 -> 300 */
 div {
     width:100px;
     transition:width 2s;
