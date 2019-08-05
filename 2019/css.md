@@ -67,6 +67,36 @@ display: none 用户看不到,而且不占用位置<br>
 
 原因: 因为原来before会占掉原文的位置,导致原文向后移动,当before设置position:absolute时,脱离文档流,导致原文前移,造成重叠.
 
+# css选择器
+## :not
+> 以多个以逗号分隔的选择器作为参数( `<complex-selector-list>` )
+```css
+/* 类名不是 `.fancy` 的 <p> 元素 */
+p:not(.fancy) {
+  color: green;
+}
+
+/* 非 <p> 元素 */ 
+body :not(p) {
+  text-decoration: underline;
+}
+
+/* 非 <div> 或 <span> 的元素 */
+body :not(div):not(span) {
+  font-weight: bold;
+}
+```
+
+# 布局
+## flex
+> 子元素所处的位置
+1. align-items  center 垂直居中  start end
+2. justify-content center 水平居中  start end
+
+## grid
+> 子元素所占的位置
+1. grid-template-columns 列宽 `1fr 2fr` 分成三等分,第一个占1/3，第二个占2/3
+
 # background
 ## linear-gradient
 > 线性渐变
