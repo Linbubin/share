@@ -98,6 +98,12 @@ body :not(div):not(span) {
 1. grid-template-columns 列宽 `1fr 2fr` 分成三等分,第一个占1/3，第二个占2/3
 
 # background
+## linear-gradient
+> 线性渐变
+```css
+/* 从左往右 透明-白-透明 */
+background: linear-gradient(to right, transparent, white, transparent); 
+```
 ## repeating-linear-gradient
 > 重复线性渐变
 ```css
@@ -119,9 +125,16 @@ background: repeating-linear-gradient(
 * `<spread-radius>` 取正值时，阴影扩大；取负值时，阴影收缩。默认为0，此时阴影与元素同样大。需要考虑 inset 
 * `<color>` 颜色值
 
+# text-shadow 文字阴影
+参数
+* `<color>`
+* `<offset-x> <offset-y>`
+* `<blur-radius>` 如果没有指定，则默认为0。值越大，模糊半径越大，阴影也就越大越淡（wider and lighter）。
+
 # 动画
 ## transform 变化
 对象: block系
+* perspective 镜头离元素的距离   一般与rotate一起使用,需要写在rotate前面 
 * rotateY(xdeg)  x为角度 正顺时针,负逆时针
 * translateY 竖直方向上位移距离
 * perspective 镜头离Z轴的距离, 和 rotate结合,展示3D效果,一定要写在rotate前面
@@ -255,3 +268,60 @@ animation-delay: 2s
 1. em
   * 和字体大小相同,默认为16px,可以设置不同的字体大小来展示不同的em
   * 给font-size设置em时,会根据它继承的font-size大小来按比例展示
+# CSS变量
+> 变量，就是拥有合法标识符和合法的值。可以被使用在任意的地方。可以使用var()函数使用变量。例如：var(--example-variable)会返回--example-variable所对应的值
+
+> 自定义属性。这些属性使用--*where*的特殊格式作为名字。例如--example-variable: 20px;即使一个css声明语句。意思是将20px赋值给--example-varibale变量。
+
+> 自定义属性和常规属性一样，作用在当前的层级，若没有定义，则从其父元素继承其值。
+
+```css
+/* 可以放在:root里给其他css使用 */
+:root{
+    --width: 100px;
+    --height: 100px;
+}
+.a{
+    /* 也可以放在单个css之中, 类似于私有变量 */
+    --width: 50px;
+    width: var(--width);
+    height: var(--height);
+    background: gray
+}
+.b{
+    --width: 60px;
+    width: var(--width);
+    height: var(--height);
+    background: gray
+}
+```
+
+
+# 文字
+
+## letter-spacing 间距
+normal | <length> 默认为0
+
+# action + 动画
+css写法和hover类似
+```css
+.content .text::before{
+    content: "no";
+    width: 100%;
+    height: 10px;
+    font-size: 15px;
+    color: blue;
+    position: relative;
+    display: inline-block;
+    left: -10%;
+}
+
+.content.active .text::before{
+    content: "yes";
+    left: 10%;
+}
+
+.content .text::before{
+    transition: 0.5s;
+}
+```
