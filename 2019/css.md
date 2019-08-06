@@ -124,6 +124,19 @@ background: repeating-linear-gradient(
 对象: block系
 * rotateY(xdeg)  x为角度 正顺时针,负逆时针
 * translateY 竖直方向上位移距离
+* perspective 镜头离Z轴的距离, 和 rotate结合,展示3D效果,一定要写在rotate前面
+
+### transform-origin 旋转中心点
+* 一个值：
+必须是`<length>`，`<percentage>`，或 left, center, right, top, bottom关键字中的一个。
+
+* 两个值：
+其中一个必须是`<length>`，`<percentage>`，或left, center, right关键字中的一个。
+另一个必须是`<length>`，`<percentage>`，或top, center, bottom关键字中的一个。
+
+* 三个值：
+前两个值和只有两个值时的用法相同。
+第三个值必须是`<length>`。它始终代表Z轴偏移量。
 
 ## transition
 > 属性是 transition-property，transition-duration，transition-timing-function 和 transition-delay
@@ -177,3 +190,68 @@ div:hover {
 * `<number>` 可以为0.5,即播放0.5次
 
 * infinite 无限次
+
+### animation-delay
+> 动画延时xx时间开始
+```css
+/* 2s后开始 */
+animation-delay: 2s
+```
+
+### animation-fill-mode
+> 设置CSS动画在执行之前和之后如何将样式应用于其目标。
+
+一般拿来和 `animation-delay`联合使用.
+
+取值:
+* none 当动画未执行时，动画将不会将任何样式应用于目标
+* forwards 目标将保留由执行期间遇到的最后一个关键帧计算值
+* backwards 动画将在应用于目标时立即应用第一个关键帧中定义的值，并在`animation-delay`期间保留此值。 
+
+
+# NOTE
+## border来画三角形
+1. 不设置width height时,会自动利用border-width画出四个等分三角形将正方形撑大
+2. 不设置一边时,那一边的内容就会被裁掉不展示,其余展示参考四边都有的时候
+3. 画一个对话框. 原理: 利用befor和after width-1px的差距,来进行覆盖形成一个小三角形
+```html
+<style>
+  #demo {
+    width: 200px;
+    line-height: 100px;
+    background-color: #fff;
+    position: relative;
+    border: 1px solid #5BBF5A;
+    text-align: center;
+    font-size: 25px;
+  }
+
+  #demo:after, #demo:before {
+    border: solid transparent;
+    content: ' ';
+    width: 0;
+    height:  0;
+    position: absolute;
+  }
+
+  #demo:after {
+    border-width: 10px;
+    border-top-color: #fff;
+    top: 100px;
+    left: 150px;
+  }
+
+  #demo:before {
+    border-width: 11px;
+    border-top-color: #5BBF5A;
+    top: 100px;
+    left: 149px;
+  }
+</style>
+<div id="demo">123</div>
+```
+
+## 相对大小
+1. em
+  * 和字体大小相同,默认为16px,可以设置不同的字体大小来展示不同的em
+  * 给font-size设置em时,会根据它继承的font-size大小来按比例展示
