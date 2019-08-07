@@ -199,6 +199,8 @@ div:hover {
 
 * cubic-bezier函数：自定义速度模式
 
+* steps: steps(8) 将状态分成8步,断续加载
+
 ### animation-iteration-count 动画在结束前运行的次数
 * `<number>` 可以为0.5,即播放0.5次
 
