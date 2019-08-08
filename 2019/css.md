@@ -223,6 +223,12 @@ animation-delay: 2s
 * forwards 目标将保留由执行期间遇到的最后一个关键帧计算值
 * backwards 动画将在应用于目标时立即应用第一个关键帧中定义的值，并在`animation-delay`期间保留此值。 
 
+### animation-direction
+> CSS 属性指示动画是否反向播放
+* normal 默认值, 从 0% -> 50% -> 100%,重新 0% -> 50% -> 100%
+* alternate 交替反向运行, 从 0% -> 50% -> 100% -> 50% -> 0% -> 50% -> 100% -> 50% -> 0%
+* reverse 反向运动动画  normal取反
+* alternate-reverse 反向交替 alternate取反
 
 # NOTE
 ## border来画三角形
@@ -327,3 +333,7 @@ css写法和hover类似
     transition: 0.5s;
 }
 ```
+
+# filter 滤镜
+* blur 以多少像素融合在一起,值为px
+* contrast 黑白度 默认为1, 0则为全黑白,超过1 就为曝光的样式
