@@ -197,6 +197,8 @@ div:hover {
 
 * ease-out：减速
 
+* ease-in-out: 先加速，再减速
+
 * cubic-bezier函数：自定义速度模式
 
 * steps: steps(8) 将状态分成8步,断续加载
