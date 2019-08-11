@@ -163,6 +163,8 @@ box-shadow: 0 0 0 calc(var(--innerRadius) - 0.4em) white,
 > 属性是 transition-property，transition-duration，transition-timing-function 和 transition-delay
 
 一般和hover结合使用
+> 需要注意在hover之前已经设置的属性，才能被transition变成动画效果
+
 属性名称 + 时间
 ```css
 /* hover时  div 2s内width从100 -> 300 */
@@ -348,3 +350,8 @@ css写法和hover类似
 * blur 以多少像素融合在一起,值为px
 * contrast 黑白度 默认为1, 0则为全黑白,超过1 就为曝光的样式
 * opacity 透明度， 和`opacity: xx`使用方式一致
+
+# clip-path 裁剪
+> CSS 属性可以创建一个只有元素的部分区域可以显示的剪切区域。 位置还是原来的位置,只是展示是裁剪后的形状.
+
+* polygon(a, b, c) 从a点 到 b点 到c点裁剪
