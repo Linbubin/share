@@ -357,6 +357,9 @@ diff算法会先创建一个由React元素组成的树,同级进行比较
 * 获取焦点`autoFocus="true" dom.focus()`
 * 所有能计算得到的状态，都不应该存储
 * 组件尽量没状态,所需数据通过props获取
+* 不可变数据的好处
+  1. 易于比较，只要比较是否同一引用就行
+  2. 易于调试，每次的状态都记录下来，而且状态改变必然是由某个action触发
 * this.setState是异步的,也可以是同步的
 ```js
 // 异步
@@ -396,6 +399,74 @@ function MyComponent() {
 # 性能
 1. `componentWillUpdate`中`return false`来防止不必要的更新
 2. `redux`中`mapStateToProps`尽可能少的返回数据,防止由于不必要数据发生改变引起的更新
+
+# react-router
+> 在一个组建容器中根据url来判断当前应该展示哪个组件
+
+> url参数发生变化，即使在同一页面，组件也会刷新（类似于 setState）
+
+和后端路由的对比
+1. 声明式路由定义
+2. 动态路由
+
+三种路由实现方式
+1. URL路径   /home
+2. hash路由 低版本浏览器不支持页面不刷新，用hash  /#/home   HashRouter
+3. 内存路由 用于ssr  url不变化 但是内容发生变化
+
+基本元素
+1. Link 普通链接 点击url不会刷新 `<Link to='/home'>home</Link>`
+2. NavLink Link基础上增加点击选中样式 `<NavLink to='/home' activeClass='select'>home</Link>`
+3. Prompt 满足条件时提醒用户是否离开页面  一般用于填写表单时，还没确定  用户点击了 切换页面
+```js
+<Prompt
+  when={flag}
+  message="Are you sure you want to leave?"
+/>
+```
+4. Redirect 重定向当前页，  登陆以后重定向到首页
+```js
+<Route exact path='/' render={() => (
+  loggedIn ? (
+    <Redirect to='/dashboard' />
+  ) : (
+    <PublicHomePage />
+  )
+)}
+```
+
+5. Route 路径匹配组件
+```js
+// /about时，两个都会匹配
+<Router>
+  <Route path='/' component={Home} />
+  <Route path='/about' component={About} />
+</Router>
+```
+
+6. Switch 只显示第一个匹配的路由
+```js
+// /about时，只显示 Home
+<Switch>
+  <Route path='/' component={Home} />
+  <Route path='/about' component={About} />
+</Switch>
+```
+
+## 嵌套路由
+> 每个React组件都可以是路由组件<br>
+> React Router的声明式语法可以方便的定义嵌套路由
+
+```js
+<Link to={`/my/sub/1`}>sub1</Link>
+<Link to={`/my/sub/2`}>sub2</Link>
+<Link to={`/my/sub/3`}>sub3</Link>
+
+<Route
+  path="/my/sub/:subId"
+  conponent={Category}
+/>
+```
 
 ### ask
 1. Class 组件应该始终使用 props 参数来调用父类的构造函数?
