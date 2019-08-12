@@ -91,7 +91,7 @@ body :not(div):not(span) {
 ## flex
 > 子元素所处的位置
 1. align-items  center 垂直居中  start end
-2. justify-content center 水平居中  start end
+2. justify-content center 水平居中  start 居左 end 居右 space-between 中间等比例隔开
 
 ## grid
 > 子元素所占的位置
@@ -288,6 +288,13 @@ animation-delay: 2s
 1. em
   * 和字体大小相同,默认为16px,可以设置不同的字体大小来展示不同的em
   * 给font-size设置em时,会根据它继承的font-size大小来按比例展示
+
+## border-radius [this](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-radius)
+> 该属性是一个 简写属性，是为了将这四个属性 border-top-left-radius、border-top-right-radius、border-bottom-right-radius，和 border-bottom-left-radius 简写为一个属性。
+
+如果写2个值, 1代表 border-top-left-radius border-bottom-right-radius, 2代表 border-top-right-radius border-bottom-left-radius
+
+
 # CSS变量
 > 变量，就是拥有合法标识符和合法的值。可以被使用在任意的地方。可以使用var()函数使用变量。例如：var(--example-variable)会返回--example-variable所对应的值
 
