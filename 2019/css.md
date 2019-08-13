@@ -142,12 +142,14 @@ box-shadow: 0 0 0 calc(var(--innerRadius) - 0.4em) white,
 # 动画
 ## transform 变化
 对象: block系
-* rotateY(xdeg)  x为角度 正顺时针,负逆时针
+* rotateY(xxxxxxdeg)  xxxxxx为角度 正顺时针,负逆时针
 * translateY 竖直方向上位移距离
 * perspective 镜头离Z轴的距离, 和 rotate结合,展示3D效果,一定要写在rotate前面
 * scale 缩放比例， 以中心点缩放
+* skew(xdeg, ydeg) 变形, 默认以图形中间垂直线为x逆时针旋转, 中间横线为y顺时针旋转
 
 ### transform-origin 旋转中心点
+> 在transform的基础上,改变默认旋转中心点
 * 一个值：
 必须是`<length>`，`<percentage>`，或 left, center, right, top, bottom关键字中的一个。
 
@@ -357,6 +359,7 @@ css写法和hover类似
 * blur 以多少像素融合在一起,值为px
 * contrast 黑白度 默认为1, 0则为全黑白,超过1 就为曝光的样式
 * opacity 透明度， 和`opacity: xx`使用方式一致
+* brightness 亮度, 和contrast类似,但是设置0 是 纯黑色
 
 # clip-path 裁剪
 > CSS 属性可以创建一个只有元素的部分区域可以显示的剪切区域。 位置还是原来的位置,只是展示是裁剪后的形状.

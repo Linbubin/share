@@ -64,3 +64,26 @@ console.log(o + "")
 var o = { [Symbol.toStringTag]: "MyObject" }
 console.log(o + "");// [object MyObject]
 ```
+
+# note
+## 前端项目的理想架构
+1. 可维护
+  * 代码是否容易理解(利用[prettier](https://prettier.io) eslint来进行代码规范和格式化)
+  * 文档是否健全
+2. 可扩展
+  * 增加新功能是否容易
+  * 新功能是否会增加系统复杂度
+3. 可测试
+  * 副作用少, 尽量使用纯函数
+  * 功能分层是否清晰
+4. 易开发
+  * 社区活跃
+  * 工具完善
+5. 易构建
+  * 构建工具选择(是否有脚手架)
+  * 使用通用技术和架构(是否是大众的技术)
+
+## 拆分复杂度
+按领域模型(feature)组织代码
+
+首先按照功能把他分成一个个文件，每个文件里面有自己的 action reducer(html css)
