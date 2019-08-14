@@ -111,6 +111,45 @@ export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 中间件在idspatcher中截获action做特殊处理
 
+# 优化
+1. 将数据扁平化
+```js
+// data 
+const initialState = {
+  items: [], // [id1]
+  page: 1,
+  pageSize: 3,
+  total: 0,
+  byId: {}, // {id1: {name: 'billy'}}
+  fetchListPending: false,
+  fetchLitError: null,
+  listNeedReload: false
+}
+
+// SUCCESS
+switch(action.type){
+  case 'FETCH_LIST_SUCCESS': {
+    let byId = {};
+    let items = [];
+    action.data.items.forEach(item => {
+      items.push(item.id)
+      byId[item.id] = item
+    })
+    return {
+      ...state,
+      byId,
+      items,
+      page: action.data.page,
+      pageSize: action.data.pageSize,
+      total: action.data.total,
+      fetchListPending: false,
+      fetchLitError: null
+    }
+  }
+}
+
+```
+
 # ask and question
 ## ask
 1. combineReducers后,一个dispatch会触发两个reducer,如何单独触发
