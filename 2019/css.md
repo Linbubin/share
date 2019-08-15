@@ -296,6 +296,16 @@ animation-delay: 2s
 
 如果写2个值, 1代表 border-top-left-radius border-bottom-right-radius, 2代表 border-top-right-radius border-bottom-left-radius
 
+## 常用颜色
+aquamarine
+cornflowerblue
+goldenrod
+hotpink
+salmon
+lightgreen
+sandybrown
+violet
+gray 灰色
 
 # CSS变量
 > 变量，就是拥有合法标识符和合法的值。可以被使用在任意的地方。可以使用var()函数使用变量。例如：var(--example-variable)会返回--example-variable所对应的值
