@@ -362,3 +362,12 @@ css写法和hover类似
 > CSS 属性可以创建一个只有元素的部分区域可以显示的剪切区域。 位置还是原来的位置,只是展示是裁剪后的形状.
 
 * polygon(a, b, c) 从a点 到 b点 到c点裁剪
+
+# BFC
+> BFC 即 Block Formatting Contexts (块级格式化上下文)，它属于上述定位方案的普通流。
+
+* body 根元素
+* 浮动元素：float 除 none 以外的值
+* 绝对定位元素：position (absolute、fixed)
+* display 为 inline-block、table-cells、flex
+* overflow 除了 visible 以外的值 (hidden、auto、scroll)
