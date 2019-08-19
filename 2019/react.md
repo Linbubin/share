@@ -355,7 +355,30 @@ diff算法会先创建一个由React元素组成的树,同级进行比较
 * 当和其他非React第三方库整合时,可以在componentDidUpdate中调用this.componentWillUnmount和this.componentDidMount来卸载/重新挂载DOM
 * form表单中组件onChange可以都写在一个方法中,`(e) => this.handleChange('name',e)`
 * 获取焦点`autoFocus="true" dom.focus()`
-* 所有能计算得到的状态，都不应该存储
+* 所有能计算得到的状态，都不应该存储, 可以用reselect库进行缓存一些复杂计算的数据
+```js
+import { createSelector } from "reselect";
+const getItems = state => state.items;
+const getById = state => state.byId;
+
+const dataSourceSelector = createSelector(getItems, getById, (items, byId) => {
+  console.log("reselect: get data source");
+  if (!items) return [];
+  return items.map(id => byId[id]);
+});
+
+getDataSource = dataSourceSelector;
+
+// getDataSource() {
+//   console.log("get data source", this.props.list);
+//   const { items, byId } = this.props.list;
+//   if (!items) return [];
+//   return items.map(id => byId[id]);
+// }
+
+// jsx
+<div>{this.getDataSource(this.props.list)}</div>
+```
 * 组件尽量没状态,所需数据通过props获取
 * 不可变数据的好处
   1. 易于比较，只要比较是否同一引用就行
@@ -396,15 +419,43 @@ function MyComponent() {
   );
 }
 ```
+* 和第三方库(canvas)结合:
+  1. 利用ref取到当前真实dom
+  2. 在componentDidMount里进行处理
+  3. 每次更新,更新state或props,在componentDidUpdate里重新画图
+  4. 有需要的话,componentWillUnmount里面进行解绑
+
+
 # 性能
-1. `componentWillUpdate`中`return false`来防止不必要的更新
-2. `redux`中`mapStateToProps`尽可能少的返回数据,防止由于不必要数据发生改变引起的更新
+> 了解常见的性能问题场景<br>
+> 时刻注意代码潜在性能问题<br>
+> 注重可重构代码<br>
+> 了解如何使用工具定位性能问题
+
+## 场景
+1. 用户输入时明显卡顿
+2. 鼠标事件卡顿
+
+## 措施
+1. 组件粒度够细
+2. `componentWillUpdate`中`return false`来防止不必要的更新
+3. `redux`中`mapStateToProps`尽可能少的返回数据,防止由于不必要数据发生改变引起的更新
+4. 按需加载
+```js
+// react-router处
+import loadable from 'react-loadable';
+const RedditListPage = loadable({
+  loader: () => import('./App'),
+  loading:() => <div>正在加载,请稍后.....</div>
+})
+```
+
 
 # react-router
 > 在一个组建容器中根据url来判断当前应该展示哪个组件
 
 > url参数发生变化，即使在同一页面，组件也会刷新（类似于 setState）
-
+## 介绍
 和后端路由的对比
 1. 声明式路由定义
 2. 动态路由
@@ -468,6 +519,9 @@ function MyComponent() {
 />
 ```
 
-### ask
+## 优化
+1. 当有分页信息查找时,可以把page和keyword都放到url中`/list/page?keyword=xxx`,这样可以直接把url发给对方,而不是告诉别人在第几页,需要查什么信息.
+
+# ask
 1. Class 组件应该始终使用 props 参数来调用父类的构造函数?
 2. render为什么每次都会被调用, 原理代码.
