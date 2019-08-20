@@ -32,8 +32,11 @@ git commit -m "add README.md"
 
 2. diff
 ```
-git diff  // 查看所有文件的差异
-git diff filename // 查看指定文件的差异
+git diff                                // 查看暂存区和工作区的差异
+git diff filename                       // 查看指定文件的差异
+git diff HEAD                           // 当前文件和最近一次提交的差异
+git diff --cached                       // 暂存区和HEAD的比较
+git diff commit_id1 commit_id2 filename // 比较 id1提交和id2提交中 filename的差异
 ```
 
 3. log
@@ -60,7 +63,7 @@ git checkout 分支 // 切换分支
 ### 分支
 > 类似于平行宇宙，互不干扰，但是可以通过某种力量(git)，让他们互相影响。
 1. 查看分支 `git branch`
-2. 创建分支 `git branch feature-A`
+2. 创建分支 `git branch feature-A  xxx(commit_id 或 branch ,不填就是 当前branch)`
 3. 切换分支 `git checkout feature-A`
 4. 2+3 => `git checkout -b feature-A`
 5. 切换到上一分支 `git checkout -`
@@ -100,11 +103,16 @@ git diff commit_id //查看某次提交 与本次的差异 HEAD为本次提交 -
 
 3. rebase 合并提交
 ```
-git rebase -i HEAD~2 // 合并log最上面的2个
+git rebase -i HEAD~2 // 合并log最上面的2个  rebase要选择待变更的父亲commit_id
 ```
 
-4. reset 版本回退(当前为 HEAD,上一次为HEAD^,上两次HEAD^^或HEAD~2)
+4. reset 版本回退(当前为 HEAD)
+* soft 这个只是把 HEAD 指向的 commit 恢复到你指定的 commit，暂存区 工作区不变
+* hard 这个是 把 HEAD，暂存区，工作区 都修改为 你指定的 commit 的时候的文件状态
+* mixed 这个是不加时候的默认参数，把 HEAD，暂存区 修改为 你指定的 commit 的时候的文件状态，工作区保持不变
+
 ```
+git reset HEAD                    // 丢弃暂存区中所有文件, 看起来像是把文件从暂存区移动到了工作区
 git reset commit_id               //可以回退到commit前，修改后    
 git reset HEAD~                   //回退到commit之前  修改之后
 git reset --hard commit_id        //退到上次提交后的状态
@@ -188,7 +196,15 @@ git fetch <remote> // 拉取远程分支到本地 用git branch -r查看
 // fetch + merge = pull
 ```
 
-14. 其他
+14. 临时储存 -- stash
+```
+git stash                  // 将当前工作区的状态 存到 临时区(暂存区会被丢弃)
+git stash list             // 查看临时储存列表
+git stash pop   stash@{xx} // 将临时储存里面的数据拿出来,并删除对应序号
+git stash apply stash@{xx} // 将临时储存里面的数据拿出来
+```
+
+15. 其他
 
 还有涉及到git钩子以及提交引用等内容不好描述,就没做整理,具体可以自行查看[这里](https://github.com/geeeeeeeeek/git-recipes/blob/master/sources/5.4-Git%E9%92%A9%E5%AD%90.md?1545892075837)
 
@@ -272,3 +288,81 @@ git checkout commit_id filename // 将commit_id的filename文件add到暂存区
 > core.quotepath设为false的话，就不会对0x80以上的字符进行quote。中文显示正常。
 
 `git config --global core.quotepath false`
+
+4. git 三个作用域
+```
+git config --list --local
+git config --list --global
+git config --list --system
+```
+
+5. git add -u  将更新的文件 添加到暂存区
+
+6. 重命名文件
+`git mv filename filerename`
+
+7. git 三大类型
+> 使用 git cat-file 来查看, -p 查看详情  -t 查看类型
+* 对象
+* tree
+* blob
+
+对象里包含了tree, tree类似文件夹,blob就是文件.
+```
+$ git cat-file -p 76fc6
+tree 87bca14aabfd74423701d9c93a80eb5ef29db3ca
+parent 1be81461c00388e167154f4b8d99b080ddda41fd
+author wuqiu <289873007@qq.com> 1566203085 +0800
+committer wuqiu <289873007@qq.com> 1566203085 +0800
+
+add a.txt
+
+$ git cat-file -p 87bca14aabfd74423701d9c93a80eb5ef29db3ca
+040000 tree 4b078ee5433833a3b75f2dc6a9f2dd8ee52acf5f    style
+100644 blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391    xx.html
+
+$ git cat-file -p 4b078ee5433833a3b75f2dc6a9f2dd8ee52acf5f
+100644 blob d65efe90283f1acc4916c889b65514fbd54b89a1    a.txt
+```
+
+8. 分离头指针
+> git checkout commit_id
+
+由于在切换回分支的时候会被删除,所以要注意保存.
+可以用来做测试的时候，如果不好就直接切换回分支,丢弃修改.
+
+9. rebase
+```
+* p, pick <commit> = use commit
+* r, reword <commit> = use commit, but edit the commit message
+* e, edit <commit> = use commit, but stop for amending
+* s, squash <commit> = use commit, but meld into previous commit
+* f, fixup <commit> = like "squash", but discard this commit's log message
+* x, exec <command> = run command (the rest of the line) using shell
+* b, break = stop here (continue rebase later with 'git rebase --continue')
+* d, drop <commit> = remove commit
+* l, label <label> = label current HEAD with a name
+* t, reset <label> = reset HEAD to a label
+* m, merge [-C <commit> | -c <commit>] <label> [* <oneline>]
+* .       create a merge commit using the original merge commit's
+* .       message (or the oneline, if no original merge commit was
+* .       specified). Use -c <commit> to reword the commit message.
+```
+
+修改以前的commit,`git rebase -i commit_pre_id`,其他都选择`pick`,要改的使用 `r`
+
+10. 删除文件
+git rm filename
+
+11. git忽略文件
+* doc/ 忽略名为doc文件夹
+* doc  忽略名为doc文件和文件夹
+* 忽略doc文件但不忽略doc文件夹(由于doc文件和doc文件夹不可能存在同一目录，假设doc文件在xx目录下)
+```
+doc
+!xx/doc
+```
+
+12. ^ ~的区别
+* ^ 是 父级  ^2 第二个父级
+* ~ 是 父级的次方  ~2 第一个父级的父级 === ^^

@@ -95,8 +95,10 @@ body :not(div):not(span) {
 
 ## grid
 > 子元素所占的位置
-1. grid-template-columns 列宽 `1fr 2fr` 分成三等分,第一个占1/3，第二个占2/3
+如果是重复参数,可以用repeat来产生  repeat(3, 1fr) === 1fr 1fr 1fr
 
+1. grid-template-columns 列宽 `1fr 2fr` 分成三等分,第一个占1/3，第二个占2/3
+2. grid-gap 该属性是row-gap and column-gap的简写形式 类似于 margin
 # background
 ## linear-gradient
 > 线性渐变
