@@ -366,3 +366,12 @@ doc
 12. ^ ~的区别
 * ^ 是 父级  ^2 第二个父级
 * ~ 是 父级的次方  ~2 第一个父级的父级 === ^^
+
+13. 出现冲突时，如果想放弃修改,怎么回退到冲突发生之前的状态
+* `git merge --abort` 恢复到合并之前状态
+
+14. 禁止向远程 `push -f` 以及修改历史commit操作
+
+15. github 搜索
+* xxx xx in:filename(`git study in:readme`) 在filename文件里面搜索xxx xx关键字
+* stars:>1000 大于1000星
