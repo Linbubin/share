@@ -433,7 +433,7 @@ async.parallel(countAsync, function (err, result) {
   return res.status(200).json({ success: true });
 })
 // ----
-getCountAsync: function(type){
+getCountAsync: function(condObj){
   let out = {};
   Object.keys(condObj).forEach(val => {
     out[val] = function(callback){
