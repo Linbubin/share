@@ -204,10 +204,15 @@ git stash pop   stash@{xx} // 将临时储存里面的数据拿出来,并删除�
 git stash apply stash@{xx} // 将临时储存里面的数据拿出来
 ```
 
-15. 其他
+15. 查看某个文件的具体某行代码更改历史
+```
+查看src/apps/new.determine/util.js文件 195-213行的更改历史
+git blame -L 195,213 src/apps/new.determine/util.js
+```
+
+16. 其他
 
 还有涉及到git钩子以及提交引用等内容不好描述,就没做整理,具体可以自行查看[这里](https://github.com/geeeeeeeeek/git-recipes/blob/master/sources/5.4-Git%E9%92%A9%E5%AD%90.md?1545892075837)
-
 
 
 ### 建议
@@ -375,3 +380,15 @@ doc
 15. github 搜索
 * xxx xx in:filename(`git study in:readme`) 在filename文件里面搜索xxx xx关键字
 * stars:>1000 大于1000星
+
+16. 删除git中的大文件
+* 先找到那个大文件的路径(曾经存在的路径)  `xxxxx.zip`
+* 利用filter-branch重写提交记录,和git rm删除git中的文件 `git filter-branch --force --index-filter 'git rm -rf --cached --ignore-unmatch xxxxx.zip' --prune-empty --tag-name-filter cat -- --all`
+* 清除缓存
+```
+rm -rf .git/refs/original/
+
+git reflog expire --expire=now --all
+
+git gc --prune=now
+```
