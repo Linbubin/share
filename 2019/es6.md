@@ -33,8 +33,41 @@ window.xx; // undefined
 thunk函数 传名调用
 
 ### 异步
-promise
-async await
+#### promise
+#### async await
+* async函数里如果没有await直接return,则返回一个promise.resolve的结果
+```js
+async function testAsync() {
+    return "hello async";
+}
+const result = testAsync();
+console.log(result);// Promise {<resolved>: "hello async"}
+```
+
+* await是在等待一个东西,表达式的计算结果是 Promise 对象或者其它值
+
+如果是promise类型,他就会阻塞等待promise.resolve的返回, 如果只有promise.reject,await会跳出错误
+
+如果是普通类型,就直接拿到返回值
+```js
+function getSomething() {
+    return "something";
+}
+
+async function testAsync() {
+    return Promise.resolve("hello async");
+}
+
+async function test() {
+    const v1 = await getSomething(); // 所以不是一定要promise
+    const v2 = await testAsync();
+    console.log(v1, v2);
+}
+
+test(); // something hello async
+```
+* 优势： 处理then链
+
 
 ### note
 去重

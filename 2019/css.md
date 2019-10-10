@@ -407,3 +407,6 @@ css写法和hover类似
 * 绝对定位元素：position (absolute、fixed)
 * display 为 inline-block、table-cells、flex
 * overflow 除了 visible 以外的值 (hidden、auto、scroll)
+
+# 单位区别
+rem 只相对根部  em相对当前的font-size
