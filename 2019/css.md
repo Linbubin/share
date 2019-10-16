@@ -95,8 +95,10 @@ body :not(div):not(span) {
 
 ## grid
 > 子元素所占的位置
-1. grid-template-columns 列宽 `1fr 2fr` 分成三等分,第一个占1/3，第二个占2/3
+如果是重复参数,可以用repeat来产生  repeat(3, 1fr) === 1fr 1fr 1fr
 
+1. grid-template-columns 列宽 `1fr 2fr` 分成三等分,第一个占1/3，第二个占2/3
+2. grid-gap 该属性是row-gap and column-gap的简写形式 类似于 margin
 # background
 ## linear-gradient
 > 线性渐变
@@ -335,6 +337,27 @@ gray 灰色
 }
 ```
 
+# CSS计数器
+需要先在外部将计数器key重置, 然后再内部设置key值,再设置content来进行内容的填写(单层级用`counter`一个参数,多层级用`counters`多参数).
+```css
+body {
+  counter-reset: aaa bbb ccc;
+  /* 重置计数器成0 */
+}
+
+h3:before {
+  counter-increment: ccc;
+  /* 增加计数器值 */
+  content: "Section "counter(ccc) " . . .   ";
+  /* 显示计数器 */
+}
+
+
+
+<h3>Introduction</h3>
+<h3>Body</h3>
+<h3>Conclusion</h3>
+```
 
 # 文字
 

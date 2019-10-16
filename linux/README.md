@@ -12,6 +12,7 @@
 11. 查看进程 ps -ef | grep node
 12. 查看进程占有的端口 netstat -nap | grep 进程id
 13. 查看进程 ps -ef | grep port  显示该port下启动文件位置
+14. 查找xx目录下的文件 find xxx -type f
 
 # 免密登录
 > 本机A 免密登录 远程机子 IP：11.0.11.222 B

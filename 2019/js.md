@@ -433,7 +433,7 @@ async.parallel(countAsync, function (err, result) {
   return res.status(200).json({ success: true });
 })
 // ----
-getCountAsync: function(type){
+getCountAsync: function(condObj){
   let out = {};
   Object.keys(condObj).forEach(val => {
     out[val] = function(callback){
@@ -685,3 +685,9 @@ console.log(obj); // { a: "three", b: "two" }
 2. event.target永远只想最终点击的对象
 
 3. js中所有内容都是原始属性和对象
+
+4. 区分函数声明和表达式最简单的方法是看function关键字出现在声明中的位置.如果function是声明中的第一个词,那么就是一个函数声明,否则就是一个表达式.
+
+5. 多利用块级作用域的特性,使得js垃圾回收机制大大提升.
+
+6. 闭包: 一个函数能访问另一个函数作用域中的变量.    只要使用回调函数,就是在使用闭包.  作用: 模块化, 私有变量
