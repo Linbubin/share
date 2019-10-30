@@ -18,6 +18,18 @@
 8. 当一方为boolean时,将boolean转化为number类型,再从头开始比较.
 9. 当有一方为string类型时,先将另一方转化为string类型,再用===进行比较.具体转换形式看[强制转化成string](#强制转化成string).
 
+
+简单总结四句话
+
+1. undefined == null，结果是true。且它俩与所有其他值比较的结果都是false。
+
+2. String == Boolean，需要两个操作数同时转为Number。
+
+3. String/Boolean == Number，需要String/Boolean转为Number。
+
+4. Object == Primitive，需要Object转为Primitive(具体通过valueOf和toString方法)。
+
+
 ## 强制转化成number
 
 * undefined → NaN

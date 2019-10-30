@@ -138,7 +138,7 @@ Math.random 在url上增加 可以清除缓存
 基本数据结构: dom树结构
 常用API: 
 ```
-获取dom document.get**** querySelectorAll
+获取dom document.get**** querySelectorAll   参数部分匹配('[class*=login-btn]')结果为类array
 新增 删除节点 appendChild(node) 如果是页面上原来有的，会移动位置 removeChild
 获取父节点 parentElement
 获取子节点 childNodes
