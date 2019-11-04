@@ -410,3 +410,10 @@ css写法和hover类似
 
 # 单位区别
 rem 只相对根部  em相对当前的font-size
+
+# 短句 word-wrap和word-break
+```css
+word-wrap: break-word; /* 单词换行展示,再根据长度折叠 */
+word-break: break-all; /* 单词不换行,只根据长度折叠 */
+word-break: break-word; /* 和word-wrap效果一样 */
+```

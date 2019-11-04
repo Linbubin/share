@@ -455,7 +455,7 @@ map.set(arr, 456);
 map.get(arr); // 456
 map; // Map(1) {Array(1) => 456}
 
-// 直接传入 key value声明
+// 直接传入 [[key value], [key value]]声明
 let map = new Map([['a', 123], ['b', 456]]);
 map; // Map(2) {"a" => 123, "b" => 456}
 
@@ -466,6 +466,21 @@ map.delete('a'); // true
 map.clear();// undefined
 
 // 遍历之类的方法 都与Set相同
+
+// 虽然 NaN==NaN 为false,但是作为Map key时是一样的
+map.set(NaN, 'bbb');
+map.get(NaN); // bbb
+
+// map的forEach是 value,key  不是key,value
+{
+    const map = new Map();
+    map.set("1", 11);
+    map.set("2", 22);
+
+    map.forEach((value, key) => {
+        console.log(value, key); // 11 , 1     22, 2
+    });
+}
 ```
 ```js
 // key值必须obj， 不能遍历  没有size
