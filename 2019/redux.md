@@ -156,3 +156,48 @@ switch(action.type){
 
 ## question
 1. 所有的reducer都会被响应,然后根据action.type不同响应不同的的return
+
+
+
+# 源码解析
+## createStore
+1. getState
+
+单纯的返回一个state,只是在前面判断是是否dispatch已经执行结束
+```js
+/**
+ * Reads the state tree managed by the store.
+ *
+ * @returns {any} The current state tree of your application.
+ */
+function getState() {
+  if (isDispatching) {
+    throw new Error(
+      'You may not call store.getState() while the reducer is executing. ' +
+        'The reducer has already received the state as an argument. ' +
+        'Pass it down from the top reducer instead of reading it from the store.'
+    )
+  }
+
+  return currentState
+}
+```
+
+2. subscribe
+在`listeners`里面`push`要监听的`function(listener)`, 返回一个`unsubscribe`函数,当调用时将`listener`从`listeners`里面给删除(splice)
+
+
+3. dispatch
+* 先判断是传入的action是否为纯对象
+* 判断action.type是否有值
+* 判断是否正在dispatch
+* 将currentState用currentReducer(currentState, 传入的action)代替
+`currentState = currentReducer(currentState, action)`
+* for循环listeners(dispatch的时候使用的是nextListeners),每个listener都拿出来执行
+
+
+4. replaceReducer
+> 将reducer替换成传入的reducer, 一般用于代码拆分或者动态加载reducer
+
+* 替换reducer
+* 调用`dispatch({ type: ActionTypes.REPLACE })`打标签,方便新老reducer的比较

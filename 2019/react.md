@@ -6,12 +6,17 @@
 在componentDidMount处,因为如果是在willMount发起请求,dom还没加载完,ajax.then中的setState将不会更新组件.
 
 ## 事件在react中的处理方式
-react使用单个事件监听器监听顶层的所有事件.这意味着更新DOM时,react不需要担心跟踪事件监听器.
+react使用单个事件监听器监听顶层的所有事件.这意味着更新DOM时,react不需要担心跟踪事件监听器.  
 为了解决跨浏览器兼容性问题，React 会将浏览器原生事件（Browser Native Event）封装为合成事件（SyntheticEvent）传入设置的事件处理器中。这里的合成事件提供了与原生事件相同的接口，不过它们屏蔽了底层浏览器的细节差异，保证了行为的一致性。另外有意思的是，React 并没有直接将事件附着到子元素上，而是以单一事件监听器的方式将所有的事件发送到顶层进行处理。这样 React 在更新 DOM 的时候就不需要考虑如何去处理附着在 DOM 上的事件监听器，最终达到优化性能的目的。
 
 ## createElement 和 cloneElement的区别
-createElement三个参数: 标签名,属性,子组件
+createElement三个参数: 标签名,属性,子组件  
 cloneElement三个参数: react元素,属性,子组件
+
+## 从JSX到DOM元素经历了哪些步骤
+JSX -> JavaScript对象结构 -> DOM元素  
+多一个中间一步是因为可以利用`对象结构`进行Virtual Diff,然后直接把不同的地方替换掉,不需要全体替换.  
+也可以将`对象结构`利用特殊的方式转化成其他元素, 比如 对象结构 -> React Native -> 手机APP
 
 ## React三种构建组件的方式
 class, createClass, 无状态函数
