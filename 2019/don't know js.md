@@ -182,6 +182,7 @@ Object.create = function (o) {
 // 其实Object.create还存在第二个参数,和Object.defineProperty类似{key: {...config}}
 ```
 7. 手写__proto__(`.__proto__ 的实现`)
+8. 手写防抖节流函数
 
 # NOTE
 1. 向obj添加属性时，key如果时number,则会转化为string

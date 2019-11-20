@@ -181,7 +181,7 @@ status：
 浏览器有同源策略，不允许ajax访问其他域接口
 跨域条件: 协议 域名 端口 有一个不同就算跨域
 可跨域标签： img（可能防盗链， 可以加载站长统计的图片来进行打点统计） link(cnd) script(jsonp)
-JSONP:
+ * JSONP: 最新版会导致CORB（Cross-Origin Read Blocking）
 ```js
 // src对应的url返回的值会被解析成js直接执行 ---> eval('返回值')
 <script>
@@ -192,7 +192,59 @@ window.callback = function(data){
 <script src="http://www.wuqiu.xyz/api">
 </script>
 ```
-服务端设置 http header
+ * 跨域资源共享（CORS）  服务端设置 http header
+```js
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+```
+  * node中间件代理跨域  利用webpack-dev-server做代理
+  ```js
+    module.exports = {
+      entry: {},
+      module: {},
+      // ......
+      devServer: {
+        historyApiFallback: true,
+        proxy: [{
+            context: '/login',
+            target: 'http://www.daxihong.com:8080',  // 代理跨域目标接口
+            changeOrigin: true,
+            secure: false,  // 当代理某些https服务报错时用
+            cookieDomainRewrite: 'www.daxihong.com'  // 可以为false，表示不修改
+        }],
+        noInfo: true
+      }
+    }
+  ```
+  * nginx反向代理
+  ```m
+  server{
+    # 监听9099端口
+    listen 9099;
+    # 域名是localhost
+    server_name localhost;
+    #凡是localhost:9099/api这个样子的，都转发到真正的服务端地址http://localhost:9871
+    location ^~ /api {
+        proxy_pass http://localhost:9871;
+    }
+  }
+  ```
 
 18. cookie sessionStorage localStorage区别:
 cookie 本身用于客户端和服务器端通信，但是有本地存储功能，就被借用了。document.cookie = xxx来获取和设置
@@ -711,3 +763,13 @@ console.log(obj); // { a: "three", b: "two" }
     ```
   * 动态作用域  
     只有this算是动态作用域,this取决于调用时,而不取决于定义时.
+
+8. HEAD请求
+> HTTP HEAD 方法 请求资源的头部信息, 并且这些头部与 HTTP GET 方法请求时返回的一致. 该请求方法的一个使用场景是在下载一个大文件前先获取其大小再决定是否要下载, 以此可以节约带宽资源.
+
+9. Array操作
+```js
+arr = [1,2,3,4,5]
+arr.copyWithin(0, 1) // 开始 copy 1-最后 的数字 放到 0开始的位置上
+arr //  [2, 3, 4, 5, 5]
+```

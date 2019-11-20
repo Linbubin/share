@@ -527,6 +527,19 @@ const RedditListPage = loadable({
 ## 优化
 1. 当有分页信息查找时,可以把page和keyword都放到url中`/list/page?keyword=xxx`,这样可以直接把url发给对方,而不是告诉别人在第几页,需要查什么信息.
 
+2. 用memo代替原来的函数组件(类似于PureComponent 代替 Component)  
+memo可以传入第二个参数 function来比较是否渲染
+```js
+function areEqual(prevProps, nextProps) {
+  /*
+  如果把 nextProps 传入 render 方法的返回结果与
+  将 prevProps 传入 render 方法的返回结果一致则返回 true，
+  否则返回 false
+  */
+  // 和shouldComponentUpdate不同    memo返回true是不渲染, false是渲染
+}
+```
+
 # ask
 1. Class 组件应该始终使用 props 参数来调用父类的构造函数?
 2. render为什么每次都会被调用, 原理代码.

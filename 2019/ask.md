@@ -3,10 +3,14 @@
 ## question
 
 1. promise 多层 then 的使用? 回调函数参数值哪来 ---> [async await](./es6#async)
-
+2. 订阅发布 和观察者模式的区别
 ## answer
 
 1. 由上一个 then 中 return 的任意类型(可以是 promise 或者 普通类型)
+
+如果回调函数最终是throw，该Promise是rejected状态。  
+如果回调函数最终是return，该Promise是resolved状态。  
+但如果回调函数最终return了一个Promise，该Promise会和回调函数return Promise状态保持一致。  
 
 ```js
 function test() {
@@ -40,3 +44,5 @@ test()
     console.log("err::", err); // err:: test1
   });
 ```
+
+2. 发布订阅模式有个集成中心来处理两端的事情, 观察者模式是直接处理
