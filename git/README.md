@@ -392,3 +392,6 @@ git reflog expire --expire=now --all
 
 git gc --prune=now
 ```
+
+17. 合并不相关记录
+`-- allow-unrelated-histories`
