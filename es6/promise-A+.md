@@ -67,3 +67,43 @@ promise的`then`方法接收两个参数:
   * 如果`onFulfilled`或`onRejected`抛出一个错误`e`,`promise2`必须`rejected` `e`作为`reason`
   * 如果`onFulfilled`不是函数,且`promise1`状态为`fulfilled`, `promise2`必须是`fulfilled`,而且和`promise1`有相同的`value`
   * 如果`onRejected`不是函数,且`promise1`状态为`rejected`, `promise2`必须是`rejected`,而且和`promise1`有相同的`reason`
+
+
+## The Promise Resolution Procedure promise的解决方式
+promise的解决方式是一个抽象的操作任务,输入一个promise或一个value,我们可以把他写作`[[Resolve]](promise, x)`.如果x是`thenable`(可以被then),它试图让promise采用x作为状态,假设x至少看起来像是一个promise.否则就以x为`value`来`fulfills`promise.
+
+只要符合`Promises/A+`公开的规定,这种对`thenable`的处理允许promise进行互操作.它还允许`Promises/A+`实现使用合理的then方法“同化”不一致的实现。
+
+运行`[[Resolve]](promise, x)`,执行以下步骤:
+* 如果promise和x来自同一个object,就以TypeError的报错原因reject.
+* 如果x是一个promise,就采用该promise的状态
+  * 如果x状态是pending,promise必须保持pending状态,直到x变为`fulfilled`或`rejected`
+  * 如果/当 x 的状态为 `fulfilled`时, 将promise变为fulfill,并带相同的value
+  * 如果/当 x 的状态为 `rejected`时, 将promise变为rejected,并带相同的reason
+* 如果x是一个object或function
+  * 让`then`执行`x.then`[3.5]
+  * 如果检索`x.then`的结果会抛出异常e,就将promise`reject`,并以e为`reason`
+  * 如果`then`是一个function, 将x当作this来调用,第一个参数为`resolvePromise`,第二个参数为`rejectPromise`
+    * 如果/当 `resolvePromise`以`y`为`value`调用时, 运行`[[Resolve]](promise, y)`
+    * 如果/当 `rejectPromise`以`r`为`reason`调用时, 就将promise`reject`,并以`r`为`reason`
+    * 如果 `resolvePromise` 和 `rejectPromise`都被调用,或对同一参数进行多次调用,那么只保留第一次调用,其他都会被忽略 ????
+    * 如果`then`被调用后抛出异常`e`
+      * 如果`resolvePromise` 或 `rejectPromise`被调用,忽略本次调用
+      * 如果没有被调用,就将promise`reject`,并以`e`为`reason`
+  * 如果x不是function,就用x来fulfill promise
+* 如果x不是promise或function, fulfill promise with x.
+
+如果一个promise `resolved` `thenable`,并参与链式调用,就会无数次的调用`[[Resolve]](promise, thenable)`,遵循上述算法将会导致无限递归.鼓励(但不是必须)实现检测这种递归并用包含信息的TypeError作为reason拒绝(reject).[3.6]
+
+# Notes 备注
+1. `platform code`意味引擎、环境和promise实施代码.在实践中，这一要求确保onfulled和onRejected在调用then的事件循环之后，使用一个新的堆栈异步执行.这可以通过`macro-task`机制(比如`setTimeout`或`setImmediate`)或`micro-task`机制(比如`MutationObserver`或`process.nextTick`)来实现.由于promise实现被视为`platform code`,因此它本身调用处理程序可能包含一个任务调度队列或`trampoline`.
+
+2. 也就是说,在严格模式下,`this`在他们内部是未定义的.在非严格模式下,它将是全局对象`windows`或`Global`.
+
+3. 当满足所有条件时,理论上允许 `promise2 === promise1`.每个实现都应该记录它是否可以生成promise2===promise1以及在什么条件下生成promise1。 ????
+
+4. 通常来说,当x来自当前实例时,x才是真的promise.该条款允许使用特定于实现的手段来采用已知的一致承诺状态.?????
+
+5. 这段程序首次存储对`x.then`的引用,然后测试该引用,再调用,避免对`x.then`属性的多次访问.这些注意事项对确保访问器属性的一致性非常重要,因为访问其属性值可能在两次检索之间发生变化.
+
+6. 实现不应该对表链的深度设置任意限制，并且假设超过该任意限制递归 将是无限的。只有真正的循环才会导致TypeError;如果遇到无限长的非重复表链，则永远递归是正确的行为。
