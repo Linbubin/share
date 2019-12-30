@@ -409,7 +409,8 @@ css写法和hover类似
 * overflow 除了 visible 以外的值 (hidden、auto、scroll)
 
 # 单位区别
-rem 只相对根部  em相对当前的font-size
+rem 只相对根部 即html的font-size,默认为16px
+em相对当前的font-size
 
 # 短句 word-wrap和word-break
 ```css
