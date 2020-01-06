@@ -76,9 +76,11 @@ obj === b // true
 
 
 ## The Promise Resolution Procedure promise的解决方式
-promise的解决方式是一个抽象的操作任务,输入一个promise或一个value,我们可以把他写作`[[Resolve]](promise, x)`.如果x是`thenable`(可以被then),它试图让promise采用x作为状态,假设x至少看起来像是一个promise.否则就以x为`value`来`fulfills`promise.
+promise的解决方式是一个抽象的操作任务,输入一个promise或一个value,我们可以把他写作`[[Resolve]](promise, x)`.如果x是`thenable`(带then方法的对象或函数),就会把x假设成promise来读取状态.否则就以x为`value`来`fulfills`promise.[2.3.2]
 
-只要符合`Promises/A+`公开的规定,这种对`thenable`的处理允许promise进行互操作.它还允许`Promises/A+`实现使用合理的then方法“同化”不一致的实现。
+只要符合`Promises/A+`公开的规定,这种对`thenable`的处理允许promise进行互操作.它还允许`Promises/A+`实现使用合理的`then`方法“同化”不一致的实现。
+
+可以简单的把`[[Resolve]](promise, x)`理解成`promise.then(onFulfilled => {return x})`
 
 运行`[[Resolve]](promise, x)`,执行以下步骤:
 * 如果promise和x来自同一个object,就以TypeError的报错原因reject.
