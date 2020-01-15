@@ -181,39 +181,39 @@ status：
 浏览器有同源策略，不允许ajax访问其他域接口
 跨域条件: 协议 域名 端口 有一个不同就算跨域
 可跨域标签： img（可能防盗链， 可以加载站长统计的图片来进行打点统计） link(cnd) script(jsonp)
- * JSONP: 最新版会导致CORB（Cross-Origin Read Blocking）
-```js
-// src对应的url返回的值会被解析成js直接执行 ---> eval('返回值')
-<script>
-window.callback = function(data){
-	console.log(data)
-}
-</script>
-<script src="http://www.wuqiu.xyz/api">
-</script>
-```
- * 跨域资源共享（CORS）  服务端设置 http header
-```js
-app.use(function (req, res, next) {
+* JSONP: 最新版会导致CORB（Cross-Origin Read Blocking）
+  ```js
+  // src对应的url返回的值会被解析成js直接执行 ---> eval('返回值')
+  <script>
+  window.callback = function(data){
+    console.log(data)
+  }
+  </script>
+  <script src="http://www.wuqiu.xyz/api">
+  </script>
+  ```
+* 跨域资源共享（CORS）  服务端设置 http header
+  ```js
+  app.use(function (req, res, next) {
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
+      // Website you wish to allow to connect
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+      // Request methods you wish to allow
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+      // Request headers you wish to allow
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+      // Set to true if you need the website to include cookies in the requests sent
+      // to the API (e.g. in case you use sessions)
+      res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Pass to next layer of middleware
-    next();
-});
-```
-  * node中间件代理跨域  利用webpack-dev-server做代理
+      // Pass to next layer of middleware
+      next();
+  });
+  ```
+* node中间件代理跨域  利用webpack-dev-server做代理
   ```js
     module.exports = {
       entry: {},
@@ -232,7 +232,7 @@ app.use(function (req, res, next) {
       }
     }
   ```
-  * nginx反向代理
+* nginx反向代理
   ```m
   server{
     # 监听9099端口

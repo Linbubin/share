@@ -222,7 +222,9 @@ function DeepChild(props) {
 2. 模拟PureComponent   用memo来包裹
 
 # QUESTION
-1. 为什么react hooks依赖调用顺序(为什么不能在条件方法中写useXX)？  
+1. 为什么react hooks依赖调用顺序(为什么不能在条件方法中写useXX)？  [介绍](https://mp.weixin.qq.com/s/Err3W38ZMAX9Bm__SAI1jg)
+> memoizedState 数组是按hook定义的顺序来放置数据的，如果 hook 顺序变化，memoizedState 并不会感知到。
+
 因为React根据useXXX的调用顺序来设置value,比如
 ```js
 // ...
@@ -247,5 +249,26 @@ const [value, setvalue] = useState(333)
 // 读出name的值222  赋值给value
 
 // 读出value的值333  准备赋值 ----> error
+```
+
+其实并不是一个数组，而是一个next的对象  
+所以如果把hook1放到一个if语句中，当这个没有执行时，hook2拿到的state其实是上一次hook1执行后的state（而不是上一次hook2执行后的）。这样显然会发生错误。
+```js
+// hook1: const [count, setCount] = useState(0) — 拿到state1
+{
+  memorizedState: 0
+  next : {
+    // hook2: const [name, setName] = useState('Star') - 拿到state2
+    memorizedState: 'Star'
+    next : {
+      null
+    }
+  }
+}
+
+// hook1 => Fiber.memoizedState
+// state1 === hook1.memoizedState
+// hook1.next => hook2
+// state2 === hook2.memoizedState
 ```
 2. react hooks中如何对应之前的周期函数？

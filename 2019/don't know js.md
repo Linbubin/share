@@ -97,9 +97,20 @@ Object.freeze(..) 会创建一个冻结对象，这个方法实际上会在一�
 ### 枚举
 1. 用for...in 看是否有输出
 2. obj.propertyIsEnumerable('xxx')  会先检查obj中是否有'xxx'对象(不会在原型链上找),并且要满足enumerable:true
-3. Object.keys(obj) 会返回一个数组,包含左右可枚举的属性,与之对应的是Object.getOwnPropertyNames(..) 返回所有属性不管是否枚举(两个方法都是从原型链上捞的)
+3. Object.keys(obj) 会返回一个数组,包含左右可枚举的属性,与之对应的是Object.getOwnPropertyNames(..) 返回所有属性不管是否枚举(两个方法都不会从原型链上捞)
 
+```js
+function A(){
+    this.name = 1
+}
+A.prototype.say = ()=>{}
+a = new A()
+'say' in A // false
+'say' in a // true
+Object.keys(a) // ['name']
+Object.getOwnPropertyNames(a) ['name']
 
+```
 
 
 
