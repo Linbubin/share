@@ -77,3 +77,28 @@ function a(){console.log(3)}
 a()
 // 1 1 1
 ```
+
+4. 输出结果
+```js
+var num = 1 // 4
+var myObject = {
+    num:2, // 3
+    add: function(){
+        this.num = 3;
+        (function(){
+            console.log(this.num) 
+            this.num = 4
+        })()
+        console.log(this.num)
+    },
+    sub: function(){
+        console.log(this.num)
+    }
+}
+
+myObject.add() // 1 3
+console.log(myObject.num) // 3
+console.log(num) // 4
+var sub = myObject.sub
+sub() // 4
+```
