@@ -220,6 +220,57 @@ function DeepChild(props) {
 ```
 
 2. 模拟PureComponent   用memo来包裹
+3. Object.is （浅比较）
+Hook 内部使用 Object.is 来比较新/旧 state 是否相等
+与 class 组件中的 setState 方法不同，如果你修改状态的时候，传的状态值没有变化，则不重新渲染
+与 class 组件中的 setState 方法不同，useState 不会自动合并更新对象。你可以用函数式的 setState 结合展开运算符来达到合并更新对象的效果
+```js
+
+// export default function Counter() {
+//   const [counter, setCounter] = useState({ name: "计数器", number: 0 });
+//   console.log("render Counter");
+//   // 如果你修改状态的时候，传的状态值没有变化，则不重新渲染
+//   return (
+//     <>
+//       <p>
+//         {counter.name}:{counter.number}
+//       </p>
+//       <button
+//         onClick={() => setCounter({ ...counter, number: counter.number + 1 })}
+//       >
+//         +
+//       </button>
+//       <button onClick={() => setCounter(counter)}>++</button>
+//     </>
+//   );
+// }
+
+export default class Counter extends React.PureComponent {
+  state = { name: "计数器", number: 0 };
+  setCounter = v => {
+    this.setState(v);
+  };
+  render() {
+    console.log(1)
+    const counter = this.state;
+    return (
+      <>
+        <p>
+          {counter.name}:{counter.number}
+        </p>
+        <button
+          onClick={() =>
+            this.setCounter({ ...counter, number: counter.number + 1 })
+          }
+        >
+          +
+        </button>
+        <button onClick={() => this.setCounter(counter)}>++</button>
+      </>
+    );
+  }
+}
+```
 
 # QUESTION
 1. 为什么react hooks依赖调用顺序(为什么不能在条件方法中写useXX)？  [介绍](https://mp.weixin.qq.com/s/Err3W38ZMAX9Bm__SAI1jg)
