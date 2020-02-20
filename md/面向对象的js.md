@@ -383,6 +383,7 @@ d1.friends.push('a3');
 alert(d2.friends);
 
 d1.getName();
+dog.__proto__ -> Dog.prototype
 ```
 弊端： 多次执行父类对象 N+1. 子类中name和friends都重新覆盖Animal中的。大部分都利用这种方式
 
@@ -441,7 +442,7 @@ function Dog(){
 	this.age = 8;
 }
 
-Dog.prototype = Object.create(Animal.prototype); // Dog.prototype = ??
+Dog.prototype = Object.create(Animal.prototype); // Dog.prototype = ??  // new Function  Function.prototype = Animal.prototype
 Dog.prototype.constructor = Dog; // 解决之前的 PROBLEM
 
 // function inherit(subType,superType){  
